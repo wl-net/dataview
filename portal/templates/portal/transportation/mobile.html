@@ -1,0 +1,89 @@
+{% extends "basic-generic.html" %}
+{% block title %}DOT Mobile Query{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/mobile-maps.css">
+<script src="//maps.google.com/maps/api/js?sensor=false&amp;libraries=weather"></script>
+<script src="/static/js/mobile-maps.js"></script>
+
+<!-- javascript in HTML content is a bad idea, but the N900 does not support CSP so we use it here -->
+<div id="control" class="search">
+  <form>
+    <input id="address" name="address" size="20" type="text" class="fromto" placeholder="Current location"
+      onkeydown="if(event.keyCode==13){showAddress(16);}" onFocus="document.getElementById('address').select();" autocomplete="on">
+    <input id="toAddress" name="to" size="20" type="text" value="3220 1st Ave South" class="fromto" placeholder="Destination"
+      onkeydown="if(event.keyCode==13){setDirections()}" onFocus="document.getElementById('toAddress').select();" autocomplete="on">
+
+    <button id="navinfo" type="button" class="navinfo" style="display:none;"
+      onclick="document.getElementById('directions').scrollIntoView(true);">
+      <span class="navinfospan">#</span>
+    </button>
+  </form>
+  <div id="info" class="info" style="display:none;"
+    onclick="document.getElementById('info').style.display='none';">
+    <span id="infotext">status/errors</span>
+  </div>
+        
+  <div id="container">
+    <div id="map-canvas" class="map"></div>
+    <div id="directions" class="directions"></div>
+  </div>        
+  <div id="streetview" class="streetview"></div>
+
+  <!-- UI Controls --> 
+  <div id="left" class="left">
+    <button type="button" class="nav" onclick="map.panBy(-150, 0);">
+      <span class="navspan">&larr;</span>
+    </button>
+  </div>  
+  <div id="right" class="right">
+    <button type="button" class="nav" onclick="map.panBy(150, 0);">
+      <span class="navspan">&rarr;</span>
+    </button>
+  </div>  
+  <div id="up" class="up">
+    <button type="button" class="nav" onclick="map.panBy(0, -150);">
+      <span class="navspan">&uarr;</span>
+    </button>
+  </div>  
+  <div id="down" class="down">
+    <button type="button" class="nav" onclick="map.panBy(0, 150);">
+      <span class="navspan">&darr;</span>
+    </button>
+  </div>  
+
+  <div id="zoomin" class="zoomin">
+    <input type="button" class="zoomnav" value="+" onclick="map.setZoom(map.zoom+1);">
+  </div>  
+  <div id="zoomout" class="zoomout">
+    <input type="button" class="zoomnav"  value=" - " onclick="map.setZoom(map.zoom-1);">
+  </div>
+
+  <div id="layers" class="layers">
+    <select id="mymaptype" onChange="changeMyMapType();" STYLE="font-size : 40px" >
+      <option value="multimodal">Any</option>
+      <option value="transit" selected="selected">Transit</option>
+      <option value="walking">Walk</option>
+      <option value="biking">Biking</option>
+      <option value="driving">Driving</option>
+    </select>
+    <input type="button" class="zoomnav" value="T" onclick="toggleTraffic();">
+    <input type="button" class="zoomnav" value="F" onclick="toggleGeoTracking();">
+    <input type="button" class="zoomnav" value="C" onclick="toggleCar2Go();">
+  </div>
+
+  <div id="sv" class="sv">
+    <input type="button" class="zoomnav" value="V" onclick="StreetView();">
+  </div>  
+  
+  <div id="gpsinfo" class="gpsinfo" style="display:none;" onclick="disableGPS();">
+    <span id="gpsData" class="gpsData">GPS not yet available.</span>
+  </div>          
+  <div id="gps" class="gps">
+    <button id="gpsBtn" type="button" class="navinfo" style="display:inline;" onclick="enableGPS();">
+      <span></span>
+    </button>
+  </div>
+  <div id="marker" class="marker" style="display:none;"></div>
+</div>
+{% endblock %}
+
