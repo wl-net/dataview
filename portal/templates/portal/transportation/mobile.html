@@ -59,12 +59,12 @@
   </div>
 
   <div id="layers" class="layers">
-    <select id="mymaptype" onChange="changeMyMapType();" STYLE="font-size : 40px" >
+    <select class="directions-mode" style="font-size: 40px" >
       <option value="multimodal">Any</option>
-      <option value="transit" selected="selected">Transit</option>
-      <option value="walking">Walk</option>
-      <option value="biking">Biking</option>
-      <option value="driving">Driving</option>
+      <option value="TRANSIT" selected="selected">Transit</option>
+      <option value="WALKING">Walk</option>
+      <option value="BIKING">Biking</option>
+      <option value="DRIVING">Driving</option>
     </select>
     <input type="button" class="zoomnav" value="T" onclick="toggleTraffic();">
     <input type="button" class="zoomnav" value="F" onclick="toggleGeoTracking();">
@@ -77,7 +77,7 @@
   
   <div id="gpsinfo" class="gpsinfo" style="display:none;" onclick="disableGPS();">
     <span id="gpsData" class="gpsData">GPS not yet available.</span>
-  </div>          
+  </div>      
   <div id="gps" class="gps">
     <button id="gpsBtn" type="button" class="navinfo" style="display:inline;" onclick="enableGPS();">
       <span></span>
