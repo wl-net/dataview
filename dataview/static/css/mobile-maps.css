@@ -1,0 +1,240 @@
+input.fromto {
+  font-size:29px;
+  height:29px;
+  width:391px
+}
+
+#control > form { text-align:center;}
+.zoomnav {
+  width:56px;
+  height:56px;
+  font-size:40px;   
+}
+
+.nav {
+  width:56px;
+  height:56px;
+  font-size:40px;
+  color:#000000;
+}
+.navspan {
+  font-size:48px;
+  position: relative;
+  top: -7px;
+}
+.navinfo {
+  width:54px;
+  height:54px;
+  font-size:40px;
+  color:#000000;
+}
+.navinfospan {
+  font-size:36px;
+  position: relative;
+  top: -3px;
+}       
+    
+div.search {
+  position: absolute;
+  top: 0;
+  left: 0; 
+  width: 800px;
+}
+
+div.map {
+  position: absolute;
+  top: 35px;
+  left: 0px; 
+  width: 800px;
+  height:445px;
+  z-index: -100;
+}
+
+div.streetview {
+  position: absolute;
+  top: 480px;
+  left: 0px; 
+  width: 800px;
+  height:480px
+}
+
+div.directions {
+  position: absolute;
+  top: 480px;
+  left: 0; 
+  width: 800px
+}
+
+#container {
+  overflow:auto;
+}
+
+#help {
+  z-index:-50;
+  position: absolute;
+  top: 120px;
+  left: 60px; 
+  width: 660px;
+  height:280px;
+  color: white;
+  background-color: #333333;
+  display:block;
+  text-align: left;
+  vertical-align: middle;
+  font-size:18px;
+  opacity:0.75;
+  line-height:120%;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+div.info {
+  z-index: -10;
+  position: absolute;
+  top: 120px;
+  left: 0px; 
+  width: 700px;
+  height:80px;
+  color: black;
+  background-color: yellow;
+  display:block;
+  text-align: center;
+  vertical-align: middle;
+  font-size:24px;
+  opacity:0.75;
+  line-height:150%;
+  padding-left:50px;
+  padding-right:50px;
+  padding-top:20px;
+  padding-bottom:20px;
+}
+
+div.left {
+  z-index: 99;
+  position: absolute;
+  top: 219px;
+  left: 0px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}
+
+div.right {
+  z-index: 99;
+  position: absolute;
+  top: 219px;
+  left: 744px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}
+div.up {
+  z-index: 99;
+  position: absolute;
+  top: 39px;
+  left: 372px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}
+div.down {
+  z-index: 99;
+  position: absolute;
+  top: 424px;
+  left: 372px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}       
+
+div.sv {
+  z-index: 99;
+  position: absolute;
+  top: 118px;
+  left: 744px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}
+
+div.gps {
+  z-index: 99;
+  position: absolute;
+  top: 37px;
+  left: 56px; 
+  width: 56px;
+  height:60px;
+  opacity:0.5;
+}       
+div.gpsinfo {
+  z-index: 100;
+  position: absolute;
+  top: 37px;
+  left: 116px; 
+  width: 192px;
+  height:56px;
+  text-align: left;
+  color: black;
+  background-color: yellow;
+  display:block;
+  vertical-align: middle;
+  font-size:12px;
+  opacity:0.75;   
+}       
+
+div.marker {
+  z-index: 50;
+  position: absolute;
+  top: 224px;
+  left: 380px; 
+  width: 40px;
+  height:40px;
+  text-align: center;
+  color: red;
+  display:block;
+  vertical-align: middle;
+  font-size:72px;
+  opacity:0.50;   
+}       
+
+div.zoomin {
+  z-index: 99;
+  position: absolute;
+  top: 37px;
+  left: 0px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}
+div.zoomout {
+  z-index: 99;
+  position: absolute;
+  top: 118px;
+  left: 0px; 
+  width: 56px;
+  height:56px;
+  opacity:0.5;
+}
+
+div.layers {
+  z-index: 99;
+  position: absolute;
+  top: 37px;
+  left: 430px; 
+  width: 370px;
+  height:56px;
+  opacity:0.5;
+  text-align: right;
+}
+
+body {
+  font-family: Verdana, Arial, sans serif;
+  font-size: 18px;
+  color: #808080;
+  margin: 2px;
+}
+table.directions th {
+  background-color:#aaaaaa;
+}
