@@ -3,6 +3,16 @@ WLNet Dataview
 
 WLNet dataview provides a more efficent way to view data.
 
+Requirements
+----
+
+* Python 3.4+ with web hosting capabilities (mod_wsgi)
+
+Portal
+----
+
+The portal application provides users with a means to interact with the data on their laptop or smartphone as well.
+
 Sign
 ----
 
