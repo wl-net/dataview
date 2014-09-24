@@ -144,7 +144,7 @@ class Destination(models.Model):
     
     def is_open(self):
         #return datetime.datetime.today().time()
-        if OpenHour.objects.filter(location=self.location, day_of_week=datetime.datetime.today().weekday(), from_hour__gt=datetime.datetime.today().time(), to_hour__lt=datetime.datetime.today().time()).count() == 1:
+        if OpenHour.objects.filter(location=self.location, day_of_week=datetime.datetime.today().weekday(), from_hour__lt=datetime.datetime.today().time(), to_hour__gt=datetime.datetime.today().time()).count() == 1:
             return "Open"
         return "Closed"
     
