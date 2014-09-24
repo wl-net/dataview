@@ -3,6 +3,18 @@ from django.contrib.gis.db import models
 from django.core.validators import URLValidator
 import datetime
 
+# general fields
+WEEKDAYS = [
+  (0, "Monday"),
+  (1, "Tuesday"),
+  (2, "Wednesday"),
+  (3, "Thursday"),
+  (4, "Friday"),
+  (5, "Saturday"),
+  (6, "Sunday"),
+]
+
+
 class Address(models.Model): 
     source_id = models.CharField(max_length=128, editable=False)
     street = models.CharField(max_length=128)
@@ -127,14 +139,32 @@ class RadioStation(models.Model):
 # Used for travel directions
 class Destination(models.Model):
     title = models.CharField(max_length=128)    
-    street = models.CharField(max_length=128)
-    city = models.CharField(max_length=128)
-    state = models.CharField(max_length=2)
-    zip = models.CharField(max_length=5)
+    location = models.ForeignKey('Address')
     #geo = models.GeometryField()
+    
+    def is_open(self):
+        #return datetime.datetime.today().time()
+        if OpenHour.objects.filter(location=self.location, day_of_week=datetime.datetime.today().weekday(), from_hour__gt=datetime.datetime.today().time(), to_hour__lt=datetime.datetime.today().time()).count() == 1:
+            return "Open"
+        return "Closed"
+    
     def __unicode__(self):
-        return title
+        return self.title + " (now " + str(self.is_open()) + ")"
     
     def __str__(self):
-        return self.title
+        return self.title + " (now " + str(self.is_open()) + ")"
     
+class OpenHour(models.Model):
+    location = models.ForeignKey('Address')
+    day_of_week = models.IntegerField(choices=WEEKDAYS)
+    from_hour = models.TimeField()
+    to_hour = models.TimeField()
+    
+    def __unicode__(self):
+        return str(self.location) + " (" + str(self.from_hour) + " - " + str(self.to_hour) + ")"
+    
+    def __str__(self):
+        return str(self.location) + " (" + str(self.from_hour) + " - " + str(self.to_hour) + ")"
+    
+    class Meta:
+        unique_together = ("location", "day_of_week")
