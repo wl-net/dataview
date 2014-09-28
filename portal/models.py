@@ -82,12 +82,21 @@ class Amenity(models.Model):
 class Package(models.Model):
     tracking_number = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
+    picked_up = models.BooleanField(default=False)
     def __unicode__(self):
         return name
     
     def __str__(self):
         return self.name
 
+class Neighbor(models.Model):
+    name = models.CharField(max_length=128)
+    location = models.ForeignKey('Residence')
+    def __unicode__(self):
+        return name
+
+    def __str__(self):
+        return self.name
 # dataview models
 
 class Message(models.Model):
