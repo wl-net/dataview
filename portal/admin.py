@@ -1,5 +1,5 @@
 from django.contrib import admin
-from portal.models import Address, Amenity, Destination, Light, Mood, RadioStation, Residence, OpenHour
+from portal.models import Address, Amenity, Neighbor, Destination, Employer, Bank, Light, Mood, RadioStation, Residence, OpenHour
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('street', 'city', 'zip')
@@ -13,18 +13,35 @@ class AmenityAdmin(admin.ModelAdmin):
 
 admin.site.register(Amenity, AmenityAdmin)
 
+class NeighborAdmin(admin.ModelAdmin):
+    list_display = ('name', 'location')
+    pass
+
+admin.site.register(Neighbor, NeighborAdmin)
+
 class DestinationAdmin(admin.ModelAdmin):
     list_display = ('title', 'location')
     pass
 
 admin.site.register(Destination, DestinationAdmin)
 
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'location')
+    pass
+
+admin.site.register(Employer, EmployerAdmin)
+
+class BankAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    pass
+
+admin.site.register(Bank, BankAdmin)
+
 class LightAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
     pass
 
 admin.site.register(Light, LightAdmin)
-
 
 class MoodAdmin(admin.ModelAdmin):
     list_display = ('title', 'enabled')

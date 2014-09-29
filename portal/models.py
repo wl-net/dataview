@@ -99,6 +99,23 @@ class Neighbor(models.Model):
         return self.name
 # dataview models
 
+class Employer(models.Model):
+    name = models.CharField(max_length=128)
+    location = models.ForeignKey('Address')
+    def __unicode__(self):
+        return name
+
+    def __str__(self):
+        return self.name
+
+class Bank(models.Model):
+    name = models.CharField(max_length=128)
+    def __unicode__(self):
+        return name
+
+    def __str__(self):
+        return self.name
+
 class Message(models.Model):
     time = models.DateTimeField()
     location = models.ForeignKey('Residence')
