@@ -82,7 +82,7 @@ class Amenity(models.Model):
     show = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     def __unicode__(self):
-        return name
+        return self.name
     
     def __str__(self):
         return self.name
@@ -92,7 +92,7 @@ class Package(models.Model):
     location = models.ForeignKey('Residence')
     picked_up = models.BooleanField(default=False)
     def __unicode__(self):
-        return name
+        return self.name
     
     def __str__(self):
         return self.name
@@ -101,7 +101,7 @@ class Neighbor(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
     def __unicode__(self):
-        return name
+        return self.name
 
     def __str__(self):
         return self.name
@@ -111,7 +111,7 @@ class Employer(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Address')
     def __unicode__(self):
-        return name
+        return self.name
 
     def __str__(self):
         return self.name
@@ -119,7 +119,7 @@ class Employer(models.Model):
 class Bank(models.Model):
     name = models.CharField(max_length=128)
     def __unicode__(self):
-        return name
+        return self.name
 
     def __str__(self):
         return self.name
@@ -127,7 +127,7 @@ class Bank(models.Model):
 class ServiceType(models.Model):
     name = models.CharField(max_length=128)
     def __unicode__(self):
-        return name
+        return self.name
 
     def __str__(self):
         return self.name
@@ -137,7 +137,7 @@ class Service(models.Model):
     service_type = models.ForeignKey('ServiceType')
     location = models.ForeignKey('Address')
     def __unicode__(self):
-        return name
+        return self.name
 
     def __str__(self):
         return self.name
