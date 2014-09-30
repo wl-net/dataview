@@ -1,17 +1,25 @@
 from django.conf.urls import patterns, include, url
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
+
+admin.site.site_header = "WLNet DataView Administrator"
+admin.site.site_title = "WLNet DataView"
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'dataview.views.home', name='home'),
-    # url(r'^dataview/', include('dataview.foo.urls')),
+    url(r'^$', 'portal.views.index', name='index'),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # sign hacks
+    url(r'^sign$', 'sign.views.index', name='index'),
+    url(r'^sign/transit$', 'sign.views.transit', name='transit'),
+    url(r'^sign/transit/destinations$', 'sign.views.destinations', name='destinations'),
+   
+    #url(r'^portal/transportation/mobile$', 'portal.views.transportation_mobile', name='transportation_mobile'),
+    #url(r'^error$', 'sign.views.error', name='error'),
+    
+    # app specific includes
+    url(r'^portal/', include('portal.urls')),
 
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 )
