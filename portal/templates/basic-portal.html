@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/portal.js"></script>
 </head>
 <body>
     <!-- Fixed navbar -->
@@ -61,10 +62,10 @@
     </div>
 
     <div id="wrap">
-        <div class="container" style="max-width: 100%;">
+        <div class="container portal-messages-container" style="max-width: 100%;">
         {% for message in portal_messages%}
             <div class="alert alert-{{message.get_type}}" role="alert">
-                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-messageid="{{message.id}}" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <strong>Warning: </strong>{{message}}
             </div>
         {% endfor %}
