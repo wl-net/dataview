@@ -16,6 +16,13 @@ WEEKDAYS = [
   (6, "Sunday"),
 ]
 
+MESSAGE_TYPES = [
+  (0, "sucess"),
+  (1, "info"),
+  (2, "warning"),
+  (3, "danger"),
+]
+
 
 class Address(models.Model): 
     source_id = models.CharField(max_length=128, editable=False)
@@ -126,7 +133,11 @@ class Message(models.Model):
     marked = models.DateTimeField()
     subject = models.CharField(max_length=128)
     message = models.TextField()
+    type = models.IntegerField(choices=MESSAGE_TYPES)
     
+    def get_type(self):
+        return str(MESSAGE_TYPES[self.type][1])
+
     def __unicode__(self):
         return self.subject
     
