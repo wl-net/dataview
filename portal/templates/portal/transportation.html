@@ -1,0 +1,48 @@
+{% extends "basic-portal.html" %}
+
+{% block content %}
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="/static/js/portal-transportation.js"></script>
+    <div class="page-header">
+        <h2 class="traffic-conditions">Traffic condition placeholder</h2>
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#destinations" class='destinations-button' role="tab" data-toggle="tab">Destinations</a></li>
+        <li><a class='traffic-monitor-button' href="#traffic-monitor" role="tab" data-toggle="tab">Traffic monitor</a></li>
+        <li><a class='commute-history-button' href="#commute-history" role="tab" data-toggle="tab">Commute History</a></li>
+        <li><a class='settings-button' href="#settings" role="tab" data-toggle="tab">Settings</a></li>
+    </ul>
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="destinations">
+  <div class="row col-xs-5">
+    <h3>1. Pick your Destination</h3>
+    <div class="list-group transit-destiation-picker">
+    {% for destination in destinations %}
+        <div>
+            <a href="#transit-dest-{{destination.id}}" data-destination-name="{{destination}}" class="list-group-item {% if destination.is_open = "Closed" %}disabled{%endif%}">
+            <h4 class="list-group-item-heading">{{destination.title}}</h4>
+            {% if destination.is_open = "Open" %}
+            <p class="list-group-item-text transit-dest-{{destination.id}}-overview"></p>
+            {%endif%}
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+  </div>
+  </div>
+  <div class="tab-pane" id="traffic-monitor">
+    <div class="row">
+        <div class="row col-xs-12">
+            <div id="map-canvas"></div>
+        </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="commute-history">
+  
+  </div>
+  <div class="tab-pane" id="settings">
+  
+  </div>
+</div>
+{% endblock %}
