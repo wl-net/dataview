@@ -124,6 +124,24 @@ class Bank(models.Model):
     def __str__(self):
         return self.name
 
+class ServiceType(models.Model):
+    name = models.CharField(max_length=128)
+    def __unicode__(self):
+        return name
+
+    def __str__(self):
+        return self.name
+
+class Service(models.Model):
+    name = models.CharField(max_length=128)
+    service_type = models.ForeignKey('ServiceType')
+    location = models.ForeignKey('Address')
+    def __unicode__(self):
+        return name
+
+    def __str__(self):
+        return self.name
+
 class Message(models.Model):
     user = models.ForeignKey('auth.User', editable=False)
     time = models.DateTimeField()
