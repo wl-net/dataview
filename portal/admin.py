@@ -1,5 +1,5 @@
 from django.contrib import admin
-from portal.models import Address, Amenity, Neighbor, ServiceType, Service, Destination, Employer, Bank, Residence, OpenHour
+from portal.models import Address, Amenity, Neighbor, ServiceType, Service, Camera, Destination, Employer, Bank, Residence, OpenHour
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('street', 'city', 'zip')
@@ -30,6 +30,12 @@ class ServiceAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Service, ServiceAdmin)
+
+class CameraAdmin(admin.ModelAdmin):
+    list_display = ('location', 'residence')
+    pass
+
+admin.site.register(Camera, CameraAdmin)
 
 class DestinationAdmin(admin.ModelAdmin):
     list_display = ('title', 'location')
