@@ -11,12 +11,16 @@ Requirements
 Portal
 ----
 
-The portal application provides users with a means to interact with the data on their laptop or smartphone as well.
+The portal application provides users with a means to interact with the data on their laptop, smartphone, or tablet.
 
 Sign
 ----
 
 WLNet dataview provides a sign interface for dedicated systems to provide information. Sign modules should never require user interaction and should automatically update to show new information as it becomes available.
+
+Automation
+----
+The automation application provides users with a way to automate lighting, music, and other systems in a residence.
 
 DOT / Transportation
 --------------------
