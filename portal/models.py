@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.gis.db import models
 from django.core.validators import URLValidator
+from django.contrib.auth.models import User
+
 import datetime
 
 # general fields
@@ -117,6 +119,7 @@ class Bank(models.Model):
         return self.name
 
 class Message(models.Model):
+    user = models.ForeignKey('auth.User', editable=False)
     time = models.DateTimeField()
     location = models.ForeignKey('Residence')
     acknowledged = models.BooleanField(default=False)
