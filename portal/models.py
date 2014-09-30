@@ -23,7 +23,6 @@ MESSAGE_TYPES = [
   (3, "danger"),
 ]
 
-
 class Address(models.Model): 
     source_id = models.CharField(max_length=128, editable=False)
     street = models.CharField(max_length=128)
