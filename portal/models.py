@@ -58,7 +58,7 @@ class Location(models.Model):
 
 class Residence(models.Model):
     name = models.CharField(max_length=64)
-    rent = models.FloatField(default=0)
+    location = models.ForeignKey('Address')
     floors = models.IntegerField(default=1)
     residence_floor = models.IntegerField(default=1)
     YEAR_CHOICES = []
@@ -67,7 +67,9 @@ class Residence(models.Model):
     year = models.IntegerField(max_length=4, choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     active_building_community_number = models.IntegerField()
     active_building_community_website = models.TextField(blank=True,null=True)
-    location = models.ForeignKey('Address')
+    rent = models.FloatField(default=0)
+    tenants = models.ManyToManyField('auth.User')
+
     def __unicode__(self):
         return self.name + " " + self.location.city
 
@@ -151,6 +153,14 @@ class Camera(models.Model):
 
     def __str__(self):
         return self.location
+
+class Guest(models.Model):
+    name = models.CharField(max_length=128)
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
 class Message(models.Model):
     user = models.ForeignKey('auth.User', editable=False)
