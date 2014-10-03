@@ -39,6 +39,13 @@ admin.site.register(Camera, CameraAdmin)
 
 class DestinationAdmin(admin.ModelAdmin):
     list_display = ('title', 'location')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'user':
+            kwargs['initial'] = request.user.id
+        return super(DestinationAdmin, self).formfield_for_foreignkey(
+            db_field, request, **kwargs
+        )
     pass
 
 admin.site.register(Destination, DestinationAdmin)

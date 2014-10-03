@@ -68,7 +68,7 @@ class Residence(models.Model):
     active_building_community_number = models.IntegerField()
     active_building_community_website = models.TextField(blank=True,null=True)
     rent = models.FloatField(default=0)
-    tenants = models.ManyToManyField('auth.User')
+    tenants = models.ManyToManyField('auth.User', blank=True, null=True)
 
     def __unicode__(self):
         return self.name + " " + self.location.city
@@ -184,7 +184,8 @@ class Message(models.Model):
     
 # Used for travel directions
 class Destination(models.Model):
-    title = models.CharField(max_length=128)    
+    title = models.CharField(max_length=128)
+    user = models.ForeignKey('auth.User', editable=False)
     location = models.ForeignKey('Address')
     #geo = models.GeometryField()
     
