@@ -181,6 +181,10 @@ class Message(models.Model):
     def __str__(self):
         return self.subject
 
+class TimeEntry(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    description = models.TextField(blank=True)
     
 # Used for travel directions
 class Destination(models.Model):
