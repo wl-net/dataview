@@ -186,6 +186,12 @@ class TimeEntry(models.Model):
     end = models.DateTimeField()
     description = models.TextField(blank=True)
     
+    def __unicode__(self):
+        return str(self.start) + " - " +  str(self.end) + ", " + str(self.end - self.start)
+
+    def __str__(self):
+        return str(self.start) + " - " +  str(self.end) + ", " + str(self.end - self.start)
+
 # Used for travel directions
 class Destination(models.Model):
     title = models.CharField(max_length=128)
