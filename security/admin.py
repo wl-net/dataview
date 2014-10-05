@@ -1,3 +1,8 @@
 from django.contrib import admin
+from security.models import Camera
 
-# Register your models here.
+class CameraAdmin(admin.ModelAdmin):
+    list_display = ('location', 'residence')
+    pass
+
+admin.site.register(Camera, CameraAdmin)

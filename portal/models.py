@@ -148,16 +148,6 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
-class Camera(models.Model):
-    location = models.CharField(max_length=128)
-    residence = models.ForeignKey('Residence')
-    
-    def __unicode__(self):
-        return self.location
-
-    def __str__(self):
-        return self.location
-
 class Guest(models.Model):
     name = models.CharField(max_length=128)
     def __unicode__(self):
