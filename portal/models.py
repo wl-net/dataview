@@ -109,6 +109,18 @@ class Neighbor(models.Model):
         return self.name
 # dataview models
 
+class Room(models.Model):
+    name = models.CharField(max_length=128)
+    location = models.ForeignKey('Residence')
+    square_feet = models.IntegerField()
+    has_door = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name + " (" +  str(self.location) + ")"
+
+    def __str__(self):
+        return self.name + " (" +  str(self.location) + ")"
+
 class Employer(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Address')
