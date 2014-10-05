@@ -179,7 +179,9 @@ class TimeEntry(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     description = models.TextField(blank=True)
-    
+    class Meta:
+        verbose_name_plural = "Time entries"
+
     def __unicode__(self):
         return str(self.start) + " - " +  str(self.end) + ", " + str(self.end - self.start)
 
