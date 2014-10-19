@@ -6,7 +6,8 @@ class Sign(models.Model):
     hostname = models.CharField(max_length=128)
     location = models.ForeignKey('portal.Room')
     is_available = models.BooleanField(default=True)
-    widgets = models.ManyToManyField('Widget', blank=True, null=True)
+    widgets = models.ManyToManyField('Widget', blank=True, null=True, through='SignWidget')
+    background_image = models.ImageField(upload_to='sign/uploads/backgrounds')
 
     def __unicode__(self):
         return self.name + " (" + self.location.name + ")"
@@ -17,6 +18,7 @@ class Sign(models.Model):
 class Widget(models.Model):
     name = models.CharField(max_length=128)
     internal_name = models.CharField(max_length=128)
+    class_name = models.CharField(max_length=128)
 
     def __unicode__(self):
         return self.name
@@ -24,6 +26,15 @@ class Widget(models.Model):
     def __str__(self):
         return self.name
 
-class SignWidgetConfig(models.Model):
-    sign = models.ForeignKey('Sign')
-    widget = models.ForeignKey('Widget')
+class SignWidget(models.Model):
+    sign = models.ForeignKey(Sign)
+    widget = models.ForeignKey(Widget)
+    enabled = models.BooleanField(default=True)
+    position = models.CharField(max_length=128)
+    order = models.IntegerField()
+
+    def __unicode__(self):
+        return str(self.widget) + " on " + str(self.sign)
+
+    def __str__(self):
+        return str(self.widget) + " on " + str(self.sign)
