@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}Sign {% endblock %}| WLNet Networks</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
+  <meta http-equiv="refresh" content="3600">
+  <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script src="/static/js/date.js"></script>
+  <script src="/static/js/sign.js"></script>
+</head>
+<body class='dataview-sign'>
+  <div id="wrap">
+    <div class="container-fluid">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted copyright">WLNet Dataview // 2003-2014, WLNet Networks</p>
+    </div>
+  </div>
+</body>
+</html>

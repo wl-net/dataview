@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.utils.datastructures import SortedDict
 from django.http import HttpResponse, Http404
 
-from sign.models import Sign, Widget
+from sign.models import Sign, Widget, SignWidget
 
 import datetime, urllib.request, json, sys
 from xml.dom import minidom
@@ -27,7 +27,7 @@ def sign(request, id=None):
         clsName = getattr(module, widget.class_name)
         cls = clsName(request)
         template_fields.update(getattr(cls, 'get_template_fields')())
-        template_fields['widgets'].append({'template_path': getattr(cls, 'get_template_path')(), 'name': str(widget), 'internal_name': widget.internal_name})
+        template_fields['widgets'].append({'template_path': getattr(cls, 'get_template_path')(), 'name': str(widget), 'internal_name': widget.internal_name, 'position': SignWidget.objects.get(sign=sign, widget=widget).position})
 
     template_fields['datetime_now'] = datetime.datetime.now()
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from sign.models import Sign, Widget
+from sign.models import Sign, Widget, SignWidget
 
 class SignAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
@@ -14,3 +14,10 @@ class WidgetAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Widget, WidgetAdmin)
+
+class SignWidgetAdmin(admin.ModelAdmin):
+    list_display = ('sign', 'widget')
+    save_as = True
+    pass
+
+admin.site.register(SignWidget, SignWidgetAdmin)
