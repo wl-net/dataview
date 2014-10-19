@@ -1,0 +1,15 @@
+{% extends "basic.html" %}
+
+{% block content %}
+  <div class="dataview-infobar well well-exsm">
+    <h1><span class="current-time">{{datetime_now|date:'l, F j'}} &ndash; {{datetime_now|date:'H:i:s'}}</span></h1>
+  </div>
+  
+  <div class="widgets">
+  {% for widget in widgets %}
+    <div class="widget heading widget-{{widget.internal_name}} col-xs-4" data-title="{{widget.name}}">
+      {% include widget.template_path %}
+    </div>
+  {% endfor %}
+  </div>
+{% endblock %}

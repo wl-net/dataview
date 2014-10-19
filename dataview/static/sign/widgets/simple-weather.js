@@ -17,4 +17,5 @@ $(document).ready(function() {
   
   getWeather();
   setInterval(getWeather, 600000);
+  $('.widget-simple_weather').attr('data-title', 'Weather in Seattle, WA')
 });
