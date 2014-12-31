@@ -52,7 +52,11 @@ class DestinationAdmin(admin.ModelAdmin):
         return super(DestinationAdmin, self).formfield_for_foreignkey(
             db_field, request, **kwargs
         )
-    pass
+    
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.user = request.user;
+        obj.save()
 
 admin.site.register(Destination, DestinationAdmin)
 
