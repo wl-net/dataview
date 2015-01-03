@@ -1,17 +1,23 @@
 WLNet Dataview
 ==============
 
-WLNet dataview provides a more efficent way to view data.
+WLNet dataview provides a way to collect, interact, and view data. Dataview is being developed as a solution to home automation, though other use-cases such as office building management will not be difficult to realize.
 
 Requirements
 ----
 
 * Python 3.4+ with web hosting capabilities (mod_wsgi)
+* django_rest_framework module
 
 Installation
 ----
 
 See https://github.com/wl-net/dataview/wiki/Installation
+
+API
+----
+
+The API application provides a REST web service for interacting with dataview from third-party applications.
 
 Automation
 ----
