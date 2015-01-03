@@ -8,6 +8,7 @@ admin.site.site_title = "WLNet DataView"
 
 urlpatterns = patterns('',
     url(r'^$', 'portal.views.index', name='index'),
+    url(r'^api/', include('api.urls')),
     
     # app specific includes
     url(r'^portal/', include('portal.urls')),
