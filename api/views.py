@@ -1,16 +1,30 @@
-#from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from api.serializers import AddressSerializer, ResidenceSerializer, RoomSerializer, SensorSerializer, SignSerializer
+from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, OpenHourSerializer
+from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SignSerializer
 
-from portal.models import Address, Residence, Room
+from portal.models import Address, Destination, OpenHour, Residence, Room
+
+class UserViewSet(viewsets.ModelViewSet):
+    lookup_field = 'username'
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 # portal models
 
 class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+
+class DestinationViewSet(viewsets.ModelViewSet):
+    queryset = Destination.objects.all()
+    serializer_class = DestinationSerializer
+
+class OpenHourViewSet(viewsets.ModelViewSet):
+    queryset = OpenHour.objects.all()
+    serializer_class = OpenHourSerializer
 
 class ResidenceViewSet(viewsets.ModelViewSet):
     queryset = Residence.objects.all()
