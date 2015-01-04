@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from portal.models import Address, Destination, OpenHour, Residence, Room
+from portal.models import Address, Destination, Guest, Message, OpenHour, Residence, Room
 
 from sensors.models import Sensor
 from sign.models import Sign
@@ -28,6 +28,16 @@ class DestinationSerializer(serializers.HyperlinkedModelSerializer):
         model = Destination
         fields = ('title', 'location', 'open_hours')
 
+class GuestSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Guest
+        fields = ['name']
+
+class MessageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('location', 'subject', 'message')
+        
 class ResidenceSerializer(serializers.HyperlinkedModelSerializer):
     tenants = serializers.HyperlinkedRelatedField(many = True, read_only = True, view_name = 'user-detail', lookup_field = 'username')
 
