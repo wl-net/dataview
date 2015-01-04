@@ -14,7 +14,7 @@ class AmenityAdmin(admin.ModelAdmin):
 admin.site.register(Amenity, AmenityAdmin)
 
 class NeighborAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location')
+    list_display = ('first_name', 'last_name', 'location')
     pass
 
 admin.site.register(Neighbor, NeighborAdmin)

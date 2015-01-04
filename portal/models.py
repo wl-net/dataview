@@ -100,13 +100,16 @@ class Package(models.Model):
         return self.name
 
 class Neighbor(models.Model):
-    name = models.CharField(max_length=128)
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
+    notes = models.TextField(blank=True)
+
     def __unicode__(self):
-        return self.name
+        return self.first_name + " " + self.last_name
 
     def __str__(self):
-        return self.name
+        return self.first_name + " " + self.last_name
 # dataview models
 
 class Room(models.Model):
