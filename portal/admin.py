@@ -74,7 +74,7 @@ admin.site.register(Residence, ResidenceAdmin)
 
 
 class OpenHourAdmin(admin.ModelAdmin):
-    list_display = ('day_of_week', 'location', 'from_hour', 'to_hour')
+    list_display = ('day_of_week', 'location', 'from_time', 'to_time')
     save_as = True
     pass
 

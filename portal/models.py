@@ -198,15 +198,15 @@ class Destination(models.Model):
     def is_open(self):
         #return datetime.datetime.today().time()
         if OpenHour.objects.filter(
-            location=self.location, inverted=False, day_of_week=datetime.datetime.today().weekday(), from_hour__lt=datetime.datetime.today().time(), to_hour__gt=datetime.datetime.today().time()).count() == 1:
+            location=self.location, inverted=False, day_of_week=datetime.datetime.today().weekday(), from_time__lt=datetime.datetime.today().time(), to_time__gt=datetime.datetime.today().time()).count() == 1:
             return "Open"
         else:
             for oh in OpenHour.objects.filter(location=self.location, inverted=True):
-                if oh.to_hour > datetime.datetime.today().time() and OpenHour.objects.filter(
-                        location=self.location, inverted=True, day_of_week=max(0,datetime.datetime.today().weekday() - 1), from_hour__gt=datetime.datetime.today().time(), to_hour__lt=datetime.datetime.today().time()).count() == 1:
+                if oh.to_time > datetime.datetime.today().time() and OpenHour.objects.filter(
+                        location=self.location, inverted=True, day_of_week=max(0,datetime.datetime.today().weekday() - 1), from_time__gt=datetime.datetime.today().time(), to_time__lt=datetime.datetime.today().time()).count() == 1:
                     return "Open"
                 
-                if oh.from_hour < datetime.datetime.today().time():
+                if oh.from_time < datetime.datetime.today().time():
                     return "Open"
                 
         return "Closed"
@@ -220,18 +220,18 @@ class Destination(models.Model):
 class OpenHour(models.Model):
     location = models.ForeignKey('Address')
     day_of_week = models.IntegerField(choices=WEEKDAYS)
-    from_hour = models.TimeField()
-    to_hour = models.TimeField()
+    from_time = models.TimeField()
+    to_time = models.TimeField()
     inverted = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return str(self.location) + " (" + str(self.from_hour) + " - " + str(self.to_hour) + ")"
+        return str(self.location) + " (" + str(self.from_time) + " - " + str(self.to_time) + ")"
     
     def __str__(self):
-        return str(self.location) + " (" + str(self.from_hour) + " - " + str(self.to_hour) + ")"
+        return str(self.location) + " (" + str(self.from_time) + " - " + str(self.to_time) + ")"
     
     def save(self, *args, **kwargs):
-        if self.to_hour < self.from_hour:
+        if self.to_time < self.from_time:
             self.inverted = True
         else:
             self.inverted = False
