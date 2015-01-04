@@ -1,5 +1,6 @@
 from django.contrib import admin
-from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, TimeEntry, Destination, Employer, Residence, OpenHour
+from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
+from portal.models import TimeEntry, Destination, Employer, Residence, OpenHour
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('street', 'city', 'zip')
@@ -36,6 +37,16 @@ class ServiceAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Service, ServiceAdmin)
+
+class GuestAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.user = request.user;
+        obj.save()
+
+admin.site.register(Guest, GuestAdmin)
 
 class TimeEntryAdmin(admin.ModelAdmin):
     list_display = ('start', 'end')
