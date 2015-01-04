@@ -131,8 +131,15 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'dataview',
-    'automation',
     'portal',
+    'automation',
+    'money',
+    'sign',
+    'sensors',
+    'security',
+    'bootstrapnavtags',
+    'rest_framework',
+    'api',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
