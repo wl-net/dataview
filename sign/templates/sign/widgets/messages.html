@@ -1,0 +1,11 @@
+<!-- widget: messages -->
+<script src="/static/sign/widgets/messages.js"></script>
+<div class="messages">
+{% for message in message_messages %}
+    <div class="well well-sm" style="overflow:auto">
+      <h2 style="margin: 5px">{{message.message}} </h2>
+      <h4><span class="label label-default pull-right">{{message.time|date:'l, F j H:i:s'}}</span></h4>
+    </div>
+{% endfor %}
+</div>
+<!-- endwidget: messages -->
