@@ -1,9 +1,11 @@
 from django.db import models
-from django.contrib.gis.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import User
 
-import datetime
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import GEOSGeometry
+
+import datetime, requests, json
 
 # general fields
 WEEKDAYS = [
@@ -29,8 +31,17 @@ class Address(models.Model):
     city = models.CharField(max_length=128)
     state = models.CharField(max_length=2)
     zip = models.CharField(max_length=5)
-    #geo = models.GeometryField()
-    
+    geo = models.PointField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        request = requests.get("https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=0" % str(self).replace(' ', '%20'))
+        response = json.loads(request.content.decode('utf-8'))
+        self.geo = GEOSGeometry("POINT(" + response[0]['lat'] + " "+ response[0]['lon'] + ")")
+        super(Address, self).save(*args, **kwargs)
+
+    def full_name(self):
+        return self.street + " " + self.city + ", " + self.state + " " + self.zip
+
     def __unicode__(self):
         return self.street + " " + self.city + ", " + self.state + " " + self.zip
 
@@ -83,6 +94,7 @@ class Amenity(models.Model):
     externalId = models.CharField(max_length=5)
     show = models.BooleanField(default=False)
     description = models.TextField(blank=True)
+
     def __unicode__(self):
         return self.name
     
@@ -100,6 +112,8 @@ class Package(models.Model):
         return self.name
 
 class Neighbor(models.Model):
+    user = models.ForeignKey('auth.User', editable=False)
+
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
@@ -127,6 +141,7 @@ class Room(models.Model):
 class Employer(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Address')
+
     def __unicode__(self):
         return self.name
 
@@ -154,8 +169,9 @@ class Service(models.Model):
         return self.name
 
 class Guest(models.Model):
-    name = models.CharField(max_length=128)
     user = models.ForeignKey('auth.User', editable=False)
+
+    name = models.CharField(max_length=128)
 
     def __unicode__(self):
         return self.name
@@ -165,6 +181,7 @@ class Guest(models.Model):
 
 class Message(models.Model):
     user = models.ForeignKey('auth.User', editable=False)
+
     time = models.DateTimeField()
     location = models.ForeignKey('Residence')
     acknowledged = models.BooleanField(default=False)
@@ -197,32 +214,31 @@ class TimeEntry(models.Model):
 
 # Used for travel directions
 class Destination(models.Model):
-    title = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     user = models.ForeignKey('auth.User', editable=False)
     location = models.ForeignKey('Address')
-    #geo = models.GeometryField()
-    
+
     def is_open(self):
         #return datetime.datetime.today().time()
         if OpenHour.objects.filter(
             location=self.location, inverted=False, day_of_week=datetime.datetime.today().weekday(), from_time__lt=datetime.datetime.today().time(), to_time__gt=datetime.datetime.today().time()).count() == 1:
-            return "Open"
+            return True
         else:
             for oh in OpenHour.objects.filter(location=self.location, inverted=True):
                 if oh.to_time > datetime.datetime.today().time() and OpenHour.objects.filter(
                         location=self.location, inverted=True, day_of_week=max(0,datetime.datetime.today().weekday() - 1), from_time__gt=datetime.datetime.today().time(), to_time__lt=datetime.datetime.today().time()).count() == 1:
-                    return "Open"
+                    return True
                 
                 if oh.from_time < datetime.datetime.today().time():
-                    return "Open"
+                    return True
                 
-        return "Closed"
+        return False
     
     def __unicode__(self):
-        return self.title + " (now " + str(self.is_open()) + ")"
+        return self.name + " (now " + "Open)" if self.is_open() else "Closed)"
     
     def __str__(self):
-        return self.title + " (now " + str(self.is_open()) + ")"
+        return self.name + " (now " + "Open)" if self.is_open() else "Closed)"
     
 class OpenHour(models.Model):
     location = models.ForeignKey('Address')
