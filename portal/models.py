@@ -234,12 +234,25 @@ class Destination(models.Model):
                 
         return False
     
+    def open_status(self):
+        return "Open" if self.is_open() else "Closed"
+
     def __unicode__(self):
-        return self.name + " (now " + "Open)" if self.is_open() else "Closed)"
+        return self.name + " (now " + self.open_status() + ")"
     
     def __str__(self):
-        return self.name + " (now " + "Open)" if self.is_open() else "Closed)"
+        return self.name + " (now " + self.open_status() + ")"
+
+class DestinationGroup(models.Model):
+    name = models.CharField(max_length=60)
+    destinations = models.ManyToManyField(Destination)
+
+    def __unicode__(self):
+        return self.name
     
+    def __str__(self):
+        return self.name
+
 class OpenHour(models.Model):
     location = models.ForeignKey('Address')
     day_of_week = models.IntegerField(choices=WEEKDAYS)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
-from portal.models import TimeEntry, Destination, Employer, Residence, OpenHour
+from portal.models import TimeEntry, Destination, DestinationGroup, Employer, Residence, OpenHour
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('street', 'city', 'zip')
@@ -55,7 +55,7 @@ class TimeEntryAdmin(admin.ModelAdmin):
 admin.site.register(TimeEntry, TimeEntryAdmin)
 
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('title', 'location')
+    list_display = ('name', 'location')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'user':
@@ -70,6 +70,14 @@ class DestinationAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(Destination, DestinationAdmin)
+
+
+class DestinationGroupAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    pass
+
+admin.site.register(DestinationGroup, DestinationGroupAdmin)
+
 
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
