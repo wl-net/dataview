@@ -64,11 +64,22 @@ class ResidenceViewSet(viewsets.ModelViewSet):
         queryset = Residence.objects.filter(tenants=request.user)
         serializer = ResidenceSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
-    
+
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all()
+    queryset = Room.objects.none()
     serializer_class = RoomSerializer
+
+    def list(self, request):
+        queryset = Room.objects.filter(location=Residence.objects.filter(tenants = request.user)) # critical
+        serializer = RoomSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
     
+    def retrieve(self, request, pk=None):
+        queryset = Room.objects.filter(location=Residence.objects.filter(tenants = request.user)) # critical
+        room = get_object_or_404(queryset, pk=pk)
+        serializer = RoomSerializer(room, context={'request': request})
+        return Response(serializer.data)
+
     
 # other applications
 

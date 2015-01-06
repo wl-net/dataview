@@ -1,3 +1,6 @@
+from django.forms import SelectMultiple
+from django.db import models
+from portal.models import Destination
 from django.contrib import admin
 from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
 from portal.models import TimeEntry, Destination, DestinationGroup, Employer, Residence, OpenHour
@@ -74,6 +77,7 @@ admin.site.register(Destination, DestinationAdmin)
 
 class DestinationGroupAdmin(admin.ModelAdmin):
     list_display = ['name']
+    formfield_overrides = { models.ManyToManyField: {'widget': SelectMultiple(attrs={'size':'10'})}, }
     pass
 
 admin.site.register(DestinationGroup, DestinationGroupAdmin)

@@ -17,7 +17,8 @@ def sign(request, id=None):
     except Sign.DoesNotExist:
         raise Http404
 
-    for widget in sign.widgets.all():
+    for signwidget in SignWidget.objects.filter(sign=sign).extra(order_by=['order']):
+        widget = signwidget.widget
         try:
             import_module("sign.widgets." + widget.internal_name)
         except Exception as e:
@@ -30,5 +31,6 @@ def sign(request, id=None):
         template_fields['widgets'].append({'template_path': getattr(cls, 'get_template_path')(), 'name': str(widget), 'internal_name': widget.internal_name, 'position': SignWidget.objects.get(sign=sign, widget=widget).position})
 
     template_fields['datetime_now'] = datetime.datetime.now()
+    template_fields['x_sign_info'] = json.dumps({'signId': sign.id})
 
     return render_to_response('sign/sign.html', RequestContext(request, template_fields))
