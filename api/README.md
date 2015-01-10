@@ -35,3 +35,12 @@ Finally, configure the URL router to allow users to reach the API at a particula
 ````python
 router.register(r'user', views.UserViewSet)
 ````
+
+Using the API
+----
+
+The API can be accessed through a web browser at /api/1. Calls to the API can be made following the pattern below:
+
+````
+curl 'http://dataview.restricted.wl-net.net:8000/api/1/<model>/' -H 'Accept: application/json'
+````
