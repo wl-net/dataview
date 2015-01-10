@@ -39,6 +39,11 @@ Portal
 
 The portal application provides users with a means to interact with the data on their laptop, smartphone, or tablet.
 
+Security
+----
+
+The security application provides management of security cameras and records information about public safety incidents.
+
 Sign
 ----
 
