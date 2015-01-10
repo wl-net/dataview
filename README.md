@@ -55,3 +55,8 @@ Transportation
 --------------------
 
 WLNet dataview provides a system to provide real-time information about transportation options, with an emphasis on public transportation.
+
+Your own Application?
+----
+
+Currently if you want to deploy your own code on top of dataview you'll want to create a new django app (using python manage.py startapp within the main dataview project). For the moment, you will have to edit dataview/urls.py, dataview/static and so on to make your application work.
