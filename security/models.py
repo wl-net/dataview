@@ -9,3 +9,9 @@ class Camera(models.Model):
 
     def __str__(self):
         return self.location
+
+class SafetyIncident(models.Model):
+    location = models.CharField(max_length=128)
+    time = models.DateTimeField()
+    units = models.TextField()
+    type = models.CharField(max_length=128)

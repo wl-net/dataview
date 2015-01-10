@@ -4,6 +4,7 @@ from rest_framework import serializers
 from portal.models import Address, Destination, Guest, Message, OpenHour, Residence, Room
 
 from sensors.models import Sensor
+from security.models import SafetyIncident
 from sign.models import Sign
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -55,6 +56,12 @@ class SensorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Sensor
         fields = ('name', 'location')
+
+# security serializers
+class SafetyIncidentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SafetyIncident
+        fields = ('location', 'units', 'type')
 
 # sign serializers
 class SignSerializer(serializers.HyperlinkedModelSerializer):

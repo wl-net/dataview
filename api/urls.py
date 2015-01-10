@@ -22,6 +22,9 @@ router.register(r'sensor', views.SensorViewSet)
 
 # sign routes
 router.register(r'sign', views.SignViewSet)
+
+router.register(r'safety-incident', views.SafetyIncidentViewSet)
+
 urlpatterns = [
     url(r'^1/', include(router.urls)),
     url(r'^1/portal/', include(portal_router.urls)),
