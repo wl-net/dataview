@@ -1,5 +1,5 @@
-WLNet Money Application
-=======================
+WLNet Dataview Money Application
+================================
 
 Simple Bank
 ----
