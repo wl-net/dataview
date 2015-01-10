@@ -36,6 +36,8 @@ Finally, configure the URL router to allow users to reach the API at a particula
 router.register(r'user', views.UserViewSet)
 ````
 
+A list of models should now be accessible in the API. For the above example, the URL https://[DATAVIEW_HOST]/api/1/user would list all users.
+
 Using the API
 ----
 
