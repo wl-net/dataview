@@ -49,6 +49,8 @@ Sign
 
 WLNet dataview provides a sign interface for dedicated systems to provide information. Sign modules should never require user interaction and should automatically update to show new information as it becomes available.
 
+An initial version of the sign interface was built using a framework utilizing custom HTML widgets and javascript to perform client side updates. A second iteration of this sign system is under development and is based off of the "dashing" dashboard framework.
+
 Transportation
 --------------------
 
