@@ -4,7 +4,7 @@ WLNet Dataview API
 Adding an API endpoint for a model
 ----
 
-1. Write a serializer (serializers.py)
+First you need to write a serializer. This should be added to serializers.py.
 
 
 Example for 'User' model (included with django):
@@ -18,7 +18,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('username', 'first_name', 'last_name')  
 ````
 
-2. Write a View (views.py)
+Second, you can write a view to that determines how users will lookup the model via the API and what constraints will be enforced when filtering models. This can be added in views.py
 
 ````python
 from django.contrib.auth.models import User
@@ -29,4 +29,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 ````
 
-3. Configure URL router (urls.py)
+Finally, configure the URL router to allow users to reach the API at a particular location. This can be done in urls.py
+
+
+````python
+router.register(r'user', views.UserViewSet)
+````
