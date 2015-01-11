@@ -15,3 +15,7 @@ class SafetyIncident(models.Model):
     time = models.DateTimeField()
     units = models.TextField()
     type = models.CharField(max_length=128)
+
+    class Meta:
+        unique_together = ('location', 'time', 'units', 'type')
+        get_latest_by = "time"

@@ -61,7 +61,7 @@ class SensorSerializer(serializers.HyperlinkedModelSerializer):
 class SafetyIncidentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SafetyIncident
-        fields = ('location', 'units', 'type')
+        fields = ('location', 'time', 'units', 'type')
 
 # sign serializers
 class SignSerializer(serializers.HyperlinkedModelSerializer):
