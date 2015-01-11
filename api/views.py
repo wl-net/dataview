@@ -10,8 +10,19 @@ from portal.models import Address, Destination, Guest, Message, OpenHour, Reside
 
 class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    queryset = User.objects.none() # critical
+
+    def list(self, request):
+        queryset = User.objects.filter(username = request.user.username) # critical
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def retrieve(self, request, username=None):
+        queryset = User.objects.filter(username = request.user.username) # critical
+        guest = get_object_or_404(queryset, username=username)
+        serializer = UserSerializer(guest, context={'request': request})
+        return Response(serializer.data)
 
 # portal models
 
