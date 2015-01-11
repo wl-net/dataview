@@ -13,9 +13,15 @@ class Camera(models.Model):
 class SafetyIncident(models.Model):
     location = models.CharField(max_length=128)
     time = models.DateTimeField()
-    units = models.TextField()
+    units = models.TextField(blank=True)
     type = models.CharField(max_length=128)
 
     class Meta:
         unique_together = ('location', 'time', 'units', 'type')
         get_latest_by = "time"
+
+    def __unicode__(self):
+        return self.type + '- ' + self.location
+
+    def __str__(self):
+        return self.type + '- ' + self.location
