@@ -46,3 +46,5 @@ The API can be accessed through a web browser at /api/1. Calls to the API can be
 ````
 curl 'http://dataview.restricted.wl-net.net:8000/api/1/<model>/' -H 'Accept: application/json'
 ````
+
+Offical REST API clients are provided as part of the [dataview-rest-clients project](https://github.com/wl-net/dataview-rest-clients)
