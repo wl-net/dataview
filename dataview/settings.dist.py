@@ -106,7 +106,11 @@ MIDDLEWARE_CLASSES = (
     'dataview.login_required.LoginRequiredMiddleware',
 )
 
-LOGIN_URL = '/account/login'
+LOGIN_URL = '/account/login/'
+
+LOGIN_EXEMPT_URLS = (
+   'api/.*',
+)
 
 ROOT_URLCONF = 'dataview.urls'
 
