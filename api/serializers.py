@@ -4,7 +4,7 @@ from rest_framework import serializers
 from portal.models import Address, Destination, Guest, Message, OpenHour, Residence, Room
 
 from sensors.models import Sensor
-from security.models import SafetyIncident
+from security.models import SafetyIncidentSource, SafetyIncident
 from sign.models import Sign
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -27,7 +27,7 @@ class DestinationSerializer(serializers.HyperlinkedModelSerializer):
     #open_hours = OpenHourSerializer(source='location')
     class Meta:
         model = Destination
-        fields = ('title', 'location', 'open_hours')
+        fields = ('name', 'location')
 
 class GuestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -58,10 +58,18 @@ class SensorSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'location')
 
 # security serializers
+
+class SafetyIncidentSourceSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SafetyIncidentSource
+        fields = ['name']
+
 class SafetyIncidentSerializer(serializers.HyperlinkedModelSerializer):
+    source = serializers.SlugRelatedField(queryset = SafetyIncidentSource.objects.all(), read_only = False, slug_field = 'name')
+
     class Meta:
         model = SafetyIncident
-        fields = ('location', 'time', 'units', 'type')
+        fields = ('source', 'location', 'time', 'units', 'type')
 
 # sign serializers
 class SignSerializer(serializers.HyperlinkedModelSerializer):

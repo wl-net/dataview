@@ -25,6 +25,8 @@ router.register(r'sensor', views.SensorViewSet)
 # sign routes
 router.register(r'sign', views.SignViewSet)
 
+# security routes
+router.register(r'safety-incident-source', views.SafetyIncidentSourceViewSet)
 router.register(r'safety-incident', views.SafetyIncidentViewSet)
 
 urlpatterns = [

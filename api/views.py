@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer
-from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SafetyIncidentSerializer, SignSerializer
+from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer, SignSerializer
 
 from portal.models import Address, Destination, Guest, Message, OpenHour, Residence, Room
 
@@ -84,19 +84,18 @@ class RoomViewSet(viewsets.ModelViewSet):
         queryset = Room.objects.filter(location=Residence.objects.filter(tenants = request.user)) # critical
         serializer = RoomSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
-    
+
     def retrieve(self, request, pk=None):
         queryset = Room.objects.filter(location=Residence.objects.filter(tenants = request.user)) # critical
         room = get_object_or_404(queryset, pk=pk)
         serializer = RoomSerializer(room, context={'request': request})
         return Response(serializer.data)
-
     
 # other applications
 
 from sensors.models import Sensor
 
-from security.models import SafetyIncident
+from security.models import SafetyIncidentSource, SafetyIncident
 
 from sign.models import Sign
 
@@ -104,9 +103,19 @@ class SensorViewSet(viewsets.ModelViewSet):
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
 
+class SafetyIncidentSourceViewSet(viewsets.ModelViewSet):
+    lookup_field = 'name'
+    queryset = SafetyIncidentSource.objects.all()
+    serializer_class = SafetyIncidentSourceSerializer
+
 class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
     serializer_class = SafetyIncidentSerializer
+
+    def list(self, request):
+        queryset = SafetyIncident.objects.all().order_by('-time')[:75]
+        serializer = SafetyIncidentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
 class SignViewSet(viewsets.ModelViewSet):
     queryset = Sign.objects.all()
