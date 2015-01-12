@@ -103,7 +103,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'dataview.login_required.LoginRequiredMiddleware',
 )
+
+LOGIN_URL = '/account/login'
 
 ROOT_URLCONF = 'dataview.urls'
 
