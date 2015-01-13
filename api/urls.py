@@ -16,6 +16,7 @@ portal_router.register(r'destination', views.DestinationViewSet)
 portal_router.register(r'guest', views.GuestViewSet)
 portal_router.register(r'message', views.MessageViewSet)
 portal_router.register(r'openhour', views.OpenHourViewSet)
+portal_router.register(r'package', views.PackageViewSet)
 portal_router.register(r'residence', views.ResidenceViewSet)
 portal_router.register(r'room', views.RoomViewSet)
 

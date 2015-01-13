@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User, Group
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.response import Response
 
-from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer
+from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer, PackageSerializer
 from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer, SignSerializer
 
-from portal.models import Address, Destination, Guest, Message, OpenHour, Residence, Room
+from portal.models import Address, Destination, Guest, Message, OpenHour, Package, Residence, Room
 
 class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
@@ -62,10 +62,14 @@ class MessageViewSet(viewsets.GenericViewSet):
         serializer = MessageSerializer(message, context={'request': request})
         return Response(serializer.data)
 
-
 class OpenHourViewSet(viewsets.ModelViewSet):
     queryset = OpenHour.objects.all()
     serializer_class = OpenHourSerializer
+
+
+class PackageViewSet(viewsets.ModelViewSet):
+    queryset = Package.objects.all()
+    serializer_class = PackageSerializer
 
 class ResidenceViewSet(viewsets.ModelViewSet):
     queryset = Residence.objects.all()
@@ -113,7 +117,7 @@ class SafetyIncidentViewSet(viewsets.ModelViewSet):
     serializer_class = SafetyIncidentSerializer
 
     def list(self, request):
-        queryset = SafetyIncident.objects.all().order_by('-time')[:75]
+        queryset = self.get_queryset().order_by('-time')[:75]
         serializer = SafetyIncidentSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from portal.models import Address, Destination, Guest, Message, OpenHour, Residence, Room
+from portal.models import Address, Destination, Guest, Message, OpenHour, Package, Residence, Room
 
 from sensors.models import Sensor
 from security.models import SafetyIncidentSource, SafetyIncident
@@ -22,7 +22,13 @@ class OpenHourSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = OpenHour
         fields = ('from_hour', 'to_hour', 'day_of_week', 'location')
-        
+
+class PackageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Package
+        fields = ('tracking_number', 'location', 'picked_up')
+
+
 class DestinationSerializer(serializers.HyperlinkedModelSerializer):
     #open_hours = OpenHourSerializer(source='location')
     class Meta:
