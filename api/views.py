@@ -4,9 +4,7 @@ from rest_framework import viewsets, filters
 from rest_framework.response import Response
 
 from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer, PackageSerializer
-from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SignSerializer
-
-from api.serializers import CameraSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer
+from api.serializers import ResidenceSerializer, RoomSerializer
 
 from portal.models import Address, Destination, Guest, Message, OpenHour, Package, Residence, Room
 
@@ -113,6 +111,7 @@ class RoomViewSet(viewsets.ModelViewSet):
 # other applications
 
 from sensors.models import Sensor
+from api.serializers import SensorSerializer
 
 class SensorViewSet(viewsets.ModelViewSet):
     queryset = Sensor.objects.all()
@@ -121,6 +120,7 @@ class SensorViewSet(viewsets.ModelViewSet):
 # security application
 
 from security.models import Camera, SafetyIncidentSource, SafetyIncident
+from api.serializers import CameraSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer
 
 class CameraViewSet(viewsets.ModelViewSet):
     queryset = Camera.objects.all()
@@ -132,6 +132,9 @@ class SafetyIncidentSourceViewSet(viewsets.ModelViewSet):
     serializer_class = SafetyIncidentSourceSerializer
 
 class SafetyIncidentFilter(django_filters.FilterSet):
+    """
+    source is a ForeignKey in SafetyIncident. We look it up by "name" in the query string.
+    """
     source = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(source = SafetyIncidentSource.objects.filter(name = value)))
     location = django_filters.CharFilter(name="location",lookup_type="icontains")
     type = django_filters.CharFilter(name="type",lookup_type="icontains")
@@ -148,6 +151,7 @@ class SafetyIncidentViewSet(viewsets.ModelViewSet):
 # sign applications
 
 from sign.models import Sign
+from api.serializers import SignSerializer
 
 class SignViewSet(viewsets.ModelViewSet):
     queryset = Sign.objects.all()
