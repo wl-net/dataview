@@ -126,14 +126,13 @@ class SafetyIncidentSourceViewSet(viewsets.ModelViewSet):
     serializer_class = SafetyIncidentSourceSerializer
 
 class SafetyIncidentFilter(django_filters.FilterSet):
+    source = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(source = SafetyIncidentSource.objects.filter(name = value)))
     location = django_filters.CharFilter(name="location",lookup_type="icontains")
     type = django_filters.CharFilter(name="type",lookup_type="icontains")
 
-    source = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(source = SafetyIncidentSource.objects.filter(name = value)))
-
     class Meta:
         model = SafetyIncident
-        fields = ('location', 'source', 'type')
+        fields = ('source', 'location' 'type', )
 
 class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
