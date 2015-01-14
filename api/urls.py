@@ -27,6 +27,7 @@ router.register(r'sensor', views.SensorViewSet)
 router.register(r'sign', views.SignViewSet)
 
 # security routes
+router.register(r'camera', views.CameraViewSet)
 router.register(r'safety-incident-source', views.SafetyIncidentSourceViewSet)
 router.register(r'safety-incident', views.SafetyIncidentViewSet)
 

@@ -4,7 +4,9 @@ from rest_framework import viewsets, filters
 from rest_framework.response import Response
 
 from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer, PackageSerializer
-from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer, SignSerializer
+from api.serializers import ResidenceSerializer, RoomSerializer, SensorSerializer, SignSerializer
+
+from api.serializers import CameraSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer
 
 from portal.models import Address, Destination, Guest, Message, OpenHour, Package, Residence, Room
 
@@ -112,13 +114,17 @@ class RoomViewSet(viewsets.ModelViewSet):
 
 from sensors.models import Sensor
 
-from security.models import SafetyIncidentSource, SafetyIncident
-
-from sign.models import Sign
-
 class SensorViewSet(viewsets.ModelViewSet):
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
+
+# security application
+
+from security.models import Camera, SafetyIncidentSource, SafetyIncident
+
+class CameraViewSet(viewsets.ModelViewSet):
+    queryset = Camera.objects.all()
+    serializer_class = CameraSerializer
 
 class SafetyIncidentSourceViewSet(viewsets.ModelViewSet):
     lookup_field = 'name'
@@ -138,6 +144,10 @@ class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
     serializer_class = SafetyIncidentSerializer
     filter_class = SafetyIncidentFilter
+
+# sign applications
+
+from sign.models import Sign
 
 class SignViewSet(viewsets.ModelViewSet):
     queryset = Sign.objects.all()
