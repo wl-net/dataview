@@ -26,9 +26,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # portal models
 
+import django_filters
+
+class AddressFilter(django_filters.FilterSet):
+    street = django_filters.CharFilter(name="street",lookup_type="icontains")
+    city = django_filters.CharFilter(name="city",lookup_type="icontains")
+
+    class Meta:
+        model = Address
+        fields = ('street', 'city')
+
 class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    filter_class = AddressFilter
+    filter_backends = (filters.DjangoFilterBackend,)
+    search_fields = ('street', 'city')
 
 class DestinationViewSet(viewsets.ModelViewSet):
     queryset = Destination.objects.all()
@@ -112,14 +125,20 @@ class SafetyIncidentSourceViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncidentSource.objects.all()
     serializer_class = SafetyIncidentSourceSerializer
 
+class SafetyIncidentFilter(django_filters.FilterSet):
+    location = django_filters.CharFilter(name="location",lookup_type="icontains")
+    type = django_filters.CharFilter(name="type",lookup_type="icontains")
+
+    source = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(source = SafetyIncidentSource.objects.filter(name = value)))
+
+    class Meta:
+        model = SafetyIncident
+        fields = ('location', 'source', 'type')
+
 class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
     serializer_class = SafetyIncidentSerializer
-
-    def list(self, request):
-        queryset = self.get_queryset().order_by('-time')[:75]
-        serializer = SafetyIncidentSerializer(queryset, many=True, context={'request': request})
-        return Response(serializer.data)
+    filter_class = SafetyIncidentFilter
 
 class SignViewSet(viewsets.ModelViewSet):
     queryset = Sign.objects.all()
