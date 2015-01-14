@@ -132,7 +132,7 @@ class SafetyIncidentFilter(django_filters.FilterSet):
 
     class Meta:
         model = SafetyIncident
-        fields = ('source', 'location' 'type', )
+        fields = ('source', 'location', 'type')
 
 class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
