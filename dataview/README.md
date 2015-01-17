@@ -35,3 +35,13 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ````
 
+Runing Tests
+----
+````
+python3 manage.py test
+````
+
+Request Routing
+----
+
+Requests are directed to specific applications using the AppSpecificURLConfLoader middleware, located in the dataview applications middleware/router.py file. With this middleware enabled, there is no need to modify the dataview application urls.py file to include new applications.
