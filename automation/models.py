@@ -24,13 +24,17 @@ class Speaker(models.Model):
     location = models.ForeignKey('portal.room')
 
     def set_volume(self, volume):
-      pass
+      self.volume = self.old_volume = volume
 
     def get_volume(self):
-      pass
+      return self.volume
 
-    def set_mute(self, mute):
-      pass
+    def mute(self):
+      self.old_volume = self.volume
+      self.volume = 0
+
+    def unmute(self):
+      self.volume = self.old_volume
 
     def __unicode__(self):
         return self.name
