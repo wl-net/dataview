@@ -15,7 +15,26 @@ class Light(models.Model):
 
     def __unicode__(self):
         return self.name
-    
+
+    def __str__(self):
+        return self.name
+
+class Speaker(models.Model):
+    name = models.CharField(max_length=128)
+    location = models.ForeignKey('portal.room')
+
+    def set_volume(self, volume):
+      pass
+
+    def get_volume(self):
+      pass
+
+    def set_mute(self, mute):
+      pass
+
+    def __unicode__(self):
+        return self.name
+
     def __str__(self):
         return self.name
 
@@ -29,7 +48,7 @@ class Mood(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 class RadioStation(models.Model):
     name = models.CharField(max_length=128)
     url = models.TextField(validators=[URLValidator()], unique=True)
@@ -37,6 +56,6 @@ class RadioStation(models.Model):
 
     def __unicode__(self):
         return self.name
-    
+
     def __str__(self):
         return self.name
