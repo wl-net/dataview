@@ -59,4 +59,4 @@ WLNet dataview provides a system to provide real-time information about transpor
 Your own Application?
 ----
 
-Currently if you want to deploy your own code on top of dataview you'll want to create a new django app (using python manage.py startapp within the main dataview project). For the moment, you will have to edit dataview/urls.py, dataview/static and so on to make your application work.
+Currently if you want to deploy your own code on top of dataview you'll want to create a new django app (using python manage.py startapp within the main dataview project). To allow requests to route to your application, place your application name in DATAVIEW_APPS in settings.py. The handling of static files is currently left to the decision of the app creator.
