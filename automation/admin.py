@@ -1,5 +1,5 @@
 from django.contrib import admin
-from automation.models import Light, Speaker, Mood, RadioStation
+from automation.models import Light, Speaker, SpeakerSourceController, Mood, RadioStation
 
 class LightAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
@@ -12,6 +12,12 @@ class SpeakerAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Speaker, SpeakerAdmin)
+
+class SpeakerSourceControllerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'location')
+    pass
+
+admin.site.register(SpeakerSourceController, SpeakerSourceControllerAdmin)
 
 class MoodAdmin(admin.ModelAdmin):
     list_display = ('title', 'enabled')

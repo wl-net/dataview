@@ -22,6 +22,9 @@ class Light(models.Model):
 class Speaker(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('portal.room')
+    sources = models.ManyToManyField('automation.SpeakerSourceController')
+
+    volume = 0
 
     def set_volume(self, volume):
       self.volume = self.old_volume = volume
@@ -35,6 +38,16 @@ class Speaker(models.Model):
 
     def unmute(self):
       self.volume = self.old_volume
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class SpeakerSourceController(models.Model):
+    name = models.CharField(max_length=128)
+    location = models.ForeignKey('portal.Residence')
 
     def __unicode__(self):
         return self.name
