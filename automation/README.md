@@ -23,7 +23,8 @@ Mood Control
 ----
 
 A mood is defined as a name and a collection of properties that are associated with that name. For example, the "sleep" mood might turn off lighting and play ambient background music.
-If speakers are only intended to be operated standalone, 
+
+The current mood is defined on a per-residence or per-room basis and can be changed either manually or based on the output of deciders.
 
 
 Deciders
