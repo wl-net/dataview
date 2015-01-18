@@ -6,10 +6,10 @@
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/dataview.js"></script>
     <script src="/static/js/portal.js"></script>
 </head>
 <body class="dataview-portal">
-    <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
         <div class="navbar-header">
@@ -19,16 +19,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">WLNet <strong>DataView</strong></a>
+            <a class="navbar-brand" href="/">WLNet <strong>Dataview</strong></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-            <li class=""><a href="/portal/money">Money</a></li>
-            <li><a href="/portal/transportation">Transportation</a></li>
-            <li><a href="/portal/security">Security</a></li>
-            <li><a href="/portal/automation">Automation</a></li>
-            <li><a href="/portal/redmine">News &amp; Entertainment</a></li>
-            <li><a href="/portal/communication">Communication</a></li>
+            {% for app in portal_apps%}
+              <li class=""><a href="/portal/{{app}}">{{app|title}}</a></li>
+            {% endfor %}
             <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">More<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -71,11 +68,6 @@
         {% endfor %}
         {% block content %}
         {% endblock %}
-        </div>
-    </div>
-    <div id="footer">
-        <div class="container">
-            <p class="text-muted copyright">&copy; 2003-2014, WLNet Networks // Denny Triangle, Seattle</p>
         </div>
     </div>
 </body>
