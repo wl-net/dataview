@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 from django.core.validators import URLValidator
 from portal.models import Room
 
@@ -44,6 +45,11 @@ class Speaker(models.Model):
 
     def __str__(self):
         return self.name
+
+class SpeakerForm(ModelForm):
+    class Meta:
+        model = Speaker
+        fields = ['name', 'location']
 
 class SpeakerSourceController(models.Model):
     name = models.CharField(max_length=128)
