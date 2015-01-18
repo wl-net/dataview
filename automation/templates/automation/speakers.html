@@ -1,0 +1,23 @@
+
+{% for room in rooms%}
+<ul class='dataview-room-{{room}}'>
+  <span>Room {{rooms.room.name}}</span>
+    {% for speaker in rooms.room.speakers %}
+      <li>{{speaker}}</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+
+{% regroup speakers by location as room_list%}
+
+<ul>
+{% for room in room_list %}
+    <li>Room: {{ room.grouper.name }}
+    <ul>
+        {% for speaker in room.list %}
+          <li>{{ speaker.name }} {{speaker.get_volume}}</li>
+        {% endfor %}
+    </ul>
+    </li>
+{% endfor %}
+</ul>
