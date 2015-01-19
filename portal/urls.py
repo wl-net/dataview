@@ -1,13 +1,13 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 
 urlpatterns = patterns('',
-    url(r'^$', 'portal.views.index', name='index'),
-
-    # portal views
-    url(r'^money$', 'portal.views.money', name='money'),
-    url(r'^transportation$', 'portal.views.transportation', name='transportation'),
-    url(r'^security', 'portal.views.security', name='security'),
-    url(r'^automation', 'portal.views.automation', name='automation'),
-    url(r'^news', 'portal.views.news', name='news'),
-    url(r'^communication', 'portal.views.communication', name='communication'),
+    url(r'^portal/$', 'portal.views.index', name='index'),
 )
+
+for app in settings.DATAVIEW_APPS:
+    print(app)
+    try:
+      urlpatterns += patterns('', url('^portal/' + app, include(app + '.portal.urls')))
+    except Exception:
+        pass

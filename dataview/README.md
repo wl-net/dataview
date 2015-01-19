@@ -44,4 +44,4 @@ python3 manage.py test
 Request Routing
 ----
 
-Requests are directed to specific applications using the AppSpecificURLConfLoader middleware, located in the dataview applications middleware/router.py file. With this middleware enabled, there is no need to modify the dataview application urls.py file to include new applications.
+Requests are directed to specific applications using the AppSpecificURLConfLoader middleware, located in the dataview applications middleware/router.py file. With this middleware enabled, there is no need to modify the dataview application urls.py file to include new applications. Applications that rely on [application]/urls.py can will only be routed to when request of is of the form 'GET /application'. In order to route requests that do not meet this requirement, the application must be listed in the GLOBAL_URLCONF settings.py directive. For applications that only need to exist within the portal, the DATAVIEW_APPS directive will suffice - however a valid urlconf file must be present in application/portal/urls.py
