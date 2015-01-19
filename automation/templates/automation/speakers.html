@@ -1,23 +1,19 @@
+{% extends "basic-portal.html" %}
 
-{% for room in rooms%}
-<ul class='dataview-room-{{room}}'>
-  <span>Room {{rooms.room.name}}</span>
-    {% for speaker in rooms.room.speakers %}
-      <li>{{speaker}}</li>
-    {% endfor %}
-</ul>
-{% endfor %}
+{% block content %}
 
 {% regroup speakers by location as room_list%}
 
-<ul>
-{% for room in room_list %}
-    <li>Room: {{ room.grouper.name }}
-    <ul>
-        {% for speaker in room.list %}
-          <li>{{ speaker.name }} {{speaker.get_volume}}</li>
-        {% endfor %}
+<div class='row'>
+  <div class='col-xs-4'>
+  {% for room in room_list %}
+    <h2>Room: {{ room.grouper.name }}</h2>
+    <ul class='list-group'>
+      {% for speaker in room.list %}
+        <li class='list-group-item'>{{ speaker.name }} {{speaker.get_volume}}</li>
+      {% endfor %}
     </ul>
-    </li>
-{% endfor %}
-</ul>
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}

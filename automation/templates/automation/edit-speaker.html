@@ -1,7 +1,13 @@
+{% extends "basic-portal.html" %}
+
+{% block content %}
+
 <form action='post'>
 {%csrf_token%}
 Edit speaker:
 {{form.as_p}}
 
-<input type="button" value="Edit speaker" />
+  <button type="submit" class="btn btn-default">Save</button>
 </form>
+
+{% endblock %}
