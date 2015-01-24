@@ -11,6 +11,11 @@ Deciders
 
 Deciders are responsible for determining the desired state of the system. While the state of the environment can always be modified manually, that cannot not be considered automation. Deciders might rely on sensors (such as those provided by the Dataview sensors application), schedule information, or any other external source in order to make decisions as to the final state of the environment.
 
+Controllers
+----
+
+Controllers contain a list of deciders, specific directions for automators to perform, and metadata tying automators and deciders together.
+
 Speaker Control
 ----
 
