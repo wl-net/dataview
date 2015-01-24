@@ -60,3 +60,8 @@ urlpatterns = patterns('automation.views',
 ````
 
 **Note:** The portal application processes only portal/application, so your requests should expect (and require) a '/'.
+
+Core Transports
+----
+
+Dataview will support several transports to communicate with external systems (such as automation devices, used in the automation application). The initial release will only support JSON-RPC (2.0).
