@@ -3,6 +3,22 @@ from django.forms import ModelForm
 from django.core.validators import URLValidator
 from portal.models import Room
 
+class Automator(models.Model):
+    host = models.GenericIPAddressField()
+    authorization = models.TextField()
+
+class Controller(models.Model):
+    pass
+
+class Decider(models.Model):
+    name = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
 class Light(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('portal.Room')

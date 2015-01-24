@@ -1,5 +1,18 @@
 from django.contrib import admin
-from automation.models import Light, Speaker, SpeakerSourceController, Mood, RadioStation
+from automation.models import Automator, Decider, Controller, Light
+from automation.models import Speaker, SpeakerSourceController, Mood, RadioStation
+
+class AutomatorAdmin(admin.ModelAdmin):
+    list_display = ['host']
+    pass
+
+admin.site.register(Automator, AutomatorAdmin)
+
+class DeciderAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    pass
+
+admin.site.register(Decider, DeciderAdmin)
 
 class LightAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
