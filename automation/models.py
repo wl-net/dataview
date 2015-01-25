@@ -7,9 +7,6 @@ class Automator(models.Model):
     host = models.GenericIPAddressField()
     authorization = models.TextField()
 
-class Controller(models.Model):
-    pass
-
 class Decider(models.Model):
     name = models.CharField(max_length=128)
 
@@ -18,6 +15,24 @@ class Decider(models.Model):
 
     def __str__(self):
         return self.name
+
+class Controller(models.Model):
+    name = models.CharField(max_length = 128)
+    description = models.TextField()
+    account = models.ForeignKey('dataview.Account')
+    deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider')
+    automator = models.ForeignKey('dataview.Automator')
+
+class ControllerForm(ModelForm):
+    class Meta:
+        model = Controller
+        fields = ['account']
+
+class ControllerDecider(models.Model):
+    notes = models.TextField()
+    controller = models.ForeignKey(Controller)
+    decider = models.ForeignKey(Decider)
+    configuration = models.TextField()
 
 class Light(models.Model):
     name = models.CharField(max_length=128)
