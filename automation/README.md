@@ -11,6 +11,10 @@ Deciders
 
 Deciders are responsible for determining the desired state of the system. While the state of the environment can always be modified manually, that cannot not be considered automation. Deciders might rely on sensors (such as those provided by the Dataview sensors application), schedule information, or any other external source in order to make decisions as to the final state of the environment.
 
+#### Performance Considerations
+
+Steps should be taken to prevent dataview from having to spend excessive time querying other services about their status. External systems that influence the decision of dataview should consider the implementation of the "sensors" application where sensors can report back with information directly to dataview.
+
 Controllers
 ----
 
