@@ -6,3 +6,8 @@ class SensorType(models.Model):
 class Sensor(models.Model):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('portal.Residence')
+
+class SensorValue(models.Model):
+    sensor = models.ForeignKey('sensors.Sensor')
+    updated = models.DateTimeField()
+    value = models.TextField()
