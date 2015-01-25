@@ -1,5 +1,5 @@
 class AbstractDecider:
-    def __init__():
+    def __init__(self):
         pass
 
     def decide(self):
@@ -12,7 +12,7 @@ class AbstractDecider:
         """
         Returns a numeric value representing the outcome of the decider (integers between 0-1)
         """
-        return 0
+        return int(self.decide())
 
     def get_decision_reason(self):
         """
