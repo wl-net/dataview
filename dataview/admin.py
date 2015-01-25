@@ -1,13 +1,19 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
-from dataview.models import SystemDeployment
+from dataview.models import Account, SystemDeployment
 
 class SystemDeploymentAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
     pass
 
 admin.site.register(SystemDeployment, SystemDeploymentAdmin)
+
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    pass
+
+admin.site.register(Account, AccountAdmin)
 
 class MyAdminSite(AdminSite):
     # Text to put at the end of each page's <title>.

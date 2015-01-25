@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.gis.db import models
 from portal.models import Address
 
-
 class SystemDeployment(models.Model):
     """ System Deployments represent a server that hosts Dataview."""
 
@@ -17,3 +16,14 @@ class SystemDeployment(models.Model):
 
     is_master = models.BooleanField(default=True)
     is_available = models.BooleanField(default=True)
+
+class Account(models.Model):
+    """ Accounts represent a collection of dataview users that rely on shared residences"""
+    name = models.CharField(max_length=60)
+    users = models.ManyToManyField('auth.User')
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
