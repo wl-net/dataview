@@ -7,7 +7,7 @@ AuthN/AuthZ
 
 ### Authentication requirement
 
-Authentication is required by the use of the dataview.login_required.LoginRequiredMiddleware middlewear. Exceptions to this policy can be audited by reviewing the settings.LOGIN_EXEMPT_URLS directive.
+Authentication is required by the use of the dataview.login_required.LoginRequiredMiddleware middleware. Exceptions to this policy can be audited by reviewing the settings.LOGIN_EXEMPT_URLS directive.
 
 ### Authorization Levels (Groups)
 

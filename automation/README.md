@@ -18,7 +18,7 @@ Steps should be taken to prevent dataview from having to spend excessive time qu
 Controllers
 ----
 
-Controllers contain a list of deciders, specific directions for automators to perform, and metadata tying automators and deciders together.
+Controllers contain a list of deciders, specific directions for automators to perform, and metadata tying automators and deciders together. The current implementation defines special "through" classes that contain the configuration and actions for Deciders and Automators. The goal here is to reduce the amount of logic placed in the controller and defer it to the implementation of specific deciders. Deciders are evalulated in a priority based order.
 
 Speaker Control
 ----
