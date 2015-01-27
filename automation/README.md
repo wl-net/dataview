@@ -9,7 +9,14 @@ Automators ensure that the physical world matches the desired state in dataview.
 Deciders
 ----
 
-Deciders are responsible for determining the desired state of the system. While the state of the environment can always be modified manually, that cannot not be considered automation. Deciders might rely on sensors (such as those provided by the Dataview sensors application), schedule information, or any other external source in order to make decisions as to the final state of the environment.
+Deciders are responsible for determining the desired state of the system. While the state of the environment can always be modified manually, that cannot not be considered automation. Deciders might rely on sensors (such as those provided by the Dataview sensors application), schedule information, or any other external source in order to make decisions as to the final state of the environment. Deciders must always return "True" or "False", and can be implemented to answer decisions that rely on specific user preferences, for example "is it warm outside"
+
+Core deciders:
+
+* time
+* day
+* holiday
+* json-rpc (abstract)
 
 #### Performance Considerations
 
@@ -19,6 +26,12 @@ Controllers
 ----
 
 Controllers contain a list of deciders, specific directions for automators to perform, and metadata tying automators and deciders together. The current implementation defines special "through" classes that contain the configuration and actions for Deciders and Automators. The goal here is to reduce the amount of logic placed in the controller and defer it to the implementation of specific deciders. Deciders are evalulated in a priority based order.
+
+Examples of specific rules that can be implemented in dataview:
+
+* If it is after 9am and before 5pm, set status to away, otherwise set status to online
+* If it is after 10pm and before 6am, turn the lights off.
+* When there is no motion
 
 Speaker Control
 ----

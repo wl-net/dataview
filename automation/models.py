@@ -25,7 +25,14 @@ class Automator(models.Model):
         return clsName(json.loads(self.configuration))
 
 class Decider(models.Model):
+    """
+    Think of deciders as a machine that answers with "Yes" or "No" depsite
+    possibly complicated (configurable) conditions to reach that decision.
+    For example: Is it warm outside?
+    """
     name = models.CharField(max_length=128)
+    description = models.TextField()
+    configuration = models.TextField()
 
     def __unicode__(self):
         return self.name
@@ -38,7 +45,11 @@ class Controller(models.Model):
     description = models.TextField()
     account = models.ForeignKey('dataview.Account')
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider')
-    automator = models.ForeignKey('automation.Automator')
+    automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator')
+
+    def get_deciders(self):
+        pass
+        #Decider.objects.filter(
 
     def __unicode__(self):
         return self.name
@@ -52,10 +63,14 @@ class ControllerForm(ModelForm):
         fields = ['account']
 
 class ControllerDecider(models.Model):
-    notes = models.TextField()
     controller = models.ForeignKey(Controller)
     decider = models.ForeignKey(Decider)
-    configuration = models.TextField()
+
+class ControllerAutomator(models.Model):
+    notes = models.TextField()
+    controller = models.ForeignKey(Controller)
+    automator = models.ForeignKey(Automator)
+    operations = models.TextField()
 
 class Light(models.Model):
     name = models.CharField(max_length=128)
