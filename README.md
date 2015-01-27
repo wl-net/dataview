@@ -22,12 +22,12 @@ The API application provides a REST web service for interacting with dataview fr
 Automation
 ----
 
-The automation application provides users with a way to automate lighting, music, and other systems in a residence.
+The automation application provides users with a way to automate lighting, music, and other systems in a residence. This application is supplemented by the sensors application, which can provide additional information to act upon when performing automation tasks. Dataview does not support any standard automation protcols out of the box, but rather relies on Automators to translate dataview actions into native commands through a JSON-RPC interface. [Automation Documentation](https://github.com/wl-net/dataview/blob/master/automation/README.md) 
 
 Dataview
 ----
 
-The dataview application contains shared code used by all other applications
+The dataview application contains shared code used by all other applications.
 
 Money
 ----
