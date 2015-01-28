@@ -6,7 +6,7 @@ import dateutil.parser
 class TimeDecider(abstract.AbstractDecider):
     def __init__(self, conditions):
         self.conditions = conditions
-        super().__init__()
+        super().__init__(conditions)
 
     def decide(self, now=None):
         """
@@ -15,10 +15,10 @@ class TimeDecider(abstract.AbstractDecider):
 
         result = True
         if now is None:
-            now = datetime.now()
+            now = datetime.time().now()
 
         for condition in self.conditions:
-            if self.__my_cmp__(now, dateutil.parser.parse(condition['time'])) not in condition['results']: 
+            if self.__my_cmp__(now, dateutil.parser.parse(condition['time']).time()) not in condition['results']: 
                 result = False
 
         return result
