@@ -29,9 +29,11 @@ Controllers contain a list of deciders, specific directions for automators to pe
 
 Examples of specific rules that can be implemented in dataview:
 
-* If it is after 9am and before 5pm, set status to away, otherwise set status to online
-* If it is after 10pm and before 6am, turn the lights off.
-* When there is no motion
+* If it is after 9am and before 5pm, set status to away, otherwise set status to online (Decider: Time. Automator: Status)
+* If it is after 10pm and before 6am, turn the lights off (Decider: Time. Automator: Light)
+* When there is no motion after 10pm, reduce the music volume (Decider: Time, Sensor. Automator: Music)
+
+Implementing this in a way that is easy for a user to program may require the addition of a models to handle the creation of rules where slight variances to the rules results in a automator being called.  However, in general we want to avoid making Controllers complicated and defer as much of the decision process to Deciders.
 
 Speaker Control
 ----
