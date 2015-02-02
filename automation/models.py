@@ -4,6 +4,7 @@ from django.core.validators import URLValidator
 from portal.models import Room
 from importlib import import_module
 import sys, json
+from automation.automators import AbstractAutomator
 
 class Automator(models.Model):
     name = models.CharField(max_length=60)
@@ -23,6 +24,22 @@ class Automator(models.Model):
         module = sys.modules[self.cls[:self.cls.rfind(".")]]
         clsName = getattr(module, self.cls[(self.cls.rfind(".")+1):len(self.cls)])
         return clsName(json.loads(self.configuration))
+
+    def get_valid_cls_list():
+        from django.conf import settings
+        import os
+        import glob2
+        import importlib
+        apps = []
+        for app in settings.DATAVIEW_APPS:
+            for file in glob2.glob(os.path.join(settings.BASE_DIR, '..', app, 'automators', "**/*.py")):
+                path = file.replace(os.path.join(settings.BASE_DIR, '..') + '/', '', 1).replace('.py', '').replace('/', '.')
+
+                mod = importlib.import_module(path)
+                for member in dir(mod):
+                    if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractAutomator):
+                        apps.append({'name': member, 'path': path})
+        return apps
 
 class Decider(models.Model):
     """
