@@ -9,7 +9,7 @@ from automation.automators import AbstractAutomator
 class Automator(models.Model):
     name = models.CharField(max_length=60)
     account = models.ForeignKey('dataview.Account')
-    cls = models.CharField(max_length=128)
+    cls = models.ForeignKey('automation.AutomatorClass')
     description = models.TextField()
     configuration = models.TextField()
 
@@ -20,11 +20,13 @@ class Automator(models.Model):
         return self.name
 
     def get_instance(self):
-        import_module(self.cls[:self.cls.rfind(".")])
-        module = sys.modules[self.cls[:self.cls.rfind(".")]]
-        clsName = getattr(module, self.cls[(self.cls.rfind(".")+1):len(self.cls)])
+        cls = self.cls.path + '.' +  self.cls.name 
+        import_module(cls[:cls.rfind(".")])
+        module = sys.modules[cls[:cls.rfind(".")]]
+        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
         return clsName(json.loads(self.configuration))
 
+    @staticmethod
     def get_valid_cls_list():
         from django.conf import settings
         import os
@@ -37,9 +39,46 @@ class Automator(models.Model):
 
                 mod = importlib.import_module(path)
                 for member in dir(mod):
-                    if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractAutomator):
+                    if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractAutomator) and member != 'AbstractAutomator':
                         apps.append({'name': member, 'path': path})
         return apps
+
+class AutomatorClass(models.Model):
+    name = models.CharField(max_length=128)
+    path = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.path + '.' + self.name
+
+    def __str__(self):
+        return self.path + '.' + self.name
+
+    class Meta:
+        unique_together = ('name', 'path',)
+
+    def update_classes(classes=None):
+        my_classes = []
+        for cls in AutomatorClass.objects.all():
+            my_classes.append({'name': cls.name, 'path': cls.path})
+
+        if classes is None:
+            classes = Automator.get_valid_cls_list()
+        for cls in classes:
+            if cls in my_classes:
+                my_classes.remove(cls) # don't remove it
+                classes.remove(cls) # don't add it
+
+        # add new classes
+        for cls in classes:
+            ac = AutomatorClass()
+            ac.name = cls['name']
+            ac.path = cls['path']
+
+            ac.save()
+
+        # remove old classes
+        for old_cls in my_classes:
+            AutomatorClass.objects.filter(name=old_cls['name']).filter(path = old_cls['path']).delete()
 
 class Decider(models.Model):
     """
@@ -50,6 +89,9 @@ class Decider(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
     configuration = models.TextField()
+
+    def decide(self):
+        return False
 
     def __unicode__(self):
         return self.name
@@ -64,9 +106,9 @@ class Controller(models.Model):
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider')
     automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator')
 
-    def get_deciders(self):
-        pass
-        #Decider.objects.filter(
+    def decide():
+        for decider in self.deciders:
+            decider.decide()
 
     def __unicode__(self):
         return self.name
@@ -88,6 +130,9 @@ class ControllerAutomator(models.Model):
     controller = models.ForeignKey(Controller)
     automator = models.ForeignKey(Automator)
     operations = models.TextField()
+
+    def perform_operations(self):
+        ops = json.loads(self.operations)
 
 class Light(models.Model):
     name = models.CharField(max_length=128)
