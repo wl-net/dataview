@@ -9,7 +9,7 @@ from automation.automators import AbstractAutomator
 class Automator(models.Model):
     name = models.CharField(max_length=60)
     account = models.ForeignKey('dataview.Account')
-    backend_implementation = models.ForeignKey('automation.AutomatorClass')
+    backend = models.ForeignKey('automation.AutomatorClass')
     description = models.TextField()
     configuration = models.TextField()
 
@@ -20,11 +20,16 @@ class Automator(models.Model):
         return self.name
 
     def get_instance(self):
-        cls = self.backend_implementation.path + '.' +  self.cls.name 
+        cls = self.backend.path + '.' +  self.backend.name 
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
         clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
         return clsName(json.loads(self.configuration))
+
+    def do_operations(self, operations, instance=None):
+        i = self.get_instance()
+        for operation in json.loads(operations):
+            getattr(i, operation["method"])(*operation["params"])
 
     @staticmethod
     def get_valid_cls_list():
@@ -106,9 +111,18 @@ class Controller(models.Model):
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider')
     automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator')
 
-    def decide():
+    def decide(self):
         for decider in self.deciders:
             decider.decide()
+
+    def automate(self):
+        decision = self.decide()
+        for automator in self.automator:
+            ca = ControllerAutomator.get(automator=automator, controller=controller)
+            config = json.loads(ca.operations)
+            ops = ca['decision']['binary'][decision]
+            for op in ops:
+              automator.do_operations()
 
     def __unicode__(self):
         return self.name
