@@ -6,6 +6,14 @@ Automators
 
 Automators ensure that the physical world matches the desired state in dataview. They might communicate with a light to turn it off or adjust the volume on a speaker. Where possible, automators should rely on existing transports (such as those defined by Dataview's common transport library) to ensure secure communication to the target device.
 
+#### Working with Automators
+
+```python
+a = Automator.objects.get(id=1)
+a.do_operations('[{"method": "set_volume", "params": ["50"]}]')
+a.get_instance().set_volume(50)
+a.get_instance().pause()
+```
 Deciders
 ----
 
