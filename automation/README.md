@@ -8,6 +8,8 @@ Automators ensure that the physical world matches the desired state in dataview.
 
 #### Working with Automators
 
+The following examples show calling of an automator. In this case, the Automator was a Music automator leveraging JSON RPC as a transport over TLS. The entire process of changing the volume is left to the Automator. Configuration for communicating with the Automator is configured within the automator class.
+
 ```python
 a = Automator.objects.get(id=1)
 a.do_operations('[{"method": "set_volume", "params": ["50"]}]')
