@@ -9,7 +9,7 @@ from automation.automators import AbstractAutomator
 class Automator(models.Model):
     name = models.CharField(max_length=60)
     account = models.ForeignKey('dataview.Account')
-    cls = models.ForeignKey('automation.AutomatorClass')
+    backend_implementation = models.ForeignKey('automation.AutomatorClass')
     description = models.TextField()
     configuration = models.TextField()
 
@@ -20,7 +20,7 @@ class Automator(models.Model):
         return self.name
 
     def get_instance(self):
-        cls = self.cls.path + '.' +  self.cls.name 
+        cls = self.backend_implementation.path + '.' +  self.cls.name 
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
         clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
@@ -119,7 +119,7 @@ class Controller(models.Model):
 class ControllerForm(ModelForm):
     class Meta:
         model = Controller
-        fields = ['account']
+        exclude = ['account_id']
 
 class ControllerDecider(models.Model):
     controller = models.ForeignKey(Controller)
