@@ -1,4 +1,4 @@
-from automation.models import AutomatorClass, Controller
+from automation.models import Automator, AutomatorClass, Controller
 
 class Processor:
     '''
@@ -9,3 +9,8 @@ class Processor:
       print("Running...")
       for controller in Controller.objects.all():
         controller.automate()
+
+    def call_automator(self, args):
+      a = Automator.objects.get(name = args[0])
+      import json
+      a.do_operations('[{"method": "' + args[1] + '", "params": ' + json.dumps(args[2:]) + '}]')
