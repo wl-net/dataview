@@ -1,5 +1,5 @@
 class AbstractDecider:
-    def __init__(self):
+    def __init__(self, conditions, configuration=None):
         pass
 
     def decide(self):
