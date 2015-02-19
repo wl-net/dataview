@@ -12,9 +12,23 @@
 </ol>
 
 <h3>Automators</h3>
+<ul>
+{%for automator in automators%}
+  <li><a href="{{automator.id}}">{{automator}}</a></li>
+{%endfor%}
+</ul>
 
 <h3>Deciders</h3>
+<ul>
+{%for decider in deciders%}
+  <li><a href="{{decider.id}}">{{decider}}</a></li>
+{%endfor%}
+</ul>
 
 <h3>Controllers</h3>
-
+<ul>
+{%for controller in controllers%}
+  <li><a href="{%url 'automation-edit_controller' controller.id%}">{{controller}}</a></li>
+{%endfor%}
+</ul>
 {% endblock %}
