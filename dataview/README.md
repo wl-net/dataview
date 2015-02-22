@@ -61,6 +61,26 @@ urlpatterns = patterns('automation.views',
 
 **Note:** The portal application processes only portal/application, so your requests should expect (and require) a '/'.
 
+Static Files
+----
+
+Create a "static" folder under your application (for example, sign/static). Place any files your application needs within another folder with the same name as your application:
+
+<pre>
+$ ls sign/static/sign/ -R
+sign/static/sign/:
+js
+
+sign/static/sign/js:
+dashing.js
+</pre>
+
+The **collectstatic** command can be used to make the static files accessible:
+
+<pre>
+python3 manage.py collectstatic
+</pre>
+
 Core Transports
 ----
 
