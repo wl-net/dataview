@@ -1,9 +1,20 @@
+
 class AbstractWidget():
-    def __init__(self, request):
+    """
+    The AbstractWidget contains a list of methods that must be defined in widgets in order for Dataview
+    to recognize the widget.
+    """
+
+    """
+    WIDGET_NAME must be set in order for Dataview to consider this widget
+    """
+
+    def __init__(self, configuration, request):
+        self.configuration = configuration
         self.request = request
-        pass
-        self.request = request
-    def get_template_fields(self):
-        raise NotImplementedError( type(self).__name__ + " does not implement get_template_fields(self) " )
-    def get_template_path(self):
-        raise NotImplementedError( type(self).__name__ + " does not implement get_template_path(self) " )
+
+    def get_contents(self):
+        """
+        get_contents should return a json object for the sign to work with
+        """
+        raise NotImplementedError( type(self).__name__ + " does not implement get_contents(self) " )
