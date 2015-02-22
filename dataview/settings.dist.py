@@ -137,6 +137,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django.contrib.gis',
+    'bootstrap3',
+    'bootstrapnavtags',
+    'guardian',
     'dataview',
     'portal',
     'automation',
@@ -144,8 +148,8 @@ INSTALLED_APPS = (
     'sign',
     'sensors',
     'security',
-    'bootstrapnavtags',
     'rest_framework',
+    'rest_framework.authtoken',
     'api',
 )
 
@@ -190,3 +194,24 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
         'portal.context_processors.commons.add_commons',
 )
+
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 10,                 # Default to 10
+    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
+    'MAX_PAGINATE_BY': 100,             # Maximum limit allowed when using `?page_size=xxx`.
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
+
+DATAVIEW_APPS = {
+     'automation',
+     'sign',
+     'portal',
+     'transportation',
+}
+
+AUTHENTICATION_BACKENDS = (
+     'django.contrib.auth.backends.ModelBackend',
+     'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = None
