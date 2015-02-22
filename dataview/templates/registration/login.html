@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{%block title%}Login {%endblock%}
+{% block content %}
+
+<body>
+  <div class="container">
+
+  <form class="form-signin" action="" method="post">
+    {% if form.errors %}
+      <div class="alert alert-warning" role="alert">Sorry, that's not a valid username or password</div>
+    {% endif %}
+    <h2 class="form-signin-heading">Please authenticate</h2>
+    {% csrf_token %}
+    <label for="username">User name:</label>
+    <input class="form-control" type="text" name="username" value="" id="username">
+    <label for="password">Password:</label>
+    <input class="form-control" type="password" name="password" value="" id="password">
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <input type="hidden" name="next" value="{{ next|escape }}" />
+  </form>
+</div>
+</body>
+{% endblock %}
