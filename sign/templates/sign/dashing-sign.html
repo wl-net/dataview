@@ -1,0 +1,36 @@
+{% extends "basic-nobootstrap.html" %}
+
+{% block content %}
+<div id="container"></div>
+  <link rel="stylesheet" href="/static/lib/css/jquery.gridster.css">
+  <link rel="stylesheet" href="/static/lib/css/rickshaw.css">
+  <link rel="stylesheet" href="/static/lib/css/font-awesome.css">
+  <link rel="stylesheet" href="/static/dashing.css">
+  <link rel="stylesheet" href="/static/widgets/number/number.css">
+  <link rel="stylesheet" href="/static/widgets/list/list.css">
+  <link rel="stylesheet" href="/static/widgets/graph/graph.css">
+  <link rel="stylesheet" href="/static/widgets/clock/clock.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/individuo7/dj-dashing-weather-widget/master/widgets/weather/weather.css">
+
+  <link rel="resource" type="text/html" href="/static/widgets/number/number.html" data-widget="number">
+  <link rel="resource" type="text/html" href="/static/widgets/list/list.html" data-widget="list">
+  <link rel="resource" type="text/html" href="/static/widgets/graph/graph.html" data-widget="graph">
+  <link rel="resource" type="text/html" href="/static/widgets/clock/clock.html" data-widget="clock">
+  <link rel="resource" type="text/html" href="https://cdn.rawgit.com/individuo7/dj-dashing-weather-widget/master/widgets/weather/weather.html" data-widget="weather">
+  <script type="text/javascript" src="/static/lib/js/rivets.bundled.min.js"></script>
+
+  <script type="text/javascript" src="/static/lib/js/jquery.gridster.js"></script>
+  <script type="text/javascript" src="/static/lib/js/jquery.knob.js"></script>
+  <script type="text/javascript" src="/static/lib/js/d3.js"></script>
+  <script type="text/javascript" src="/static/lib/js/rickshaw.js"></script>
+  <script type="text/javascript" src="/static/lib/js/moment-with-langs.js"></script>
+
+  <script type="text/javascript" src="/static/dashing.js"></script>
+  <script type="text/javascript" src="/static/widgets/number/number.js"></script>
+  <script type="text/javascript" src="/static/widgets/list/list.js"></script>
+  <script type="text/javascript" src="/static/widgets/graph/graph.js"></script>
+  <script type="text/javascript" src="/static/widgets/clock/clock.js"></script>
+  <!--<script type="text/javascript" src="https://cdn.rawgit.com/individuo7/dj-dashing-weather-widget/master/widgets/weather/weather.js"></script>-->
+
+  <script type="text/javascript" src="/sign/config/1"></script>
+{% endblock %}
