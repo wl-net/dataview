@@ -1,0 +1,23 @@
+{% extends "basic.html" %}
+
+{% block content %}
+<style>
+    body { background-color: #232020; }
+</style>
+<div class="alert-container"><div class="alert-inner">
+    <div style="color: #ccc; font-size: 65px; font-weight:bold;">Out of Service :-(</div>
+    <div class="alert-subheading">There is an issue with the sign application. Please check the system logs for more details.</div>
+    <div class="technical-details">
+        <div class="technical-details-more">
+            <p>The sign application was unable to process the request.</p>
+               This application will attempt the following every few minutes:
+            <ul>
+                <li>...</li>
+                <li>...</li>
+                <li>...</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
