@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, ModelMultipleChoiceField
 from django.core.validators import URLValidator
 from portal.models import Room
 from importlib import import_module
@@ -107,17 +107,16 @@ class Decider(models.Model):
 class Controller(models.Model):
     name = models.CharField(max_length = 128)
     description = models.TextField()
-    account = models.ForeignKey('dataview.Account')
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider')
     automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator')
 
     def decide(self):
-        for decider in self.deciders:
+        for decider in self.deciders.all():
             decider.decide()
 
     def automate(self):
         decision = self.decide()
-        for automator in self.automator:
+        for automator in self.automator.all():
             ca = ControllerAutomator.get(automator=automator, controller=controller)
             config = json.loads(ca.operations)
             ops = ca['decision']['binary'][decision]
@@ -133,7 +132,10 @@ class Controller(models.Model):
 class ControllerForm(ModelForm):
     class Meta:
         model = Controller
-        exclude = ['account_id']
+        fields = ['name', 'description']
+    # ManyToManyFields that can't be handled automatically
+    automators = ModelMultipleChoiceField(queryset=Automator.objects.all())
+    deciders = ModelMultipleChoiceField(queryset=Decider.objects.all())
 
 class ControllerDecider(models.Model):
     controller = models.ForeignKey(Controller)

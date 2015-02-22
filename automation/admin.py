@@ -3,7 +3,7 @@ from automation.models import Automator, Decider, Controller, Light
 from automation.models import Speaker, SpeakerSourceController, Mood, RadioStation
 
 class AutomatorAdmin(admin.ModelAdmin):
-    list_display = ['host']
+    list_display = ['name']
     pass
 
 admin.site.register(Automator, AutomatorAdmin)
@@ -13,6 +13,12 @@ class DeciderAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Decider, DeciderAdmin)
+
+class ControllerAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    pass
+
+admin.site.register(Controller, ControllerAdmin)
 
 class LightAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
