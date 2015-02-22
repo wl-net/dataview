@@ -33,16 +33,19 @@ class Widget(models.Model):
         import os
         import glob2
         import importlib
-        apps = []
+        widgets = []
         for app in settings.DATAVIEW_APPS:
             for file in glob2.glob(os.path.join(settings.BASE_DIR, '..', app, 'sign_widgets', "**/*.py")):
                 path = file.replace(os.path.join(settings.BASE_DIR, '..') + '/', '', 1).replace('.py', '').replace('/', '.')
 
                 mod = importlib.import_module(path)
                 for member in dir(mod):
-                    if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractWidget) and member != 'AbstractWidget':
-                        apps.append({'internal_name': member, 'path': path})
-        return apps
+                    try:
+                        if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractWidget) and member != 'AbstractWidget':
+                            widgets.append({'name': mod.__dict__[member].WIDGET_NAME, 'internal_name': member, 'path': path})
+                    except AttributeError:
+                        pass
+        return widgets
 
     def update_widget_list(widgets=None):
         my_widgets = []
@@ -59,7 +62,8 @@ class Widget(models.Model):
         # add new widgets
         for cls in widgets:
             w = Widget()
-            w.name = cls['internal_name']
+            w.name = cls['name']
+            w.internal_name = cls['internal_name']
             w.path = cls['path']
 
             w.save()
