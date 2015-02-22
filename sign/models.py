@@ -7,7 +7,7 @@ class Sign(models.Model):
     location = models.ForeignKey('portal.Room')
     is_available = models.BooleanField(default=True)
     widgets = models.ManyToManyField('Widget', blank=True, null=True, through='SignWidget')
-    background_image = models.ImageField(upload_to='sign/uploads/backgrounds')
+    background_image = models.ImageField(upload_to='sign/uploads/backgrounds', blank=True)
 
     def __unicode__(self):
         return self.name + " (" + self.location.name + ")"
