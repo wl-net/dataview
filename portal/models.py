@@ -25,6 +25,9 @@ MESSAGE_TYPES = [
   (3, "danger"),
 ]
 
+#class Application(models.Model):
+#    name = models.CharField(max_length=128)
+
 class Address(models.Model): 
     source_id = models.CharField(max_length=128, editable=False)
     street = models.CharField(max_length=128)
@@ -51,8 +54,6 @@ class Address(models.Model):
 class Transaction(models.Model):
     uuid = models.CharField(max_length=36)
     transactionid = models.CharField(max_length=36)
-    uuid = models.CharField(max_length=36)
-    uuid = models.CharField(max_length=36)
     uuid = models.CharField(max_length=36)
     name = models.CharField(max_length=60)
     recorded_total = models.IntegerField(default=0)
@@ -179,12 +180,31 @@ class Guest(models.Model):
     def __str__(self):
         return self.name
 
+class Event(models.Model):
+    """
+    Events are sourced either internally or externally
+    """
+    user = models.ForeignKey('auth.User')
+    time = models.DateTimeField()
+    action = models.CharField(max_length=128)
+    description = models.TextField()
+
+    class Meta:
+        ordering = ['time']
+
+    def __unicode__(self):
+        return self.action
+
+    def __str__(self):
+        return self.action
+
 class Message(models.Model):
     user = models.ForeignKey('auth.User', editable=False)
 
     time = models.DateTimeField()
     location = models.ForeignKey('Residence')
     acknowledged = models.BooleanField(default=False)
+    relevant = models.BooleanField(default=True)
     marked = models.DateTimeField()
     subject = models.CharField(max_length=128)
     message = models.TextField()
