@@ -50,6 +50,9 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+# see https://docs.djangoproject.com/en/dev/releases/1.6/#new-test-runner
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = ''
@@ -141,6 +144,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'bootstrap3',
     'bootstrapnavtags',
+    'dashing',
     'guardian',
     'dataview',
     'portal',
