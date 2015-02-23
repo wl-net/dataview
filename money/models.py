@@ -12,3 +12,16 @@ class Bank(models.Model):
 class Budget(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
+
+class Transaction(models.Model):
+    uuid = models.CharField(max_length=36)
+    transactionid = models.CharField(max_length=36)
+    uuid = models.CharField(max_length=36)
+    name = models.CharField(max_length=60)
+    recorded_total = models.IntegerField(default=0)
+    location = models.ForeignKey('portal.Address')
+    memo = models.TextField()
+
+    def __unicode__(self):
+        return "$" + str(self.recorded_total) + " at " + self.name
+    
