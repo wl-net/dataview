@@ -50,12 +50,17 @@ class Widget(models.Model):
     def update_widget_list(widgets=None):
         my_widgets = []
         for widget in Widget.objects.all():
-            my_widgets.append({'internal_name': widget.name, 'path': widget.path})
+            my_widgets.append({'name': widget.name, 'internal_name': widget.internal_name, 'path': widget.path})
 
         if widgets is None:
             widgets = Widget.get_valid_cls_list()
+
+        common = []
         for cls in widgets:
             if cls in my_widgets:
+                common.append(cls)
+
+        for cls in common:
                 my_widgets.remove(cls) # don't remove it
                 widgets.remove(cls) # don't add it
 
@@ -70,7 +75,7 @@ class Widget(models.Model):
 
         # remove old widgets
         for old_cls in my_widgets:
-            Widget.objects.filter(name=old_cls['internal_name']).filter(path = old_cls['path']).delete()
+            Widget.objects.filter(internal_name=old_cls['internal_name']).filter(path = old_cls['path']).delete()
 
 class SignWidget(models.Model):
     sign = models.ForeignKey(Sign)
