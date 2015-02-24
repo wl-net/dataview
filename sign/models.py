@@ -42,7 +42,7 @@ class Widget(models.Model):
                 for member in dir(mod):
                     try:
                         if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractWidget) and member != 'AbstractWidget':
-                            widgets.append({'name': mod.__dict__[member].WIDGET_NAME, 'internal_name': member, 'path': path})
+                            widgets.append({'name': mod.__dict__[member].WIDGET_NAME, 'internal_name': member, 'path': path.replace('.__init__','')})
                     except AttributeError:
                         pass
         return widgets
