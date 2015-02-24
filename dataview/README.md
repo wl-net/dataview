@@ -1,9 +1,21 @@
 WLNet Dataview Core Application
 ===============================
 
-AuthN/AuthZ
+What's in Core?
 ----
 
+Dataview Core contains functionality that is intended to be used in many types of deployments and is not tied to a specific service or deployment:
+
+* Automation (Automators, Deciders, and Controllers)
+* Sign
+* Portal
+* Sensors
+* Security
+
+Applications listed here are likely to be broken out into their own github projects and removed from the dataview project.
+
+AuthN/AuthZ
+----
 
 ### Authentication requirement
 
