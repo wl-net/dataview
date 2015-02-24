@@ -75,7 +75,7 @@ var Dashing = {
             set = [];
         this.addDashboard = function(name, options) {
             if (!name || typeof name !== 'string') {
-                console.warn('You need specify a name for the dashboard and must be a string');
+                console.warn('You need specify a name for the dashboard and it must be a string');
                 return;
             }
             options = options || {};
