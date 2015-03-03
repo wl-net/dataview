@@ -175,7 +175,7 @@ class Event(models.Model):
     user = models.ForeignKey('auth.User')
     time = models.DateTimeField()
     action = models.CharField(max_length=128)
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     class Meta:
         ordering = ['time']

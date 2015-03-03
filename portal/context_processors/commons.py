@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db.models import Q
 
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import User,Permission
 from portal.models import Message, Residence
 
 def add_commons(request):
@@ -21,5 +21,6 @@ def add_commons(request):
 
         d =  {'portal_messages': Message.objects.filter(user=request.user, acknowledged=False),
               'portal_residences': Residence.objects.filter(tenants=request.user),
-              'portal_apps': apps}
+              'portal_apps': apps,
+              'portal_current_user': User.objects.get(username=request.user)}
     return d
