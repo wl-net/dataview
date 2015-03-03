@@ -5,13 +5,16 @@
 
 <h3>Getting Started</h3>
 <ol>
-  <li>Create Automators to perform the operations you wish to automate</li>
+  <li>Create Automators which are capable of performing the operations you want to automate</li>
   <li>Determine the conditions under which you want the automator to be called</li>
   <li>Setup deciders for each of the conditions under 2.</li>
   <li>Setup a controller with the deciders and automators determined above</li>
 </ol>
 
+<p>You can reuse any deciders or automators you create to perform other decisions, so don't be too specific when creating deciders or Automators</p>
+
 <h3>Automators</h3>
+<a href="{%url 'automation-add_automator'%}">Add</a>
 <ul>
 {%for automator in automators%}
   <li><a href="{{automator.id}}">{{automator}}</a></li>
@@ -19,13 +22,17 @@
 </ul>
 
 <h3>Deciders</h3>
+<a href="{%url 'automation-add_decider'%}">Add</a>
+
 <ul>
 {%for decider in deciders%}
-  <li><a href="{{decider.id}}">{{decider}}</a></li>
+  <li><a href="{%url 'automation-edit_decider' decider.id%}">{{decider}}</a></li>
 {%endfor%}
 </ul>
 
 <h3>Controllers</h3>
+<a href="{%url 'automation-add_controller'%}">Add</a>
+
 <ul>
 {%for controller in controllers%}
   <li><a href="{%url 'automation-edit_controller' controller.id%}">{{controller}}</a></li>
