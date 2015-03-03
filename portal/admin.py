@@ -1,11 +1,11 @@
 from django.forms import SelectMultiple
 from django.db import models
 from portal.models import Destination
-from django.contrib import admin
+from django.contrib import admin, gis
 from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
 from portal.models import TimeEntry, Destination, DestinationGroup, Employer, Residence, OpenHour
 
-class AddressAdmin(admin.ModelAdmin):
+class AddressAdmin(gis.admin.OSMGeoAdmin):
     list_display = ('street', 'city', 'zip')
     pass
 
