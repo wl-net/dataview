@@ -1,7 +1,12 @@
 from django.conf.urls import patterns, include, url
 
+from automation.views import AutomateWizard, AutomatorForm, DeciderForm, ControllerForm
+
 urlpatterns = patterns('automation.views',
     url(r'^/?$', 'index', name = 'automation-index'),
+
+    url(r'^/automate$', AutomateWizard.as_view([AutomatorForm, DeciderForm, ControllerForm], template_name='automation/automate-wizard.html')),
+
     url(r'^/(?P<residence>[0-9]+)/speakers$', 'speakers', name='automation-speakers'),
     url(r'^/(?P<residence>[0-9]+)/add-speaker$', 'add_speaker', name='add_speaker'),
     url(r'^/(?P<residence>[0-9]+)/edit-speaker/(?P<speaker>[0-9]+)$', 'edit_speaker', name='edit_speaker'),

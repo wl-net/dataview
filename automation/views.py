@@ -13,6 +13,14 @@ def index(request):
     events = Event.objects.filter(type = 'automation.operation')[:5]
     return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'events': events}))
 
+from django.http import HttpResponseRedirect
+from django.contrib.formtools.wizard.views import SessionWizardView
+
+class AutomateWizard(SessionWizardView):
+    def done(self, form_list, **kwargs):
+        do_something_with_the_form_data(form_list)
+        return HttpResponseRedirect('/portal/automation/')
+
 def speakers(request, residence):
     speakers = Speaker.objects.filter(location = Room.objects.filter(location = Residence.objects.get(id = residence, tenants = request.user))).order_by('location')
 
