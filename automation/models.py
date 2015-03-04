@@ -79,13 +79,15 @@ class AutomatorClass(models.Model):
 
         if classes is None:
             classes = Automator.get_valid_cls_list()
+
+        classes_to_create = []
         for cls in classes:
-            if cls in my_classes:
-                my_classes.remove(cls) # don't remove it
-                classes.remove(cls) # don't add it
+            if cls not in my_classes:
+                classes_to_create.append(cls)
+                my_classes.remove(cls)
 
         # add new classes
-        for cls in classes:
+        for cls in classes_to_create:
             ac = AutomatorClass()
             ac.name = cls['name']
             ac.path = cls['path']
@@ -158,13 +160,15 @@ class DeciderClass(models.Model):
 
         if classes is None:
             classes = Decider.get_valid_cls_list()
+
+        classes_to_create = []
         for cls in classes:
-            if cls in my_classes:
-                my_classes.remove(cls) # don't remove it
-                classes.remove(cls) # don't add it
+            if cls not in my_classes:
+                classes_to_create.append(cls)
+                my_classes.remove(cls)
 
         # add new classes
-        for cls in classes:
+        for cls in classes_to_create:
             ac = DeciderClass()
             ac.name = cls['name']
             ac.path = cls['path']
@@ -199,6 +203,9 @@ class Controller(models.Model):
             ops = ca['decision']['binary'][decision]
             for op in ops:
               automator.do_operations()
+
+    def is_complete(self):
+        return self.automator.all().count() > 0 and self.decider.all().count()
 
     def __unicode__(self):
         return self.name

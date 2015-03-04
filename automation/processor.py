@@ -9,7 +9,10 @@ class Processor:
       DeciderClass.update_classes()
       print("Running...")
       for controller in Controller.objects.all():
-        controller.automate()
+        if controller.is_complete():
+          controller.automate()
+        else:
+          print("Skipped '{0}'. Please ensure it is configured properly.".format(controller.name))
 
     def call_automator(self, args):
       a = Automator.objects.get(name = args[0])
