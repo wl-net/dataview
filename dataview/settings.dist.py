@@ -112,6 +112,8 @@ MIDDLEWARE_CLASSES = (
 
 LOGIN_URL = '/account/login/'
 
+LOGIN_REDIRECT_URL = '/'
+
 LOGIN_EXEMPT_URLS = (
    'api/.*',
 )
