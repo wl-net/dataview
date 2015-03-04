@@ -5,13 +5,14 @@ from portal.models import Room
 from importlib import import_module
 import sys, json
 from automation.automators import AbstractAutomator
+from portal.models import Event
 
 class Automator(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
     account = models.ForeignKey('dataview.Account')
-    backend = models.ForeignKey('automation.AutomatorClass')
-    description = models.TextField()
-    configuration = models.TextField()
+    backend = models.ForeignKey('automation.AutomatorClass', help_text="This backend will be responsible for performing the actions you desire. Your Dataview administrator can provision additional backends for you to use.")
+    description = models.TextField(help_text="What does this Automator do?")
+    configuration = models.TextField(blank=True, help_text="Don't modify this unless you know understand how the automator processes configuration")
 
     def __unicode__(self):
         return self.name
@@ -26,10 +27,17 @@ class Automator(models.Model):
         clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
         return clsName(json.loads(self.configuration))
 
-    def do_operations(self, operations, instance=None):
+    def do_operations(self, operations, instance=None, logging=True):
         i = self.get_instance()
         for operation in json.loads(operations):
             getattr(i, operation["method"])(*operation["params"])
+
+            if logging:
+                e = Event()
+                e.account = self.account
+                e.action = self.name + ': ' + operation['method']
+                e.type = 'automation.operation'
+                e.save()
 
     @staticmethod
     def get_valid_cls_list():
@@ -85,6 +93,11 @@ class AutomatorClass(models.Model):
         for old_cls in my_classes:
             AutomatorClass.objects.filter(name=old_cls['name']).filter(path = old_cls['path']).delete()
 
+class AutomatorForm(ModelForm):
+    class Meta:
+        model = Automator
+        fields = ['name', 'backend', 'description', 'configuration']
+
 class Decider(models.Model):
     """
     Think of deciders as a machine that answers with "Yes" or "No" depsite
@@ -104,11 +117,16 @@ class Decider(models.Model):
     def __str__(self):
         return self.name
 
+class DeciderForm(ModelForm):
+    class Meta:
+        model = Decider
+        fields = ['name', 'description', 'configuration']
+
 class Controller(models.Model):
     name = models.CharField(max_length = 128)
     description = models.TextField()
-    deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider')
-    automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator')
+    deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
+    automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator', help_text="Specify the automators you are interested in using. You'll set the operations to perform later")
 
     def decide(self):
         for decider in self.deciders.all():

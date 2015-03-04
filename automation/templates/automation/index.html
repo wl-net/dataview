@@ -25,7 +25,7 @@
 <a href="{%url 'automation-add_automator'%}">Add</a>
 <ul>
 {%for automator in automators%}
-  <li><a href="{{automator.id}}">{{automator}}</a></li>
+  <li><a href="{%url 'automation-edit_automator' automator.id%}">{{automator}}</a></li>
 {%endfor%}
 </ul>
 

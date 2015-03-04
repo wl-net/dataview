@@ -9,7 +9,7 @@ def index(request):
     automators = Automator.objects.all()
     controllers = Controller.objects.all()
     deciders = Decider.objects.all()
-    events = Event.objects.all()
+    events = Event.objects.filter(type = 'automation.operation')[:5]
     return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'events': events}))
 
 def speakers(request, residence):
@@ -47,7 +47,7 @@ def edit_automator(request, automator):
         if form.is_valid():
             form.save()
     else:
-        form = ControllerForm(instance = Automator.objects.get(id=automator))
+        form = AutomatorForm(instance = Automator.objects.get(id=automator))
 
     return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
 

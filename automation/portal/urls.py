@@ -8,7 +8,7 @@ urlpatterns = patterns('automation.views',
 
     url(r'^/automators/$', 'automators', name='automation-automators'),
     url('^/add-automator$', 'add_automator', name='automation-add_automator'),
-    url('^/edit-automator/(?P<controller>[0-9]+)$', 'edit_automator', name='automation-edit_automator'),
+    url('^/edit-automator/(?P<automator>[0-9]+)$', 'edit_automator', name='automation-edit_automator'),
 
     url(r'^/controllers/$', 'controllers', name='automation-controllers'),
     url('^/add-controller$', 'add_controller', name='automation-add_controller'),
