@@ -52,9 +52,15 @@ WLNet dataview provides a sign interface for dedicated systems to provide inform
 An initial version of the sign interface was built using a framework utilizing custom HTML widgets and javascript to perform client side updates. A second iteration of this sign system is under development and is based off of the "dashing" dashboard framework.
 
 Transportation
---------------------
+--------------
 
 WLNet dataview provides a system to provide real-time information about transportation options, with an emphasis on public transportation.
+
+
+Installer
+---------
+
+Dataview provides the installation/setup process as an application called "installer". It is intended that this application will be used to perform initial setup of Dataview before logging into the application for the first time.
 
 Your own Application?
 ----
