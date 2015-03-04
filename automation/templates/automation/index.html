@@ -13,6 +13,14 @@
 
 <p>You can reuse any deciders or automators you create to perform other decisions, so don't be too specific when creating deciders or Automators</p>
 
+<h3>Recent Activity</h3>
+<ul>
+{%for event in events%}
+  <li>{{event}}</li>
+{%endfor%}
+</ul>
+
+</h3>
 <h3>Automators</h3>
 <a href="{%url 'automation-add_automator'%}">Add</a>
 <ul>

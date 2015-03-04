@@ -2,15 +2,15 @@ from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 
-from portal.models import Residence, Room
+from portal.models import Residence, Room, Event
 from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm, DeciderForm, Speaker, SpeakerForm
 
 def index(request):
     automators = Automator.objects.all()
     controllers = Controller.objects.all()
     deciders = Decider.objects.all()
-
-    return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders}))
+    events = Event.objects.all()
+    return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'events': events}))
 
 def speakers(request, residence):
     speakers = Speaker.objects.filter(location = Room.objects.filter(location = Residence.objects.get(id = residence, tenants = request.user))).order_by('location')
