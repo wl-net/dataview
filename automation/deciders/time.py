@@ -1,9 +1,9 @@
 from dataview.transports.json_rpc import JSONRPCClient
-from automation.deciders import abstract
+from automation.deciders import AbstractDecider
 from datetime import datetime
 import dateutil.parser
 
-class TimeDecider(abstract.AbstractDecider):
+class TimeDecider(AbstractDecider):
     def __init__(self, conditions):
         self.conditions = conditions
         super().__init__(conditions)
