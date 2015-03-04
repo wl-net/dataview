@@ -16,5 +16,5 @@ urlpatterns = patterns('automation.views',
 
     url(r'^/deciders/$', 'deciders', name='automation-deciders'),
     url('^/add-decider', 'add_decider', name='automation-add_decider'),
-    url('^/edit-decider/(?P<decider>[0-9]+)$', 'edit_controller', name='automation-edit_decider'),
+    url('^/edit-decider/(?P<decider>[0-9]+)$', 'edit_decider', name='automation-edit_decider'),
 )
