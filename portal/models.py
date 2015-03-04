@@ -172,8 +172,8 @@ class Event(models.Model):
     """
     Events are sourced either internally or externally
     """
-    user = models.ForeignKey('auth.User')
-    time = models.DateTimeField()
+    account = models.ForeignKey('dataview.Account')
+    time = models.DateTimeField(auto_now=True)
     action = models.CharField(max_length=128)
     description = models.TextField(blank=True)
 
