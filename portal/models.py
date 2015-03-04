@@ -176,9 +176,13 @@ class Event(models.Model):
     time = models.DateTimeField(auto_now=True)
     action = models.CharField(max_length=128)
     description = models.TextField(blank=True)
+    """
+    types should be of the form app.namespace.your_event
+    """
+    type = models.CharField(max_length=60)
 
     class Meta:
-        ordering = ['time']
+        ordering = ['-time']
 
     def __unicode__(self):
         return self.action
@@ -198,6 +202,10 @@ class Message(models.Model):
     message = models.TextField()
     type = models.IntegerField(choices=MESSAGE_TYPES)
     
+    def acknowledge(self):
+        self.acknowledged = True
+        marked = datetime.datetime.now()
+
     def get_type(self):
         return str(MESSAGE_TYPES[self.type][1])
 
