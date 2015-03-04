@@ -12,7 +12,7 @@ class Automator(models.Model):
     name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
     account = models.ForeignKey('dataview.Account')
     backend = models.ForeignKey('automation.AutomatorClass', help_text="This backend will be responsible for performing the actions you desire. Your Dataview administrator can provision additional backends for you to use.")
-    description = models.TextField(help_text="What does this Automator do?")
+    description = models.TextField(blank=True, help_text="What does this Automator do?")
     configuration = models.TextField(blank=True, help_text="Don't modify this unless you know understand how the automator processes configuration")
 
     def __unicode__(self):
@@ -183,7 +183,7 @@ class DeciderForm(ModelForm):
 
 class Controller(models.Model):
     name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
-    description = models.TextField()
+    description = models.TextField(blank=True)
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
     automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator', help_text="Specify the automators you are interested in using. You'll set the operations to perform later")
 
