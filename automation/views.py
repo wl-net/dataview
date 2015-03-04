@@ -61,7 +61,6 @@ def add_controller(request):
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
 
 def edit_controller(request, controller):
-
     if request.method == 'POST':
         form = ControllerForm(request.POST, instance= Controller.objects.get(id=controller))
         if form.is_valid():
@@ -72,10 +71,25 @@ def edit_controller(request, controller):
     return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form}))
 
 def deciders(request):
-    return render_to_response('automation/deciders.html', RequestContext(request, {'form': form}))
+    deciders = Decider.objects.all()
+    return render_to_response('automation/deciders.html', RequestContext(request, {'deciders': deciders}))
 
 def add_decider(request):
+    if request.method == 'POST':
+        form = DeciderForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = DeciderForm()
+
     return render_to_response('automation/add-decider.html', RequestContext(request, {'form': form}))
 
 def edit_decider(request, decider):
+    if request.method == 'POST':
+        form = DeciderForm(request.POST, instance=Decider.objects.get(id=decider))
+        if form.is_valid():
+            form.save()
+    else:
+        form = DeciderForm(instance = Decider.objects.get(id=decider))
+
     return render_to_response('automation/edit-decider.html', RequestContext(request, {'form': form}))

@@ -106,9 +106,26 @@ class Decider(models.Model):
     possibly complicated (configurable) conditions to reach that decision.
     For example: Is it warm outside?
     """
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, help_text="Give your decider a name. For example: <strong>Am I sleeping?</strong>")
     description = models.TextField()
-    configuration = models.TextField()
+    configuration = models.TextField(blank=True, help_text="This is the set of rules the decider uses to make its decision.")
+
+    @staticmethod
+    def get_valid_cls_list():
+        from django.conf import settings
+        import os
+        import glob2
+        import importlib
+        apps = []
+        for app in settings.DATAVIEW_APPS:
+            for file in glob2.glob(os.path.join(settings.BASE_DIR, '..', app, 'deciders', "**/*.py")):
+                path = file.replace(os.path.join(settings.BASE_DIR, '..') + '/', '', 1).replace('.py', '').replace('/', '.')
+
+                mod = importlib.import_module(path)
+                for member in dir(mod):
+                    if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractDecider) and member != 'AbstractDecider':
+                        apps.append({'name': member, 'path': path})
+        return apps
 
     def decide(self):
         return False
@@ -119,13 +136,51 @@ class Decider(models.Model):
     def __str__(self):
         return self.name
 
+class DeciderClass(models.Model):
+    name = models.CharField(max_length=128)
+    path = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.path + '.' + self.name
+
+    def __str__(self):
+        return self.path + '.' + self.name
+
+    class Meta:
+        unique_together = ('name', 'path',)
+
+    def update_classes(classes=None):
+        my_classes = []
+        for cls in DeciderClass.objects.all():
+            my_classes.append({'name': cls.name, 'path': cls.path})
+
+        if classes is None:
+            classes = Decider.get_valid_cls_list()
+        for cls in classes:
+            if cls in my_classes:
+                my_classes.remove(cls) # don't remove it
+                classes.remove(cls) # don't add it
+
+        # add new classes
+        for cls in classes:
+            ac = DeciderClass()
+            ac.name = cls['name']
+            ac.path = cls['path']
+
+            ac.save()
+
+        # remove old classes
+        for old_cls in my_classes:
+            DeciderClass.objects.filter(name=old_cls['name']).filter(path = old_cls['path']).delete()
+
+
 class DeciderForm(ModelForm):
     class Meta:
         model = Decider
         fields = ['name', 'description', 'configuration']
 
 class Controller(models.Model):
-    name = models.CharField(max_length = 128)
+    name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
     description = models.TextField()
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
     automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator', help_text="Specify the automators you are interested in using. You'll set the operations to perform later")
