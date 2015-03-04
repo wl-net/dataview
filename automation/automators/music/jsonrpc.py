@@ -7,6 +7,15 @@ class MusicJSONRPCAutomator(AbstractAutomator):
         self.client = JSONRPCClient()
         self.client.connect(configuration['target'], configuration['token'], configuration['certificate'])
 
+    def get_configuration_fields():
+        fields = {
+            'target': ['text', 'url'],
+            'token': ['text', 'secret'],
+            'certificate': ['text', 'pemfile'],
+        }
+
+        return fields
+
     def mute(self):
         self.client.call('mute',arguments={})
         
