@@ -84,6 +84,7 @@ class AutomatorClass(models.Model):
         for cls in classes:
             if cls not in my_classes:
                 classes_to_create.append(cls)
+            else:
                 my_classes.remove(cls)
 
         # add new classes
@@ -101,7 +102,7 @@ class AutomatorClass(models.Model):
 class AutomatorForm(ModelForm):
     class Meta:
         model = Automator
-        fields = ['name', 'backend', 'description', 'configuration']
+        fields = ['name', 'account', 'backend', 'description', 'configuration']
 
 class Decider(models.Model):
     """
@@ -165,6 +166,7 @@ class DeciderClass(models.Model):
         for cls in classes:
             if cls not in my_classes:
                 classes_to_create.append(cls)
+            else:
                 my_classes.remove(cls)
 
         # add new classes

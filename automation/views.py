@@ -2,6 +2,7 @@ from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 
+from dataview.models import Account
 from portal.models import Residence, Room, Event
 from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm, DeciderForm, Speaker, SpeakerForm
 
@@ -33,11 +34,11 @@ def automators(request):
 
 def add_automator(request):
     if request.method == 'POST':
-        form = AutomatorForm(request.POST)
+        form = AutomatorForm(request.POST, initial={'account': Account.objects.get(users=request.user)})
         if form.is_valid():
             form.save()
     else:
-        form = AutomatorForm()
+        form = AutomatorForm(initial={'account': Account.objects.get(users=request.user)})
 
     return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
 
