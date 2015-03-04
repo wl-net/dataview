@@ -108,7 +108,7 @@ class Decider(models.Model):
     For example: Is it warm outside?
     """
     name = models.CharField(max_length=128, help_text="Give your decider a name. For example: <strong>Am I sleeping?</strong>")
-    description = models.TextField()
+    description = models.TextField(blank=True)
     configuration = models.TextField(blank=True, help_text="This is the set of rules the decider uses to make its decision.")
     backend = models.ForeignKey('automation.DeciderClass', help_text="This backend will be responsible for making decisions. Your Dataview administrator can provision additional internal backends for you to use.")
 
