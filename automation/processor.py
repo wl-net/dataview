@@ -1,4 +1,4 @@
-from automation.models import Automator, AutomatorClass, Controller
+from automation.models import Automator, AutomatorClass, DeciderClass, Controller
 
 class Processor:
     '''
@@ -6,6 +6,7 @@ class Processor:
     '''
     def run(self):
       AutomatorClass.update_classes()
+      DeciderClass.update_classes()
       print("Running...")
       for controller in Controller.objects.all():
         controller.automate()

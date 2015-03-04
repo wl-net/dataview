@@ -1,5 +1,5 @@
 from dataview.transports.JSONRPC import JSONRPCClient
-
+from automation.deciders import AbstractDecider
 class JSONRPCDecider(AbstractDecider):
     def __init__(self, conditons, configuration):
         super().__init__()

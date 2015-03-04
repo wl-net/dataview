@@ -5,6 +5,7 @@ from portal.models import Room
 from importlib import import_module
 import sys, json
 from automation.automators import AbstractAutomator
+from automation.deciders import AbstractDecider
 from portal.models import Event
 
 class Automator(models.Model):
@@ -109,6 +110,7 @@ class Decider(models.Model):
     name = models.CharField(max_length=128, help_text="Give your decider a name. For example: <strong>Am I sleeping?</strong>")
     description = models.TextField()
     configuration = models.TextField(blank=True, help_text="This is the set of rules the decider uses to make its decision.")
+    backend = models.ForeignKey('automation.DeciderClass', help_text="This backend will be responsible for making decisions. Your Dataview administrator can provision additional internal backends for you to use.")
 
     @staticmethod
     def get_valid_cls_list():
@@ -177,7 +179,7 @@ class DeciderClass(models.Model):
 class DeciderForm(ModelForm):
     class Meta:
         model = Decider
-        fields = ['name', 'description', 'configuration']
+        fields = ['name', 'backend', 'description', 'configuration']
 
 class Controller(models.Model):
     name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
