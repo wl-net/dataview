@@ -36,6 +36,8 @@ class Automator(models.Model):
                 e = Event()
                 e.account = self.account
                 e.action = self.name + ': ' + operation['method']
+                if operation['method']:
+                    e.action = e.action + ' ' + ' '.join(operation['params'])
                 e.type = 'automation.operation'
                 e.save()
 

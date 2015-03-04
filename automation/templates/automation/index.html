@@ -16,7 +16,7 @@
 <h3>Recent Activity</h3>
 <ul>
 {%for event in events%}
-  <li>{{event}}</li>
+  <li>{{event.time|date:'l, F j H:i:s'}}: {{event}}</li>
 {%endfor%}
 </ul>
 

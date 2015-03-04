@@ -43,7 +43,7 @@ def add_automator(request):
 
 def edit_automator(request, automator):
     if request.method == 'POST':
-        form = AutomatorForm(request.POST, instance= Atuomator.objects.get(id=automator))
+        form = AutomatorForm(request.POST, instance=Automator.objects.get(id=automator))
         if form.is_valid():
             form.save()
     else:
