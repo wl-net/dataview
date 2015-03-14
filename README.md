@@ -1,7 +1,7 @@
 WLNet Dataview
 ==============
 
-WLNet dataview provides a way to collect, interact, and view data. Dataview is being developed as a solution to home automation, though other use-cases such as office building management will not be difficult to realize.
+WLNet dataview provides a way to collect, interact, and view data. Dataview is being developed as a solution to home automation, though other use-cases such as office building management will not be difficult to realize. The official website for dataview is located at http://opensource.wl-net.net/projects/dataview
 
 Requirements
 ----
