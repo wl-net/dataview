@@ -1,9 +1,8 @@
 from django.forms import SelectMultiple
 from django.db import models
-from portal.models import Destination
 from django.contrib import admin, gis
 from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
-from portal.models import TimeEntry, Destination, DestinationGroup, Employer, Residence, OpenHour
+from portal.models import TimeEntry, Employer, Residence
 
 class AddressAdmin(gis.admin.OSMGeoAdmin):
     list_display = ('street', 'city', 'zip')
@@ -57,32 +56,6 @@ class TimeEntryAdmin(admin.ModelAdmin):
 
 admin.site.register(TimeEntry, TimeEntryAdmin)
 
-class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location')
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'user':
-            kwargs['initial'] = request.user.id
-        return super(DestinationAdmin, self).formfield_for_foreignkey(
-            db_field, request, **kwargs
-        )
-    
-    def save_model(self, request, obj, form, change):
-        if not change:
-            obj.user = request.user;
-        obj.save()
-
-admin.site.register(Destination, DestinationAdmin)
-
-
-class DestinationGroupAdmin(admin.ModelAdmin):
-    list_display = ['name']
-    formfield_overrides = { models.ManyToManyField: {'widget': SelectMultiple(attrs={'size':'10'})}, }
-    pass
-
-admin.site.register(DestinationGroup, DestinationGroupAdmin)
-
-
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')
     pass
@@ -94,11 +67,3 @@ class ResidenceAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Residence, ResidenceAdmin)
-
-
-class OpenHourAdmin(admin.ModelAdmin):
-    list_display = ('day_of_week', 'location', 'from_time', 'to_time')
-    save_as = True
-    pass
-
-admin.site.register(OpenHour, OpenHourAdmin)
