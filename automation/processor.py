@@ -17,4 +17,5 @@ class Processor:
     def call_automator(self, args):
       a = Automator.objects.get(name = args[0])
       import json
-      a.do_operations('[{"method": "' + args[1] + '", "params": ' + json.dumps(args[2:]) + '}]')
+      return a.do_operations('[{"method": "' + args[1] + '", "params": ' + json.dumps(args[2:]) + '}]')
+

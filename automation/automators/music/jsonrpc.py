@@ -29,5 +29,5 @@ class MusicJSONRPCAutomator(AbstractAutomator):
         self.client.call('set_volume', [volume])
         
     def get_playback_information(self):
-        self.client.call('get_playback_information', [])
+        return self.client.call('get_playback_information', [])
     
