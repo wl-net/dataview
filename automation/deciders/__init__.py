@@ -8,7 +8,7 @@ class AbstractDecider:
         """
         return False
 
-    def fuzzy_decide():
+    def fuzzy_decide(self):
         """
         Returns a numeric value representing the outcome of the decider (integers between 0-1)
         """

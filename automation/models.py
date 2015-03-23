@@ -30,8 +30,9 @@ class Automator(models.Model):
 
     def do_operations(self, operations, instance=None, logging=True):
         i = self.get_instance()
+        response = []
         for operation in json.loads(operations):
-            getattr(i, operation["method"])(*operation["params"])
+            response.append(getattr(i, operation["method"])(*operation["params"]))
 
             if logging:
                 e = Event()
@@ -41,6 +42,8 @@ class Automator(models.Model):
                     e.action = e.action + ' ' + ' '.join(operation['params'])
                 e.type = 'automation.operation'
                 e.save()
+
+            return response
 
     @staticmethod
     def get_valid_cls_list():
@@ -132,8 +135,17 @@ class Decider(models.Model):
                         apps.append({'name': member, 'path': path})
         return apps
 
+    def get_instance(self):
+        cls = self.backend.path + '.' +  self.backend.name 
+        import_module(cls[:cls.rfind(".")])
+        module = sys.modules[cls[:cls.rfind(".")]]
+        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+        print(self.configuration)
+        return clsName(json.loads(self.configuration))
+
     def decide(self):
-        return False
+        i = self.get_instance()
+        return {'boolean': i.decide(), 'numeric': i.fuzzy_decide(), 'string_descriptive': i.get_decision_reason()}
 
     def __unicode__(self):
         return self.name
@@ -190,12 +202,14 @@ class DeciderForm(ModelForm):
 class Controller(models.Model):
     name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
     description = models.TextField(blank=True)
+    enabled = models.BooleanField(default=False)
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
     automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator', help_text="Specify the automators you are interested in using. You'll set the operations to perform later")
 
     def decide(self):
+        decisions = {}
         for decider in self.deciders.all():
-            decider.decide()
+            decisions.append(decider.name, decider.decide())
 
     def automate(self):
         decision = self.decide()
@@ -218,7 +232,7 @@ class Controller(models.Model):
 class ControllerForm(ModelForm):
     class Meta:
         model = Controller
-        fields = ['name', 'description']
+        fields = ['name', 'enabled', 'description']
     # ManyToManyFields that can't be handled automatically
     automators = ModelMultipleChoiceField(queryset=Automator.objects.all())
     deciders = ModelMultipleChoiceField(queryset=Decider.objects.all())
@@ -235,6 +249,12 @@ class ControllerAutomator(models.Model):
 
     def perform_operations(self):
         ops = json.loads(self.operations)
+
+
+class ControllerAutomatorForm(ModelForm):
+    class Meta:
+        model = ControllerAutomator
+        fields = ['notes', 'automator', 'operations']
 
 class Light(models.Model):
     name = models.CharField(max_length=128)

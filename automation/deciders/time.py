@@ -15,7 +15,7 @@ class TimeDecider(AbstractDecider):
 
         result = True
         if now is None:
-            now = datetime.time().now()
+            now = datetime.now().time()
 
         for condition in self.conditions:
             if self.__my_cmp__(now, dateutil.parser.parse(condition['time']).time()) not in condition['results']: 
