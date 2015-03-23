@@ -15,7 +15,7 @@ class Command(NoArgsCommand):
         if options['call-automator']:
             processor = Processor()
             processor.call_automator(args)
-        if options['call-decider']:
+        elif options['call-decider']:
             processor = Processor()
             processor.call_decider(args)
         else:
