@@ -9,9 +9,8 @@ class AbstractWidget():
     WIDGET_NAME must be set in order for Dataview to consider this widget
     """
 
-    def __init__(self, configuration, request):
+    def __init__(self, configuration):
         self.configuration = configuration
-        self.request = request
 
     def get_contents(self):
         """

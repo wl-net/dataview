@@ -1,4 +1,5 @@
 from sign.sign_widgets import AbstractWidget
+from transportation.provider.opentripplanner import OpenTripPlannerProvider
 
 class TransportationWidget(AbstractWidget):
 
@@ -6,7 +7,10 @@ class TransportationWidget(AbstractWidget):
 
     def __init__(self, configuration):
         super().__init__(configuration)
+        self.configuration = configuration
         pass
 
     def get_contents(self):
-        pass
+        otpp = OpenTripPlannerProvider(self.configuration['api_target'], self.configuration['router_id'])
+
+        return ""
