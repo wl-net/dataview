@@ -14,9 +14,9 @@ class YourWidget(AbstractWidget):
     WIDGET_NAME = "Your Widget"
 
     def __init__(self, configuration):
-        super().__init__(configuration)
+        super().\_\_init\_\_(configuration)
         pass
 
     def get_contents(self):
-        return json.dumps(...) # TODO
+        return {} # A json array that the widget will consume
 </pre>
