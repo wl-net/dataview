@@ -7,7 +7,6 @@ Create a sign_widgets folder under your application and place the following code
 
 <pre>
 from sign.sign_widgets import AbstractWidget
-import json
 
 class YourWidget(AbstractWidget):
 
@@ -18,5 +17,5 @@ class YourWidget(AbstractWidget):
         pass
 
     def get_contents(self):
-        return {} # A json array that the widget will consume
+        return {} # An object that the widget will consume (this will be encoded as json before sending)
 </pre>
