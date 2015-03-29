@@ -58,3 +58,11 @@ def sign_config(request, id=None):
         cls = clsName(request)
         response[widget.internal_name] = {'name': widget.name}
     return HttpResponse(json.dumps(response), content_type="application/json")
+
+def sign_widget(request, id, widget_id):
+    response = {}
+    sw = SignWidget.objects.get(id=widget_id)
+    i = sw.widget.get_instance(sw.configuration)
+    response['contents'] = i.get_contents()
+
+    return HttpResponse(json.dumps(response), content_type="application/json")

@@ -1,6 +1,8 @@
 from django.db import models
 from portal.models import Residence
 from sign.sign_widgets import AbstractWidget
+from importlib import import_module
+import sys, json
 
 class Sign(models.Model):
     name = models.CharField(max_length=128)
@@ -46,6 +48,13 @@ class Widget(models.Model):
                     except AttributeError:
                         pass
         return widgets
+
+    def get_instance(self, configuration):
+        cls = self.path + '.' +  self.internal_name
+        import_module(cls[:cls.rfind(".")])
+        module = sys.modules[cls[:cls.rfind(".")]]
+        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+        return clsName(json.loads(configuration))
 
     def update_widget_list(widgets=None):
         my_widgets = []
