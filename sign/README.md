@@ -14,7 +14,7 @@ class YourWidget(AbstractWidget):
     WIDGET_NAME = "Your Widget"
 
     def __init__(self, configuration):
-        super().\_\_init\_\_(configuration)
+        super().__init__(configuration)
         pass
 
     def get_contents(self):
