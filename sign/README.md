@@ -3,7 +3,7 @@ WLNet Dataview Sign Application
 
 # Creating Custom widgets
 
-Create a sign_widgets folder under your application and place the following code under 'your_application/sign_widgets/your_widget/__init__.py':
+Create a sign_widgets folder under your application and place the following code under 'your_application/sign_widgets/your_widget/\__init\__.py':
 
 <pre>
 from sign.sign_widgets import AbstractWidget
