@@ -20,6 +20,16 @@ class YourWidget(AbstractWidget):
         return {} # An object that the widget will consume (this will be encoded as json before sending)
 </pre>
 
+# Installing Widgets
+
+When installing a widget (regardless of who created it), you will need to inform dataview that you have installed a new widget:
+
+<pre>
+wlnet@wlnet-dataview:~/dataview$ python3 manage.py signcontrol --update-widgets
+</pre>
+
+You should now see your widget in the list of available widgets.
+
 # Pulling data from a widget
 
 You can access a sign widget by requesting
