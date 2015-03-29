@@ -1,6 +1,22 @@
 WLNet Dataview Sign Application
 ===============================
 
+# Using a sign
+
+A general purpose computer can display the sign. WLNet has performed testing on Raspberry Pis (version 2), though other devices should be able to perform the task if they have sufficent computation power.
+
+Simply navigate to https://YOUR_DATAVIEW_ENDPOINT/sign/SIGN_ID and the sign will be displayed. It is recommended that you enable the kiosk mode in your browser to maximize the amount of space available for sign widgets.
+
+# Installing Widgets
+
+When installing a widget (regardless of who created it), you will need to inform dataview that you have installed a new widget:
+
+<pre>
+wlnet@wlnet-dataview:~/dataview$ python3 manage.py signcontrol --update-widgets
+</pre>
+
+You should now see your widget in the list of available widgets.
+
 # Creating Custom widgets
 
 Create a sign_widgets folder under your application and place the following code under 'your_application/sign_widgets/your_widget/\__init\__.py':
@@ -19,16 +35,6 @@ class YourWidget(AbstractWidget):
     def get_contents(self):
         return {} # An object that the widget will consume (this will be encoded as json before sending)
 </pre>
-
-# Installing Widgets
-
-When installing a widget (regardless of who created it), you will need to inform dataview that you have installed a new widget:
-
-<pre>
-wlnet@wlnet-dataview:~/dataview$ python3 manage.py signcontrol --update-widgets
-</pre>
-
-You should now see your widget in the list of available widgets.
 
 # Pulling data from a widget
 
