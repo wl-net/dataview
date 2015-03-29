@@ -24,7 +24,7 @@ class YourWidget(AbstractWidget):
 
 You can access a sign widget by requesting
 
-/sign/<SIGN_ID>/widgets/<SIGN_WIDGET_ID>
+/sign/*SIGN_ID*/widgets/*SIGN_WIDGET_ID*
 
 a JSON response will be returned. As an example:
 
