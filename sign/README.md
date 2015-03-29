@@ -19,3 +19,17 @@ class YourWidget(AbstractWidget):
     def get_contents(self):
         return {} # An object that the widget will consume (this will be encoded as json before sending)
 </pre>
+
+# Pulling data from a widget
+
+You can access a sign widget by requesting
+
+/sign/<SIGN_ID>/widgets/<SIGN_WIDGET_ID>
+
+a JSON response will be returned. As an example:
+
+<pre>
+{"friendly_name": "Directions to 3rd and Spring", "widget_name": "Departure Information", "contents": {"trip_efficency": 97.46, "friendly_message": "10 minutes departing at 13:27"}}
+</pre>
+
+the sign can poll this endpoint for data and update accordingly.
