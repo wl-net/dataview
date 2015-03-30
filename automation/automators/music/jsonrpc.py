@@ -18,7 +18,10 @@ class MusicJSONRPCAutomator(AbstractAutomator):
 
     def mute(self):
         self.client.call('mute',arguments={})
-        
+
+    def unmute(self):
+        self.client.call('unmute',arguments={})
+
     def play(self, url):
         self.client.call('play', arguments = [url])
         
