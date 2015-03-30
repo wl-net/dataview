@@ -61,6 +61,20 @@ $ bundle
 $ dashing start
 </pre>
 
+Routing requests to /sign/id/dashing to the dashing dashboard.
+
+<pre>
+ProxyPass /sign/dataview-1 http://localhost:3030/dataview-1
+ProxyPass /assets http://localhost:3030/assets
+ProxyPass /views http://localhost:3030/views
+ProxyPass /sign/events http://localhost:3030/events
+</pre>
+
+<pre>
+RewriteEngine on
+RewriteRule ^/sign/([0-9]*)/dashing$ http://localhost/sign/dataview-$1 [P]
+RewriteRule ^/sign/([0-9]*)/events$ http://localhost/sign/events [P]
+</pre>
 
 # Dashing Integration
 
