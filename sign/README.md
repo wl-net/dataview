@@ -83,3 +83,8 @@ RewriteRule ^/sign/([0-9]*)/events$ http://localhost/sign/events [P]
 Dataview pushes changes to the dashing dashboard erb files via a generator.
 
 ## Protecting Dashing
+
+
+## Pushing updates to the sign
+
+If dashing is used with server sent events (SSE) then dataview's `--update-sign' method must be called. This should be ran at least once a minute so that dataview can perform updates to the sign. If an application requires more frequent updates to the sign, it will push updates outside of this system.
