@@ -49,3 +49,14 @@ a JSON response will be returned. As an example:
 </pre>
 
 the sign can poll this endpoint for data and update accordingly.
+
+# Setting up Dashing
+
+<pre>
+$ sudo apt-get installl ruby ruby-dev bundler nodejs
+$ sudo gem install dashing
+$ dashing new dataview_sign
+$ cd dataview_sign
+$ bundle
+$ dashing start
+</pre>
