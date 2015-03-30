@@ -84,6 +84,7 @@ Dataview pushes changes to the dashing dashboard erb files via a generator.
 
 ## Protecting Dashing
 
+If dashing is run outside of Dataview, a modification to dashing will be required to ensure that dataview's authentication and authorization requirements are met. If you choose to run dashing outside of dataview, it is recommended that you use Apache and setup a ProxyPass and RewriteRule for the sign to be accessed.
 
 ## Pushing updates to the sign
 
