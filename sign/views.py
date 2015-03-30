@@ -39,7 +39,7 @@ def sign_dashing(request, id=None):
     return render_to_response('sign/dashing-sign.html', RequestContext(request, {}))
 
 def sign_config(request, id=None):
-    response = {}
+    response = {"widgets":[]}
 
     try:
         sign = Sign.objects.get(id=id)
@@ -48,21 +48,16 @@ def sign_config(request, id=None):
 
     for signwidget in SignWidget.objects.filter(sign=sign).extra(order_by=['order']):
         widget = signwidget.widget
-        try:
-            import_module(widget.path)
-        except Exception as e:
-            print(e)
-            continue
-        module = sys.modules[widget.path]
-        clsName = getattr(module, widget.internal_name)
-        cls = clsName(request)
-        response[widget.internal_name] = {'name': widget.name}
+        response["widgets"].append(json.loads(signwidget.frontend_configuration))
+
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 def sign_widget(request, id, widget_id):
     response = {}
     sw = SignWidget.objects.get(id=widget_id)
-    i = sw.widget.get_instance(sw.configuration)
+    i = sw.widget.get_instance(sw.backend_configuration)
     response['contents'] = i.get_contents()
+    response['widget_name'] = i.WIDGET_NAME
+    response['friendly_name'] = i.configuration['friendly_name']
 
     return HttpResponse(json.dumps(response), content_type="application/json")

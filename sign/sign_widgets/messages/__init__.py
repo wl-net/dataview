@@ -8,7 +8,7 @@ class MessageWidget(AbstractWidget):
     WIDGET_NAME = "Messages"
 
     def __init__(self, configuration):
-        super().__init__(configuration, None)
+        super().__init__(configuration)
         pass
 
     def get_contents(self):

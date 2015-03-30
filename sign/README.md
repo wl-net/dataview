@@ -60,3 +60,12 @@ $ cd dataview_sign
 $ bundle
 $ dashing start
 </pre>
+
+
+# Dashing Integration
+
+## Making changes to dashing configuration
+
+Dataview pushes changes to the dashing dashboard erb files via a generator.
+
+## Protecting Dashing

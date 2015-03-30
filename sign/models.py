@@ -12,6 +12,17 @@ class Sign(models.Model):
     widgets = models.ManyToManyField('Widget', blank=True, null=True, through='SignWidget')
     background_image = models.ImageField(upload_to='sign/uploads/backgrounds', blank=True)
 
+
+    def update_signs():
+        sws = SignWidgets.objects.all()
+        for sw in sws:
+            wi = sw.widget.get_instance(sw.configuration)
+            contents = wi.get_contents()
+
+            # dashing specific code
+
+        pass
+
     def __unicode__(self):
         return self.name + " (" + self.location.name + ")"
 
@@ -92,7 +103,8 @@ class SignWidget(models.Model):
     enabled = models.BooleanField(default=True)
     position = models.CharField(max_length=128)
     order = models.IntegerField()
-    configuration = models.TextField()
+    backend_configuration = models.TextField(default='{}')
+    frontend_configuration = models.TextField(default='{}')
 
     def __unicode__(self):
         return str(self.widget) + " on " + str(self.sign)
