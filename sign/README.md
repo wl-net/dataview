@@ -86,6 +86,24 @@ Dataview pushes changes to the dashing dashboard erb files via a generator.
 
 If dashing is run outside of Dataview, a modification to dashing will be required to ensure that dataview's authentication and authorization requirements are met. If you choose to run dashing outside of dataview, it is recommended that you use Apache and setup a ProxyPass and RewriteRule for the sign to be accessed.
 
+### AuthN/AuthZ via Dataview
+
+By default the dashing sign will establish a connection back to dataview with the cookies the user provided in order to determine whether or not they are authorized to view the sign.
+
+The helper code for authorization works similar to this:
+
+````ruby
+helpers do
+  def protected!
+    clnt = HTTPClient.new
+    clnt.cookie_manager
+    if not request.cookies.has_key?('sessionid') or clnt.get('http://localhost/sign/1/dashing', nil, {'Cookie' => 'sessionid=' + request.cookies['sessionid']}).status != 200
+      redirect '/account/login'
+    end
+    end
+end
+````
+
 ## Pushing updates to the sign
 
 If dashing is used with server sent events (SSE) then dataview's `--update-sign' method must be called. This should be ran at least once a minute so that dataview can perform updates to the sign. If an application requires more frequent updates to the sign, it will push updates outside of this system.
