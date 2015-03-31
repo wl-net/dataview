@@ -14,9 +14,9 @@ class Sign(models.Model):
 
 
     def update_signs():
-        sws = SignWidgets.objects.all()
+        sws = SignWidget.objects.all()
         for sw in sws:
-            wi = sw.widget.get_instance(sw.configuration)
+            wi = sw.widget.get_instance(sw.backend_configuration)
             contents = wi.get_contents()
 
             # dashing specific code
@@ -56,7 +56,8 @@ class Widget(models.Model):
                     try:
                         if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractWidget) and member != 'AbstractWidget':
                             widgets.append({'name': mod.__dict__[member].WIDGET_NAME, 'internal_name': member, 'path': path.replace('.__init__','')})
-                    except AttributeError:
+                    except AttributeError as e:
+                        print(e)
                         pass
         return widgets
 

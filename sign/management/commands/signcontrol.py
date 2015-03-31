@@ -1,5 +1,5 @@
 from django.core.management.base import NoArgsCommand, make_option
-from sign.models import Widget
+from sign.models import Sign, Widget
 
 class Command(NoArgsCommand):
  
