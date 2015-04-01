@@ -22,9 +22,10 @@ portal_router.register(r'room', views.RoomViewSet)
 
 # sensor routes
 router.register(r'sensor', views.SensorViewSet)
+router.register(r'sensor-value', views.SensorValueViewSet)
 
 # sign routes
-router.register(r'sign', views.SignViewSet)
+#router.register(r'sign', views.SignViewSet)
 
 # security routes
 router.register(r'camera', views.CameraViewSet)

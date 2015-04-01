@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer, PackageSerializer
 from api.serializers import ResidenceSerializer, RoomSerializer
 
-from portal.models import Address, Destination, Guest, Message, OpenHour, Package, Residence, Room
+from portal.models import Address, Guest, Message, Package, Residence, Room
+from transportation.models import Destination, OpenHour
 
 class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
@@ -110,13 +111,16 @@ class RoomViewSet(viewsets.ModelViewSet):
     
 # other applications
 
-from sensors.models import Sensor
-from api.serializers import SensorSerializer
+from sensors.models import Sensor, SensorValue
+from api.serializers import SensorSerializer, SensorValueSerializer
 
 class SensorViewSet(viewsets.ModelViewSet):
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
 
+class SensorValueViewSet(viewsets.ModelViewSet):
+    queryset = SensorValue.objects.all()
+    serializer_class = SensorValueSerializer
 # security application
 
 from security.models import Camera, SafetyIncidentSource, SafetyIncident
@@ -147,12 +151,3 @@ class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
     serializer_class = SafetyIncidentSerializer
     filter_class = SafetyIncidentFilter
-
-# sign applications
-
-from sign.models import Sign
-from api.serializers import SignSerializer
-
-class SignViewSet(viewsets.ModelViewSet):
-    queryset = Sign.objects.all()
-    serializer_class = SignSerializer
