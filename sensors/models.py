@@ -23,7 +23,7 @@ class Sensor(models.Model):
 
 class SensorValue(models.Model):
     sensor = models.ForeignKey('sensors.Sensor')
-    updated = models.DateTimeField(default=datetime.datetime.now())
+    updated = models.DateTimeField(auto_now_add=True, blank=True)
     value = models.TextField()
 
     def __unicode__(self):
