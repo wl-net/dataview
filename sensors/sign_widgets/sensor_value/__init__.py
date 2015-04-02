@@ -11,7 +11,7 @@ class SensorValueWidget(AbstractWidget):
 
     def get_contents(self):
         try:
-            return SensorValue.objects.filter(sensor=self.configuration["sensor"]).order_by('updated')[0].value
+            return SensorValue.objects.filter(sensor=self.configuration["sensor"]).order_by('-updated')[0].value
         except Exception:
             return "Unknown"
 
