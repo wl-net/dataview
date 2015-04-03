@@ -44,6 +44,11 @@ Dataview defines two mechanisms for updating signs. First, Dataview defines the 
 
 Sign updaters are python classes that live within an application's sign_updaters folder. Each sign_updater must extend the AbstractSignUpdater class and must be linked to a sign using a sign type (see above)
 
+To instruct dataview to update signs,  `--update-sign' argument to signcontrol must be passed. This should be ran at least once a minute so that dataview can perform updates to the sign.
+
+```
+python3 manage.py signcontrol --update-sign
+```
 
 ## Pulling data from a widget
 
