@@ -36,7 +36,16 @@ class YourWidget(AbstractWidget):
         return {} # An object that the widget will consume (this will be encoded as json before sending)
 </pre>
 
-# Pulling data from a widget
+# How to get data to signs
+
+Dataview defines two mechanisms for updating signs. First, Dataview defines the concept of a sign updater and a sign type. The sign is a required field of each sign and creates a relationship between signs and a method to update the sign. Legacy workflows may find it helpful to ask dataview for the latest information. For these cases, Dataview provides an endpoint which can be queried.
+
+## Sign Updaters
+
+Sign updaters are python classes that live within an application's sign_updaters folder. Each sign_updater must extend the AbstractSignUpdater class and must be linked to a sign using a sign type (see above)
+
+
+## Pulling data from a widget
 
 You can access a sign widget by requesting
 
@@ -75,14 +84,6 @@ RewriteEngine on
 RewriteRule ^/sign/([0-9]*)/dashing$ http://localhost/sign/dataview-$1 [P]
 RewriteRule ^/sign/([0-9]*)/events$ http://localhost/sign/events [P]
 </pre>
-
-# How to get data to signs
-
-Dataview defines the concept of a sign updater and a sign type. The sign is a required field of each sign and creates a relationship between signs and a method to update the sign.
-
-## Sign Updaters
-
-Sign updaters are python classes that live within an application's sign_updaters folder. Each sign_updater must extend the AbstractSignUpdater class and must be linked to a sign using a sign type (see above)
 
 # Dashing Integration
 
