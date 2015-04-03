@@ -31,6 +31,13 @@ class SignType(models.Model):
                         pass
         return types
 
+    def get_instance(self, configuration):
+        cls = self.path + '.' +  self.internal_name
+        import_module(cls[:cls.rfind(".")])
+        module = sys.modules[cls[:cls.rfind(".")]]
+        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+        return clsName(json.loads(configuration))
+
     def update_sign_type_list(sign_types=None):
         my_sign_types = []
         for sign_type in SignType.objects.all():
@@ -62,10 +69,10 @@ class SignType(models.Model):
             SignType.objects.filter(internal_name=old_cls['internal_name']).filter(path = old_cls['path']).delete()
 
     def __unicode__(self):
-        return self.name + " (" + self.location.name + ")"
+        return self.name
 
     def __str__(self):
-        return self.name + " (" + self.location.name + ")"
+        return self.name
 
 class Sign(models.Model):
     name = models.CharField(max_length=128)
@@ -74,17 +81,17 @@ class Sign(models.Model):
     is_available = models.BooleanField(default=True)
     widgets = models.ManyToManyField('Widget', blank=True, null=True, through='SignWidget')
     background_image = models.ImageField(upload_to='sign/uploads/backgrounds', blank=True)
-
+    backend_configuration = models.TextField(blank=True, default='{}')
+    type = models.ForeignKey(SignType)
 
     def update_signs():
         sws = SignWidget.objects.all()
         for sw in sws:
-            wi = sw.widget.get_instance(sw.backend_configuration)
-            contents = wi.get_contents()
-
-            # dashing specific code
-
-        pass
+            #try:
+            updater = sw.sign.type.get_instance(sw.sign.backend_configuration)
+            updater.update_widget(sw)
+            #except Exception as e:
+            #    print(e)
 
     def __unicode__(self):
         return self.name + " (" + self.location.name + ")"
