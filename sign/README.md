@@ -76,6 +76,14 @@ RewriteRule ^/sign/([0-9]*)/dashing$ http://localhost/sign/dataview-$1 [P]
 RewriteRule ^/sign/([0-9]*)/events$ http://localhost/sign/events [P]
 </pre>
 
+# How to get data to signs
+
+Dataview defines the concept of a sign updater and a sign type. The sign is a required field of each sign and creates a relationship between signs and a method to update the sign.
+
+## Sign Updaters
+
+Sign updaters are python classes that live within an application's sign_updaters folder. Each sign_updater must extend the AbstractSignUpdater class and must be linked to a sign using a sign type (see above)
+
 # Dashing Integration
 
 ## Making changes to dashing configuration
