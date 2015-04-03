@@ -4,6 +4,69 @@ from sign.sign_widgets import AbstractWidget
 from importlib import import_module
 import sys, json
 
+class SignType(models.Model):
+    name = models.CharField(max_length=128)
+    internal_name = models.CharField(max_length=128)
+    path = models.CharField(max_length=128)
+
+    @staticmethod
+    def get_valid_cls_list():
+        from django.conf import settings
+        import os
+        import glob2
+        import importlib
+        types = []
+        for app in settings.DATAVIEW_APPS:
+            for file in glob2.glob(os.path.join(settings.BASE_DIR, '..', app, 'sign_updaters', "**/*.py")):
+                path = file.replace(os.path.join(settings.BASE_DIR, '..') + '/', '', 1).replace('.py', '').replace('/', '.')
+
+                mod = importlib.import_module(path)
+                for member in dir(mod):
+                    try:
+                        from sign.sign_updaters import AbstractSignUpdater
+                        if isinstance(mod.__dict__[member], type) and issubclass(mod.__dict__[member], AbstractSignUpdater) and member != 'AbstractSignUpdater':
+                            types.append({'name': mod.__dict__[member].SIGN_TYPE_NAME, 'internal_name': member, 'path': path.replace('.__init__','')})
+                    except AttributeError as e:
+                        print(e)
+                        pass
+        return types
+
+    def update_sign_type_list(sign_types=None):
+        my_sign_types = []
+        for sign_type in SignType.objects.all():
+            my_sign_types.append({'name': sign_type.name, 'internal_name': sign_type.internal_name, 'path': sign_type.path})
+
+        if sign_types is None:
+            sign_types = SignType.get_valid_cls_list()
+
+        common = []
+        for cls in sign_types:
+            if cls in my_sign_types:
+                common.append(cls)
+
+        for cls in common:
+                my_sign_types.remove(cls) # don't remove it
+                sign_types.remove(cls) # don't add it
+
+        # add new sign_types
+        for cls in sign_types:
+            w = SignType()
+            w.name = cls['name']
+            w.internal_name = cls['internal_name']
+            w.path = cls['path']
+
+            w.save()
+
+        # remove old sign_types
+        for old_cls in my_sign_types:
+            SignType.objects.filter(internal_name=old_cls['internal_name']).filter(path = old_cls['path']).delete()
+
+    def __unicode__(self):
+        return self.name + " (" + self.location.name + ")"
+
+    def __str__(self):
+        return self.name + " (" + self.location.name + ")"
+
 class Sign(models.Model):
     name = models.CharField(max_length=128)
     hostname = models.CharField(max_length=128)
@@ -33,6 +96,7 @@ class Widget(models.Model):
     name = models.CharField(max_length=128)
     internal_name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
+    external_id = models.CharField(max_length=60)
 
     def __unicode__(self):
         return self.name
