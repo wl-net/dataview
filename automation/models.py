@@ -3,12 +3,13 @@ from django.forms import ModelForm, ModelMultipleChoiceField
 from django.core.validators import URLValidator
 from portal.models import Room
 from importlib import import_module
-import sys, json
+import sys, json, uuid
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
 from portal.models import Event
 
 class Automator(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
     account = models.ForeignKey('dataview.Account')
     backend = models.ForeignKey('automation.AutomatorClass', help_text="This backend will be responsible for performing the actions you desire. Your Dataview administrator can provision additional backends for you to use.")
