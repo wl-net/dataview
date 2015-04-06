@@ -7,7 +7,9 @@ Requirements
 ----
 
 * Python 3.4+ with web hosting capabilities (mod_wsgi)
-* django_rest_framework module
+* django 1.8
+
+For a list of required third-party libraries, please refer to the Installation page.
 
 Installation
 ----
