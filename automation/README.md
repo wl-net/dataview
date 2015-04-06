@@ -16,6 +16,13 @@ a.do_operations('[{"method": "set_volume", "params": ["50"]}]')
 a.get_instance().set_volume(50)
 a.get_instance().pause()
 ```
+
+Calling an automator from the command line
+
+```
+python3 manage.py automation_callautomator "WLNet Denny Triangle Sound" play http://kandi.shoutdrive.com:80
+```
+
 Deciders
 ----
 
