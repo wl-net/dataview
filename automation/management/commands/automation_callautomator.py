@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
         parser.add_argument('automator_name', type=str)
         parser.add_argument('automator_method', type=str)
-        parser.add_argument('automator_params', nargs='+', type=str)
+        parser.add_argument('automator_params', nargs='*', type=str, default=[])
 
     def handle(self, *args, **options):
         processor = Processor()
