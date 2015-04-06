@@ -14,7 +14,7 @@ def index(request):
     return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'events': events}))
 
 from django.http import HttpResponseRedirect
-from django.contrib.formtools.wizard.views import SessionWizardView
+from formtools.wizard.views import SessionWizardView
 
 class AutomateWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
