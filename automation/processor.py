@@ -14,12 +14,12 @@ class Processor:
         else:
           print("Skipped '{0}'. Please ensure it is configured properly.".format(controller.name))
 
-    def call_automator(self, args):
-      a = Automator.objects.get(name = args[0])
+    def call_automator(self, automator, method, params):
+      a = Automator.objects.get(name = automator)
       import json
-      print(a.do_operations('[{"method": "' + args[1] + '", "params": ' + json.dumps(args[2:]) + '}]'))
+      print(a.do_operations('[{"method": "' + method + '", "params": ' + json.dumps(params) + '}]'))
 
-    def call_decider(self, args):
-      d = Decider.objects.get(name = args[0])
+    def call_decider(self, decider):
+      d = Decider.objects.get(name = decider)
       import json
       print(d.decide())
