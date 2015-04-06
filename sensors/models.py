@@ -15,6 +15,9 @@ class Sensor(models.Model):
     description = models.TextField(blank=True)
     location = models.ForeignKey('portal.Room')
 
+    def get_most_recent_value(self):
+        return SensorValue.objects.filter(sensor=self).order_by('-updated')[0].value
+
     def __unicode__(self):
         return self.name
 
