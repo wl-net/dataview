@@ -64,11 +64,11 @@ class Residence(models.Model):
     YEAR_CHOICES = []
     for r in range(1900, (datetime.datetime.now().year+1)):
         YEAR_CHOICES.append((r,r))
-    year = models.IntegerField(max_length=4, choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     active_building_community_number = models.IntegerField()
     active_building_community_website = models.TextField(blank=True,null=True)
     rent = models.FloatField(default=0)
-    tenants = models.ManyToManyField('auth.User', blank=True, null=True)
+    tenants = models.ManyToManyField('auth.User', blank=True)
 
     def __unicode__(self):
         return self.name + " " + self.location.city

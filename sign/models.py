@@ -79,7 +79,7 @@ class Sign(models.Model):
     hostname = models.CharField(max_length=128)
     location = models.ForeignKey('portal.Room')
     is_available = models.BooleanField(default=True)
-    widgets = models.ManyToManyField('Widget', blank=True, null=True, through='SignWidget')
+    widgets = models.ManyToManyField('Widget', blank=True, through='SignWidget')
     background_image = models.ImageField(upload_to='sign/uploads/backgrounds', blank=True)
     backend_configuration = models.TextField(blank=True, default='{}')
     type = models.ForeignKey(SignType)
