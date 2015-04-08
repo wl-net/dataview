@@ -22,6 +22,25 @@ Calling an automator from the command line
 ```
 python3 manage.py automation_callautomator "WLNet Denny Triangle Sound" play http://kandi.shoutdrive.com:80
 ```
+##### Writing your own Automator
+
+Create an empty file in YOUR_APPLICATION/automators/YOUR_AUTOMATOR_TYPE/YOUR_TRANSPORT.py Create a python class that extendss AbstractAutomator as shown below:
+
+````
+from dataview.transports.json_rpc import JSONRPCClient
+from automation.automators import AbstractAutomator
+
+class HumidiferJSONRPCAutomator(AbstractAutomator):
+    def __init__(self, configuration):
+        super().__init__(configuration)
+        self.client = JSONRPCClient()
+        self.client.connect(configuration['target'], configuration['token'], configuration['certificate'])
+        
+    ... your automation methods
+````
+
+See the sample automators within the source tree for examples:
+https://github.com/wl-net/dataview/tree/master/automation/automators
 
 Deciders
 ----
