@@ -3,7 +3,7 @@ from automation.automators import AbstractAutomator
 
 class MusicJSONRPCAutomator(AbstractAutomator):
     def __init__(self, configuration):
-        super().__init__()
+        super().__init__(configuration)
         self.client = JSONRPCClient()
         self.client.connect(configuration['target'], configuration['token'], configuration['certificate'])
 

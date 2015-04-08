@@ -1,3 +1,4 @@
 class AbstractAutomator:
-    def __init__(self):
+
+    def __init__(self, configuration):
         pass
