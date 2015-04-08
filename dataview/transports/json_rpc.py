@@ -15,7 +15,7 @@ class JSONRPCClient:
         pass
 
     def disconnect(self):
-        self.client.close()
+        pass # this transport does not stay open
 
     def call(self, command, arguments):
         req = {"jsonrpc": "2.0", "method": command, "params": arguments, "id": self.request_id}
