@@ -1,6 +1,7 @@
 WLNet Dataview Automation
 =========================
 
+Dataview implements automation in three pieces. Automators are traditional "remote control" and are only concerned with performing actions. Deciders are responsible for mapping strings such as "Am I sleeping" to a machine readable value, and controllers are the glue that connect deciders and automators.
 Automators
 ----
 
