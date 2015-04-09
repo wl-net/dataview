@@ -4,12 +4,12 @@ from django.core.validators import URLValidator
 from portal.models import Room
 from importlib import import_module
 import sys, json, uuid
+from dataview.common.models import UUIDModel
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
 from portal.models import Event
 
-class Automator(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Automator(UUIDModel):
     name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
     account = models.ForeignKey('dataview.Account')
     backend = models.ForeignKey('automation.AutomatorClass', help_text="This backend will be responsible for performing the actions you desire. Your Dataview administrator can provision additional backends for you to use.")
@@ -63,7 +63,7 @@ class Automator(models.Model):
                         apps.append({'name': member, 'path': path})
         return apps
 
-class AutomatorClass(models.Model):
+class AutomatorClass(UUIDModel):
     name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
 
@@ -108,7 +108,7 @@ class AutomatorForm(ModelForm):
         model = Automator
         fields = ['name', 'account', 'backend', 'description', 'configuration']
 
-class Decider(models.Model):
+class Decider(UUIDModel):
     """
     Think of deciders as a machine that answers with "Yes" or "No" depsite
     possibly complicated (configurable) conditions to reach that decision.
@@ -154,7 +154,7 @@ class Decider(models.Model):
     def __str__(self):
         return self.name
 
-class DeciderClass(models.Model):
+class DeciderClass(UUIDModel):
     name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
 
@@ -200,7 +200,7 @@ class DeciderForm(ModelForm):
         model = Decider
         fields = ['name', 'backend', 'description', 'configuration']
 
-class Controller(models.Model):
+class Controller(UUIDModel):
     name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
     description = models.TextField(blank=True)
     enabled = models.BooleanField(default=False)
@@ -238,11 +238,11 @@ class ControllerForm(ModelForm):
     automators = ModelMultipleChoiceField(queryset=Automator.objects.all())
     deciders = ModelMultipleChoiceField(queryset=Decider.objects.all())
 
-class ControllerDecider(models.Model):
+class ControllerDecider(UUIDModel):
     controller = models.ForeignKey(Controller)
     decider = models.ForeignKey(Decider)
 
-class ControllerAutomator(models.Model):
+class ControllerAutomator(UUIDModel):
     notes = models.TextField()
     controller = models.ForeignKey(Controller)
     automator = models.ForeignKey(Automator)

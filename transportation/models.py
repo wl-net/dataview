@@ -1,4 +1,5 @@
 from django.db import models
+from dataview.common.models import UUIDModel
 from portal.models import Address
 
 WEEKDAYS = [
@@ -11,12 +12,12 @@ WEEKDAYS = [
   (6, "Sunday"),
 ]
 
-class TransportationInformationProvider(models.Model):
+class TransportationInformationProvider(UUIDModel):
     name = models.CharField(max_length = 128)
     api_source = models.CharField(max_length=255)
 
 # Used for travel directions
-class Destination(models.Model):
+class Destination(UUIDModel):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('portal.Address')
 
@@ -45,7 +46,7 @@ class Destination(models.Model):
     def __str__(self):
         return self.name + " (now " + self.open_status() + ")"
 
-class DestinationGroup(models.Model):
+class DestinationGroup(UUIDModel):
     name = models.CharField(max_length=60)
     destinations = models.ManyToManyField(Destination)
 
@@ -55,7 +56,7 @@ class DestinationGroup(models.Model):
     def __str__(self):
         return self.name
 
-class OpenHour(models.Model):
+class OpenHour(UUIDModel):
     location = models.ForeignKey('portal.Address')
     day_of_week = models.IntegerField(choices=WEEKDAYS)
     from_time = models.TimeField()

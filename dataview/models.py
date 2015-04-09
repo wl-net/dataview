@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.gis.db import models
 from portal.models import Address
+from dataview.common.models import UUIDModel
 from django.conf import settings
+from django.forms import ModelForm, ModelMultipleChoiceField
 
-class SystemDeployment(models.Model):
+class SystemDeployment(UUIDModel):
     """ System Deployments represent a server that hosts Dataview."""
 
     """ the name of the dataview deployment. Whatever you want"""
@@ -13,15 +15,21 @@ class SystemDeployment(models.Model):
     hostname = models.CharField(max_length=128)
 
     """ the physical location of the dataview server"""
-    location = models.ForeignKey('portal.Address')
+    location = models.ForeignKey('portal.Address', blank=True)
 
     is_master = models.BooleanField(default=True)
     is_available = models.BooleanField(default=True)
 
-class Account(models.Model):
+
+class SystemDeploymentForm(ModelForm):
+    class Meta:
+        model = SystemDeployment
+        fields = ['name', 'hostname', 'location']
+
+class Account(UUIDModel):
     """ Accounts represent a collection of dataview users that rely on shared residences"""
-    name = models.CharField(max_length=60)
-    users = models.ManyToManyField('auth.User')
+    name = models.CharField(max_length=60, help_text="This will be displayed to all users you share your account with")
+    users = models.ManyToManyField('auth.User', help_text="")
 
     def __unicode__(self):
         return self.name
@@ -29,8 +37,13 @@ class Account(models.Model):
     def __str__(self):
         return self.name
 
+class AccountForm(ModelForm):
+    class Meta:
+        model = Account
+        fields = ['name', 'users']
+
 import hashlib
-class X509Certificate(models.Model):
+class X509Certificate(UUIDModel):
     cert = models.TextField(unique=True)
     file_name = models.CharField(max_length=255, unique=True)
 

@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import User
 
+from dataview.common.models import UUIDModel
+
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -25,10 +27,10 @@ MESSAGE_TYPES = [
   (3, "danger"),
 ]
 
-#class Application(models.Model):
+#class Application(UUIDModel):
 #    name = models.CharField(max_length=128)
 
-class Address(models.Model): 
+class Address(UUIDModel): 
     source_id = models.CharField(max_length=128, editable=False)
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
@@ -51,12 +53,12 @@ class Address(models.Model):
     def __str__(self):
         return self.street + " " + self.city + ", " + self.state + " " + self.zip
 
-class Location(models.Model):
+class Location(UUIDModel):
     title = models.CharField(max_length=128)
 
 # ActiveBuilding Models
 
-class Residence(models.Model):
+class Residence(UUIDModel):
     name = models.CharField(max_length=64)
     location = models.ForeignKey('Address')
     floors = models.IntegerField(default=1)
@@ -76,7 +78,7 @@ class Residence(models.Model):
     def __str__(self):
         return self.name + " " + self.location.city 
 
-class Amenity(models.Model):
+class Amenity(UUIDModel):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
     reserverable = models.BooleanField(default=False)
@@ -90,7 +92,7 @@ class Amenity(models.Model):
     def __str__(self):
         return self.name
 
-class Package(models.Model):
+class Package(UUIDModel):
     tracking_number = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
     picked_up = models.BooleanField(default=False)
@@ -100,7 +102,7 @@ class Package(models.Model):
     def __str__(self):
         return self.name
 
-class Neighbor(models.Model):
+class Neighbor(UUIDModel):
     user = models.ForeignKey('auth.User', editable=False)
 
     first_name = models.CharField(max_length=128)
@@ -115,7 +117,7 @@ class Neighbor(models.Model):
         return self.first_name + " " + self.last_name
 # dataview models
 
-class Room(models.Model):
+class Room(UUIDModel):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Residence')
     square_feet = models.IntegerField()
@@ -127,7 +129,7 @@ class Room(models.Model):
     def __str__(self):
         return self.name + " (" +  str(self.location) + ")"
 
-class Employer(models.Model):
+class Employer(UUIDModel):
     name = models.CharField(max_length=128)
     location = models.ForeignKey('Address')
 
@@ -137,7 +139,7 @@ class Employer(models.Model):
     def __str__(self):
         return self.name
 
-class ServiceType(models.Model):
+class ServiceType(UUIDModel):
     name = models.CharField(max_length=128)
 
     def __unicode__(self):
@@ -146,7 +148,7 @@ class ServiceType(models.Model):
     def __str__(self):
         return self.name
 
-class Service(models.Model):
+class Service(UUIDModel):
     name = models.CharField(max_length=128)
     service_type = models.ForeignKey('ServiceType')
     location = models.ForeignKey('Address')
@@ -157,7 +159,7 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
-class Guest(models.Model):
+class Guest(UUIDModel):
     user = models.ForeignKey('auth.User', editable=False)
 
     name = models.CharField(max_length=128)
@@ -168,7 +170,7 @@ class Guest(models.Model):
     def __str__(self):
         return self.name
 
-class Event(models.Model):
+class Event(UUIDModel):
     """
     Events are sourced either internally or externally
     """
@@ -190,7 +192,7 @@ class Event(models.Model):
     def __str__(self):
         return self.action
 
-class Message(models.Model):
+class Message(UUIDModel):
     user = models.ForeignKey('auth.User', editable=False)
 
     time = models.DateTimeField()
@@ -215,7 +217,7 @@ class Message(models.Model):
     def __str__(self):
         return self.subject
 
-class TimeEntry(models.Model):
+class TimeEntry(UUIDModel):
     start = models.DateTimeField()
     end = models.DateTimeField()
     description = models.TextField(blank=True)

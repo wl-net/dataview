@@ -1,8 +1,8 @@
 from django.db import models
-
+from dataview.common.models import UUIDModel
 from portal.models import Address
 
-class Camera(models.Model):
+class Camera(UUIDModel):
     location = models.CharField(max_length=128)
     residence = models.ForeignKey('portal.Residence')
     
@@ -12,7 +12,7 @@ class Camera(models.Model):
     def __str__(self):
         return self.location
 
-class SafetyIncidentSource(models.Model):
+class SafetyIncidentSource(UUIDModel):
     name = models.CharField(max_length=60, unique=True)
 
     def __unicode__(self):
@@ -21,13 +21,26 @@ class SafetyIncidentSource(models.Model):
     def __str__(self):
         return self.name
 
-class SafetyIncidentAlert(models.Model):
-    #user = models.User()
+class SafetyIncidentAlert(UUIDModel):
     incident = models.ForeignKey('security.SafetyIncident')
     location = models.ForeignKey('portal.address')
 
-class SafetyIncident(models.Model):
-    source = models.ForeignKey('security.SafetyIncidentSource')#, editable=False)
+from django.contrib.gis.db.models import MultiPolygonField
+
+class SafetyIncidentAlertBoundary(UUIDModel):
+    name = models.CharField(max_length=128)
+    description = models.TextField()
+    geobox = MultiPolygonField()
+    enabled = models.BooleanField(default=True)
+    
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class SafetyIncident(UUIDModel):
+    source = models.ForeignKey('security.SafetyIncidentSource', editable=False)
     location = models.CharField(max_length=128)
     time = models.DateTimeField()
     units = models.TextField(blank=True)
@@ -36,6 +49,11 @@ class SafetyIncident(models.Model):
     class Meta:
         unique_together = ('location', 'time', 'units', 'type')
         get_latest_by = "time"
+
+    def get_address(self):
+        pass
+    #def save(self, *args, **kwargs):
+    #    super(SafetyIncident, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.type + '- ' + self.location

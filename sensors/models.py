@@ -1,7 +1,8 @@
 from django.db import models
+from dataview.common.models import UUIDModel
 import datetime
 
-class SensorType(models.Model):
+class SensorType(UUIDModel):
     name = models.CharField(max_length=128)
     def __unicode__(self):
         return self.name
@@ -9,7 +10,7 @@ class SensorType(models.Model):
     def __str__(self):
         return self.name
 
-class Sensor(models.Model):
+class Sensor(UUIDModel):
     name = models.CharField(max_length=128)
     type = models.ForeignKey(SensorType)
     description = models.TextField(blank=True)
@@ -24,7 +25,7 @@ class Sensor(models.Model):
     def __str__(self):
         return self.name
 
-class SensorValue(models.Model):
+class SensorValue(UUIDModel):
     sensor = models.ForeignKey('sensors.Sensor')
     updated = models.DateTimeField(auto_now_add=True, blank=True)
     value = models.TextField()

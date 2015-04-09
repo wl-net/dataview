@@ -1,7 +1,8 @@
 from django.db import models
+from dataview.common.models import UUIDModel
 
 # Create your models here.
-class Bank(models.Model):
+class Bank(UUIDModel):
     name = models.CharField(max_length=128)
     def __unicode__(self):
         return self.name
@@ -9,11 +10,11 @@ class Bank(models.Model):
     def __str__(self):
         return self.name
 
-class Budget(models.Model):
+class Budget(UUIDModel):
     name = models.CharField(max_length=128)
     description = models.TextField()
 
-class Transaction(models.Model):
+class Transaction(UUIDModel):
     uuid = models.CharField(max_length=36)
     transactionid = models.CharField(max_length=36)
     uuid = models.CharField(max_length=36)

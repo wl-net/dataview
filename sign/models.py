@@ -1,10 +1,14 @@
 from django.db import models
+
+from dataview.common.models import UUIDModel
+
 from portal.models import Residence
 from sign.sign_widgets import AbstractWidget
+
 from importlib import import_module
 import sys, json
 
-class SignType(models.Model):
+class SignType(UUIDModel):
     name = models.CharField(max_length=128)
     internal_name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
@@ -74,7 +78,7 @@ class SignType(models.Model):
     def __str__(self):
         return self.name
 
-class Sign(models.Model):
+class Sign(UUIDModel):
     name = models.CharField(max_length=128)
     hostname = models.CharField(max_length=128)
     location = models.ForeignKey('portal.Room')
@@ -99,7 +103,7 @@ class Sign(models.Model):
     def __str__(self):
         return self.name + " (" + self.location.name + ")"
 
-class Widget(models.Model):
+class Widget(UUIDModel):
     name = models.CharField(max_length=128)
     internal_name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
@@ -169,7 +173,7 @@ class Widget(models.Model):
         for old_cls in my_widgets:
             Widget.objects.filter(internal_name=old_cls['internal_name']).filter(path = old_cls['path']).delete()
 
-class SignWidget(models.Model):
+class SignWidget(UUIDModel):
     sign = models.ForeignKey(Sign)
     widget = models.ForeignKey(Widget)
     enabled = models.BooleanField(default=True)
