@@ -53,6 +53,11 @@ Runing Tests
 python3 manage.py test
 ````
 
+UUID Backed Models
+----
+
+To help prevent enumeration, uuid based models are encouraged. Please extend new models off of dataivew.common.models.UUIDModel instead of the standard django.db.models.Model. If you need you add a uuid pk to a model based on some other class, please review the dataview.common.models package first.
+
 Request Routing
 ----
 
