@@ -81,7 +81,7 @@ class SignType(UUIDModel):
 class Sign(UUIDModel):
     name = models.CharField(max_length=128)
     hostname = models.CharField(max_length=128)
-    location = models.ForeignKey('portal.Room')
+    location = models.ForeignKey('building.Room')
     is_available = models.BooleanField(default=True)
     widgets = models.ManyToManyField('Widget', blank=True, through='SignWidget')
     background_image = models.ImageField(upload_to='sign/uploads/backgrounds', blank=True)

@@ -1,7 +1,6 @@
 from django.db import models
 from django.forms import ModelForm, ModelMultipleChoiceField
 from django.core.validators import URLValidator
-from portal.models import Room
 from importlib import import_module
 import sys, json, uuid
 from dataview.common.models import UUIDModel

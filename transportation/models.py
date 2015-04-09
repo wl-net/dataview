@@ -1,6 +1,6 @@
 from django.db import models
 from dataview.common.models import UUIDModel
-from portal.models import Address
+from building.models import Address
 
 WEEKDAYS = [
   (0, "Monday"),
@@ -19,7 +19,7 @@ class TransportationInformationProvider(UUIDModel):
 # Used for travel directions
 class Destination(UUIDModel):
     name = models.CharField(max_length=128)
-    location = models.ForeignKey('portal.Address')
+    location = models.ForeignKey(Address)
 
     def is_open(self):
         #return datetime.datetime.today().time()
@@ -57,7 +57,7 @@ class DestinationGroup(UUIDModel):
         return self.name
 
 class OpenHour(UUIDModel):
-    location = models.ForeignKey('portal.Address')
+    location = models.ForeignKey('building.Address')
     day_of_week = models.IntegerField(choices=WEEKDAYS)
     from_time = models.TimeField()
     to_time = models.TimeField()

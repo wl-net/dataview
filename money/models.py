@@ -20,7 +20,7 @@ class Transaction(UUIDModel):
     uuid = models.CharField(max_length=36)
     name = models.CharField(max_length=60)
     recorded_total = models.IntegerField(default=0)
-    location = models.ForeignKey('portal.Address')
+    location = models.ForeignKey('building.Address')
     memo = models.TextField()
 
     def __unicode__(self):

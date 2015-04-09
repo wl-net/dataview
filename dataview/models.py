@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.gis.db import models
-from portal.models import Address
 from dataview.common.models import UUIDModel
 from django.conf import settings
 from django.forms import ModelForm, ModelMultipleChoiceField
@@ -14,9 +13,6 @@ class SystemDeployment(UUIDModel):
     """ the FQDN that can be used to manage this specific dataview deployment"""
     hostname = models.CharField(max_length=128)
 
-    """ the physical location of the dataview server"""
-    location = models.ForeignKey('portal.Address', blank=True)
-
     is_master = models.BooleanField(default=True)
     is_available = models.BooleanField(default=True)
 
@@ -24,7 +20,7 @@ class SystemDeployment(UUIDModel):
 class SystemDeploymentForm(ModelForm):
     class Meta:
         model = SystemDeployment
-        fields = ['name', 'hostname', 'location']
+        fields = ['name', 'hostname']
 
 class Account(UUIDModel):
     """ Accounts represent a collection of dataview users that rely on shared residences"""

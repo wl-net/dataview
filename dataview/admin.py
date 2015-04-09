@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy
 from dataview.models import Account, SystemDeployment
 
 class SystemDeploymentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location')
+    list_display = ['name']
     pass
 
 admin.site.register(SystemDeployment, SystemDeploymentAdmin)

@@ -14,7 +14,7 @@ class Sensor(UUIDModel):
     name = models.CharField(max_length=128)
     type = models.ForeignKey(SensorType)
     description = models.TextField(blank=True)
-    location = models.ForeignKey('portal.Room')
+    location = models.ForeignKey('building.Room')
 
     def get_most_recent_value(self):
         return SensorValue.objects.filter(sensor=self).order_by('-updated')[0].value

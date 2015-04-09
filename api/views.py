@@ -6,7 +6,9 @@ from rest_framework.response import Response
 from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer, PackageSerializer
 from api.serializers import ResidenceSerializer, RoomSerializer
 
-from portal.models import Address, Guest, Message, Package, Residence, Room
+from portal.models import Guest, Message, Package, Residence
+from building.models import Address, Building, Room
+
 from transportation.models import Destination, OpenHour
 
 class UserViewSet(viewsets.ModelViewSet):

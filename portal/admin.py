@@ -1,32 +1,15 @@
 from django.forms import SelectMultiple
 from django.db import models
 from django.contrib import admin, gis
-from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
+from portal.models import Neighbor, ServiceType, Service, Guest
 from portal.models import Residence
 
-class AddressAdmin(gis.admin.OSMGeoAdmin):
-    list_display = ('street', 'city', 'zip')
-    pass
-
-admin.site.register(Address, AddressAdmin)
-
-class AmenityAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location', 'reserverable')
-    pass
-
-admin.site.register(Amenity, AmenityAdmin)
 
 class NeighborAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'location')
     pass
 
 admin.site.register(Neighbor, NeighborAdmin)
-
-class RoomAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location', 'square_feet')
-    pass
-
-admin.site.register(Room, RoomAdmin)
 
 class ServiceTypeAdmin(admin.ModelAdmin):
     list_display = ['name']

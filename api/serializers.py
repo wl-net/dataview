@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from portal.models import Address, Guest, Message, Package, Residence, Room
+from building.models import Address, Building, Room
+from portal.models import Guest, Message, Package, Residence
 
 from sensors.models import Sensor, SensorValue
 from security.models import Camera, SafetyIncidentSource, SafetyIncident

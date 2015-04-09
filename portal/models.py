@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import User
-
+from building.models import Address
 from dataview.common.models import UUIDModel
 
 from django.contrib.gis.db import models
@@ -27,40 +27,11 @@ MESSAGE_TYPES = [
   (3, "danger"),
 ]
 
-#class Application(UUIDModel):
-#    name = models.CharField(max_length=128)
-
-class Address(UUIDModel): 
-    source_id = models.CharField(max_length=128, editable=False)
-    street = models.CharField(max_length=128)
-    city = models.CharField(max_length=128)
-    state = models.CharField(max_length=2)
-    zip = models.CharField(max_length=5)
-    geo = models.PointField(blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        request = requests.get("https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=0" % str(self).replace(' ', '%20'))
-        response = json.loads(request.content.decode('utf-8'))
-        self.geo = GEOSGeometry("POINT(" + response[0]['lat'] + " "+ response[0]['lon'] + ")")
-        super(Address, self).save(*args, **kwargs)
-
-    def full_name(self):
-        return self.street + " " + self.city + ", " + self.state + " " + self.zip
-
-    def __unicode__(self):
-        return self.street + " " + self.city + ", " + self.state + " " + self.zip
-
-    def __str__(self):
-        return self.street + " " + self.city + ", " + self.state + " " + self.zip
-
-class Location(UUIDModel):
-    title = models.CharField(max_length=128)
-
 # ActiveBuilding Models
 
 class Residence(UUIDModel):
     name = models.CharField(max_length=64)
-    location = models.ForeignKey('Address')
+    location = models.ForeignKey('building.Address')
     floors = models.IntegerField(default=1)
     residence_floor = models.IntegerField(default=1)
     YEAR_CHOICES = []
@@ -75,20 +46,6 @@ class Residence(UUIDModel):
 
     def __str__(self):
         return self.name + " " + self.location.city 
-
-class Amenity(UUIDModel):
-    name = models.CharField(max_length=128)
-    location = models.ForeignKey('Residence')
-    reserverable = models.BooleanField(default=False)
-    externalId = models.CharField(max_length=5)
-    show = models.BooleanField(default=False)
-    description = models.TextField(blank=True)
-
-    def __unicode__(self):
-        return self.name
-    
-    def __str__(self):
-        return self.name
 
 class Package(UUIDModel):
     tracking_number = models.CharField(max_length=128)
@@ -115,18 +72,6 @@ class Neighbor(UUIDModel):
         return self.first_name + " " + self.last_name
 # dataview models
 
-class Room(UUIDModel):
-    name = models.CharField(max_length=128)
-    location = models.ForeignKey('Residence')
-    square_feet = models.IntegerField()
-    has_door = models.BooleanField(default=True)
-
-    def __unicode__(self):
-        return self.name + " (" +  str(self.location) + ")"
-
-    def __str__(self):
-        return self.name + " (" +  str(self.location) + ")"
-
 class ServiceType(UUIDModel):
     name = models.CharField(max_length=128)
 
@@ -139,7 +84,7 @@ class ServiceType(UUIDModel):
 class Service(UUIDModel):
     name = models.CharField(max_length=128)
     service_type = models.ForeignKey('ServiceType')
-    location = models.ForeignKey('Address')
+    location = models.ForeignKey('building.Address')
 
     def __unicode__(self):
         return self.name

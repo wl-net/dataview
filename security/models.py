@@ -1,10 +1,10 @@
 from django.db import models
 from dataview.common.models import UUIDModel
-from portal.models import Address
+from building.models import Address, Building
 
 class Camera(UUIDModel):
     location = models.CharField(max_length=128)
-    residence = models.ForeignKey('portal.Residence')
+    residence = models.ForeignKey('building.Building')
     
     def __unicode__(self):
         return self.location
@@ -23,7 +23,7 @@ class SafetyIncidentSource(UUIDModel):
 
 class SafetyIncidentAlert(UUIDModel):
     incident = models.ForeignKey('security.SafetyIncident')
-    location = models.ForeignKey('portal.address')
+    location = models.ForeignKey('building.address')
 
 from django.contrib.gis.db.models import MultiPolygonField
 
