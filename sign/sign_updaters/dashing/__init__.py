@@ -11,6 +11,6 @@ class DashingSignUpdater(AbstractSignUpdater):
         wconfig = json.loads(sign_widget.backend_configuration)
         if 'dashing_view_type_identifier' not in wconfig:
             return      
-        r = requests.post(self.configuration['dashing_uri'] + 'widgets/' + sign_widget.widget.external_id,
-                          data=json.dumps({'auth_token': self.configuration['dashing_auth_token'], json.loads(sign_widget.backend_configuration)['dashing_view_type_identifier']: contents}))
+        r = requests.post(self.configuration['dashing_uri'] + 'widgets/' + wconfig['dashing_widget_id'],
+                          data=json.dumps({'auth_token': self.configuration['dashing_auth_token'], wconfig['dashing_view_type_identifier']: contents}))
         r.raise_for_status()
