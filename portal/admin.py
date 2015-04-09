@@ -1,15 +1,7 @@
 from django.forms import SelectMultiple
 from django.db import models
 from django.contrib import admin, gis
-from portal.models import Neighbor, ServiceType, Service, Guest
-from portal.models import Residence
-
-
-class NeighborAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'location')
-    pass
-
-admin.site.register(Neighbor, NeighborAdmin)
+from portal.models import ServiceType, Service, Guest
 
 class ServiceTypeAdmin(admin.ModelAdmin):
     list_display = ['name']
@@ -33,8 +25,3 @@ class GuestAdmin(admin.ModelAdmin):
 
 admin.site.register(Guest, GuestAdmin)
 
-class ResidenceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location')
-    pass
-
-admin.site.register(Residence, ResidenceAdmin)

@@ -2,7 +2,6 @@ from django.db import models
 
 from dataview.common.models import UUIDModel
 
-from portal.models import Residence
 from sign.sign_widgets import AbstractWidget
 
 from importlib import import_module

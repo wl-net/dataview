@@ -1,6 +1,7 @@
 from django.db import models
 from dataview.common.models import UUIDModel
 from django.contrib.gis.db import models
+import datetime
 
 class Address(UUIDModel):
     source_id = models.CharField(max_length=128, editable=False)
@@ -28,6 +29,11 @@ class Address(UUIDModel):
 class Building(UUIDModel):
     address = models.ForeignKey(Address)
     name = models.CharField(max_length=128)
+
+    YEAR_CHOICES = []
+    for r in range(1900, (datetime.datetime.now().year+1)):
+        YEAR_CHOICES.append((r,r))
+    built_year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
 class Room(UUIDModel):
     name = models.CharField(max_length=128)

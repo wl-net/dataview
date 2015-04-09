@@ -27,51 +27,6 @@ MESSAGE_TYPES = [
   (3, "danger"),
 ]
 
-# ActiveBuilding Models
-
-class Residence(UUIDModel):
-    name = models.CharField(max_length=64)
-    location = models.ForeignKey('building.Address')
-    floors = models.IntegerField(default=1)
-    residence_floor = models.IntegerField(default=1)
-    YEAR_CHOICES = []
-    for r in range(1900, (datetime.datetime.now().year+1)):
-        YEAR_CHOICES.append((r,r))
-    year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    rent = models.FloatField(default=0)
-    tenants = models.ManyToManyField('auth.User', blank=True)
-
-    def __unicode__(self):
-        return self.name + " " + self.location.city
-
-    def __str__(self):
-        return self.name + " " + self.location.city 
-
-class Package(UUIDModel):
-    tracking_number = models.CharField(max_length=128)
-    location = models.ForeignKey('Residence')
-    picked_up = models.BooleanField(default=False)
-    def __unicode__(self):
-        return self.name
-    
-    def __str__(self):
-        return self.name
-
-class Neighbor(UUIDModel):
-    user = models.ForeignKey('auth.User', editable=False)
-
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
-    location = models.ForeignKey('Residence')
-    notes = models.TextField(blank=True)
-
-    def __unicode__(self):
-        return self.first_name + " " + self.last_name
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name
-# dataview models
-
 class ServiceType(UUIDModel):
     name = models.CharField(max_length=128)
 
@@ -127,9 +82,7 @@ class Event(UUIDModel):
 
 class Message(UUIDModel):
     user = models.ForeignKey('auth.User', editable=False)
-
     time = models.DateTimeField()
-    location = models.ForeignKey('Residence')
     acknowledged = models.BooleanField(default=False)
     relevant = models.BooleanField(default=True)
     marked = models.DateTimeField()
