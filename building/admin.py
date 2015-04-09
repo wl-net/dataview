@@ -13,6 +13,12 @@ class AmenityAdmin(admin.ModelAdmin):
 
 admin.site.register(Amenity, AmenityAdmin)
 
+class BuildingAdmin(admin.ModelAdmin):
+    list_display = ('name', 'address')
+    pass
+
+admin.site.register(Building, BuildingAdmin)
+
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'square_feet')
     pass

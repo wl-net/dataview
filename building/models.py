@@ -1,7 +1,8 @@
 from django.db import models
 from dataview.common.models import UUIDModel
 from django.contrib.gis.db import models
-import datetime
+import datetime, requests, json
+from django.contrib.gis.geos import GEOSGeometry
 
 class Address(UUIDModel):
     source_id = models.CharField(max_length=128, editable=False)
@@ -35,6 +36,12 @@ class Building(UUIDModel):
         YEAR_CHOICES.append((r,r))
     built_year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
 class Room(UUIDModel):
     name = models.CharField(max_length=128)
     unit_number = models.CharField(max_length=8)
@@ -60,4 +67,3 @@ class Amenity(UUIDModel):
 
     def __str__(self):
         return self.name
-
