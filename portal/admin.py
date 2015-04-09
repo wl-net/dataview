@@ -2,7 +2,7 @@ from django.forms import SelectMultiple
 from django.db import models
 from django.contrib import admin, gis
 from portal.models import Address, Amenity, Neighbor, Room, ServiceType, Service, Guest
-from portal.models import TimeEntry, Employer, Residence
+from portal.models import Residence
 
 class AddressAdmin(gis.admin.OSMGeoAdmin):
     list_display = ('street', 'city', 'zip')
@@ -49,18 +49,6 @@ class GuestAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(Guest, GuestAdmin)
-
-class TimeEntryAdmin(admin.ModelAdmin):
-    list_display = ('start', 'end')
-    pass
-
-admin.site.register(TimeEntry, TimeEntryAdmin)
-
-class EmployerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location')
-    pass
-
-admin.site.register(Employer, EmployerAdmin)
 
 class ResidenceAdmin(admin.ModelAdmin):
     list_display = ('name', 'location')

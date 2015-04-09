@@ -127,16 +127,6 @@ class Room(UUIDModel):
     def __str__(self):
         return self.name + " (" +  str(self.location) + ")"
 
-class Employer(UUIDModel):
-    name = models.CharField(max_length=128)
-    location = models.ForeignKey('Address')
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.name
-
 class ServiceType(UUIDModel):
     name = models.CharField(max_length=128)
 
@@ -214,16 +204,3 @@ class Message(UUIDModel):
     
     def __str__(self):
         return self.subject
-
-class TimeEntry(UUIDModel):
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    description = models.TextField(blank=True)
-    class Meta:
-        verbose_name_plural = "Time entries"
-
-    def __unicode__(self):
-        return str(self.start) + " - " +  str(self.end) + ", " + str(self.end - self.start)
-
-    def __str__(self):
-        return str(self.start) + " - " +  str(self.end) + ", " + str(self.end - self.start)
