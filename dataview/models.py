@@ -59,3 +59,25 @@ class X509Certificate(UUIDModel):
 
     def get_file_from_str(certificate):
         return settings.BASE_DIR + '/certificates/' + X509Certificate.objects.get(cert=certificate).file_name
+
+class Event(UUIDModel):
+    """
+    Events are sourced either internally or externally
+    """
+    account = models.ForeignKey(Account)
+    time = models.DateTimeField(auto_now=True)
+    action = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    """
+    types should be of the form app.namespace.your_event
+    """
+    type = models.CharField(max_length=60)
+
+    class Meta:
+        ordering = ['-time']
+
+    def __unicode__(self):
+        return self.action
+
+    def __str__(self):
+        return self.action

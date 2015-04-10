@@ -58,28 +58,6 @@ class Guest(UUIDModel):
     def __str__(self):
         return self.name
 
-class Event(UUIDModel):
-    """
-    Events are sourced either internally or externally
-    """
-    account = models.ForeignKey('dataview.Account')
-    time = models.DateTimeField(auto_now=True)
-    action = models.CharField(max_length=128)
-    description = models.TextField(blank=True)
-    """
-    types should be of the form app.namespace.your_event
-    """
-    type = models.CharField(max_length=60)
-
-    class Meta:
-        ordering = ['-time']
-
-    def __unicode__(self):
-        return self.action
-
-    def __str__(self):
-        return self.action
-
 class Message(UUIDModel):
     user = models.ForeignKey('auth.User', editable=False)
     time = models.DateTimeField()
