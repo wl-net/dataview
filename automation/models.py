@@ -115,7 +115,8 @@ class Decider(UUIDModel):
     """
     name = models.CharField(max_length=128, help_text="Give your decider a name. For example: <strong>Am I sleeping?</strong>")
     description = models.TextField(blank=True)
-    configuration = models.TextField(blank=True, help_text="This is the set of rules the decider uses to make its decision.")
+    conditions = models.TextField(blank=True, help_text="This is the set of rules the decider uses to make its decision.", default='{}')
+    configuration = models.TextField(blank=True, help_text="Optional configuration", default='{}')
     backend = models.ForeignKey('automation.DeciderClass', help_text="This backend will be responsible for making decisions. Your Dataview administrator can provision additional internal backends for you to use.")
 
     @staticmethod
@@ -140,8 +141,12 @@ class Decider(UUIDModel):
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
         clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
-        print(self.configuration)
-        return clsName(json.loads(self.configuration))
+        try:
+            config = json.loads(self.configuration)
+        except Exception:
+            config = {}
+
+        return clsName(json.loads(self.conditions), config)
 
     def decide(self):
         i = self.get_instance()

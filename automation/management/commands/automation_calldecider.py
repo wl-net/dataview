@@ -15,4 +15,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         processor = Processor()
-        print(processor.call_decider(options['decider_name']))
+        processor.call_decider(options['decider_name'])

@@ -1,5 +1,7 @@
 class AbstractDecider:
-    def __init__(self, conditions, configuration=None):
+    def __init__(self, conditions, configuration={}):
+        self.conditions = conditions
+        self.configuration = configuration
         pass
 
     def decide(self):

@@ -21,5 +21,4 @@ class Processor:
 
     def call_decider(self, decider):
       d = Decider.objects.get(name = decider)
-      import json
       print(d.decide())
