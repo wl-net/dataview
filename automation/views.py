@@ -1,5 +1,6 @@
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from dataview.models import Event
@@ -23,21 +24,24 @@ class AutomateWizard(SessionWizardView):
 
 def automators(request):
     automators = Automator.objects.all()
-    return render_to_response('automation/automators.html', RequestContext(request, {'form': form}))
-
+    return render_to_response('automation/automators.html', RequestContext(request, {'automators': automators}))
 
 def add_automator(request):
     if request.method == 'POST':
         form = AutomatorForm(request.POST, initial={'account': Account.objects.get(users=request.user)})
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect(reverse('automation-automators'))
     else:
         form = AutomatorForm(initial={'account': Account.objects.get(users=request.user)})
-
     return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
 
 def edit_automator(request, automator):
     if request.method == 'POST':
+        if request.POST.get('delete') is not None:
+            Automator.objects.get(id=automator).delete()
+            return HttpResponseRedirect(reverse('automation-automators'))
+
         form = AutomatorForm(request.POST, instance=Automator.objects.get(id=automator))
         if form.is_valid():
             form.save()
@@ -62,6 +66,10 @@ def add_controller(request):
 
 def edit_controller(request, controller):
     if request.method == 'POST':
+        if request.POST.get('delete') is not None:
+            Controller.objects.get(id=controller).delete()
+            return HttpResponseRedirect(reverse('automation-controllers'))
+
         form = ControllerForm(request.POST, instance= Controller.objects.get(id=controller))
         if form.is_valid():
             form.save()
@@ -86,6 +94,10 @@ def add_decider(request):
 
 def edit_decider(request, decider):
     if request.method == 'POST':
+        if request.POST.get('delete') is not None:
+            Decider.objects.get(id=decider).delete()
+            return HttpResponseRedirect(reverse('automation-deciders'))
+
         form = DeciderForm(request.POST, instance=Decider.objects.get(id=decider))
         if form.is_valid():
             form.save()
