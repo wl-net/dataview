@@ -7,8 +7,10 @@ urlpatterns = patterns('',
 )
 
 for app in settings.DATAVIEW_APPS:
-    print(app)
     try:
-      urlpatterns += patterns('', url('^portal/' + app, include(app + '.portal.urls')))
-    except Exception:
-        pass
+        urlpatterns += patterns('', url('^portal/' + app, include(app + '.portal.urls')))
+    except ImportError as e:
+        if "No module named '" + app + '.portal' +  "'" != str(e):
+
+            import traceback
+            print(traceback.format_exc())
