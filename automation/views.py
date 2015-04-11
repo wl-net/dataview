@@ -2,7 +2,7 @@ from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 
-from portal.models import Event
+from dataview.models import Event
 from dataview.models import Account
 from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm, DeciderForm
 

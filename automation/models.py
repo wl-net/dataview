@@ -6,7 +6,7 @@ import sys, json, uuid
 from dataview.common.models import UUIDModel
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
-from portal.models import Event
+from dataview.models import Event
 
 class Automator(UUIDModel):
     name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
