@@ -27,7 +27,7 @@ class Command(BaseCommand):
         print("Delete {0} recorded senor values before {1}?".format(svs.count(), then))
         choice = input("Type 'delete' to confirm: ").lower()
         if choice == "delete":
-            print("Deleting")
+            print("Deleting...")
             svs.delete()
         else:
             print("Aborting...")
