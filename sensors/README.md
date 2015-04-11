@@ -2,6 +2,7 @@ Dataview Sensors Application
 ============================
 
 Getting data into Dataview
+---
 
 The API should handle most scenarios where you need to get data into dataview. 
 
@@ -32,3 +33,8 @@ From the command line:
 $ python3 manage.py sensors_getsensorvalue 14bae5f3-f6de-4234-b2a8-b6cfa8bc44ed
 '23.0' was reported at 2015-04-11 23:16:07.674237+00:00
 ```
+
+Dealing with old data
+---
+
+Dataview currently does not have a utility for purging old sensor data from the database.
