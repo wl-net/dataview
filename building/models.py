@@ -48,6 +48,7 @@ class Room(UUIDModel):
     location = models.ForeignKey(Building)
     square_feet = models.IntegerField()
     has_door = models.BooleanField(default=True)
+    notes = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.name + " (" +  str(self.location) + ")"
