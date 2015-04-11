@@ -12,3 +12,6 @@ class HumidiferJSONRPCAutomator(AbstractAutomator):
 
     def set_output_rate(self, output_rate):
         self.client.call('call_function', ['humoutrate', [output_rate.upper()]])
+
+    def get_commands(self):
+        return {"set_fan_speed":{"args":[["off", "high", "low"]]}, "set_output_rate":{"args":[["off", "high", "low"]]}}
