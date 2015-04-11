@@ -52,7 +52,12 @@ def controllers(request):
     return render_to_response('automation/controllers.html', RequestContext(request, {'controllers': controllers}))
 
 def add_controller(request):
-    form = ControllerForm()
+    if request.method == 'POST':
+        form = ControllerForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ControllerForm()
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
 
 def edit_controller(request, controller):
