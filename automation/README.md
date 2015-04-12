@@ -43,6 +43,12 @@ class HumidiferJSONRPCAutomator(AbstractAutomator):
 See the sample automators within the source tree for examples:
 https://github.com/wl-net/dataview/tree/master/automation/automators
 
+##### Ensuring State
+
+Your automator should be designed such that sending the same command multiple times should have no impact as long as the system is already in that state.
+
+For example, if you automate a light switch you should not implement change_state() but rather turn_on() and turn_off(). Some use cases will fit outside of this model, such as a coffee maker. In these cases, care must be taken to ensure that the action is performed only once by returning accurate status information to automator requests.
+
 Deciders
 ----
 
