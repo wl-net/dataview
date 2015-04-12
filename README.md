@@ -3,16 +3,22 @@ WLNet Dataview
 
 WLNet dataview provides a way to collect, interact, and view data. Dataview is being developed as a solution to home automation, though other use-cases such as office building management will not be difficult to realize. The official website for dataview is located at http://opensource.wl-net.net/projects/dataview
 
+Should I use Dataview?
+---
+
+Dataview is currently under development and doens't offer a lot of functionality to users who are not interested in developing on top of it. If you are interested in automation, this might be a good platform to build off of.
+
 Project Status
 ----
 
-WLNet Dataview is being developed under WLNet's Open Source program and is still in early stages of development. Upgrading from public revisions of dataview is not supported at this time. 
+WLNet Dataview is being developed under WLNet's Open Source program and is still nearing a stable release. Upgrading from public revisions of dataview is not supported, but will work in most cases as long as database migrations are made and performed.
 
 Requirements
 ----
 
 * Python 3.4+ with web hosting capabilities (mod_wsgi)
 * django 1.8
+* Postgres database with PostGIS support
 
 For a list of required third-party libraries, please refer to the Installation page.
 
@@ -39,7 +45,7 @@ The dataview application contains shared code used by all other applications.
 Money
 ----
 
-The money application provides basic budgeting and transactions through imported data.
+The money application provides basic budgeting and transactions through imported data. This application will not be part of dataview core and will be removed soon.
 
 Portal
 ----
