@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 from dataview.models import Event
 from dataview.models import Account
-from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm, DeciderForm
+from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm, ControllerAutomator, ControllerAutomatorForm, ControllerDecider, ControllerDeciderForm, DeciderForm
 
 def index(request):
     automators = Automator.objects.all()
@@ -48,7 +48,23 @@ def edit_automator(request, automator):
     else:
         form = AutomatorForm(instance = Automator.objects.get(id=automator))
 
+
     return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
+
+def edit_controllerautomator(request, controller, automator):
+    if request.method == 'POST':
+        if request.POST.get('delete') is not None:
+            ControllerAutomator.objects.get(id=automator).delete()
+            return HttpResponseRedirect(reverse('automation-automators'))
+
+        form = ControllerAutomatorForm(request.POST, instance=ControllerAutomator.objects.get(id=automator))
+        if form.is_valid():
+            form.save()
+    else:
+        form = ControllerAutomatorForm(instance = ControllerAutomator.objects.get(id=automator))
+
+    return render_to_response('automation/edit-controllerautomator.html', RequestContext(request, {'form': form}))
+
 
 def controllers(request):
     controllers = Controller.objects.all()
@@ -65,6 +81,10 @@ def add_controller(request):
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
 
 def edit_controller(request, controller):
+    automators = {}
+    deciders = {}
+    my_automators ={}
+    my_deciders = {}
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
             Controller.objects.get(id=controller).delete()
@@ -74,9 +94,14 @@ def edit_controller(request, controller):
         if form.is_valid():
             form.save()
     else:
-        form = ControllerForm(instance = Controller.objects.get(id=controller))
+        controller = Controller.objects.get(id=controller)
+        form = ControllerForm(instance = controller)
+        automators = Automator.objects.all()
+        deciders = Decider.objects.all()
+        my_automators = controller.automator.all()
+        my_deciders = controller.deciders.all()
 
-    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form}))
+    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'automators': automators, 'my_automators': my_automators, 'deciders': deciders, 'my_deciders': deciders}))
 
 def deciders(request):
     deciders = Decider.objects.all()

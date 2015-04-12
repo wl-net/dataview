@@ -239,12 +239,17 @@ class ControllerForm(ModelForm):
         model = Controller
         fields = ['name', 'enabled', 'description']
     # ManyToManyFields that can't be handled automatically
-    automators = ModelMultipleChoiceField(queryset=Automator.objects.all())
-    deciders = ModelMultipleChoiceField(queryset=Decider.objects.all())
+    #automators = ModelMultipleChoiceField(queryset=Automator.objects.all())
+    #deciders = ModelMultipleChoiceField(queryset=Decider.objects.all())
 
 class ControllerDecider(UUIDModel):
     controller = models.ForeignKey(Controller)
     decider = models.ForeignKey(Decider)
+
+class ControllerDeciderForm(ModelForm):
+    class Meta:
+        model = ControllerDecider
+        fields = ['controller', 'decider']
 
 class ControllerAutomator(UUIDModel):
     notes = models.TextField()
@@ -254,7 +259,10 @@ class ControllerAutomator(UUIDModel):
 
     def perform_operations(self):
         ops = json.loads(self.operations)
-
+        for automator, operations in ops['automators']:
+            a = Automator.objects.get(automator)
+            a.get_instance()
+            a.perform_operations(operations)
 
 class ControllerAutomatorForm(ModelForm):
     class Meta:
