@@ -132,6 +132,7 @@ class TaskGroup(UUIDModel):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
     tasks = models.ManyToManyField(Task)
+    is_task_wrapper = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
@@ -245,7 +246,7 @@ class Controller(UUIDModel):
     description = models.TextField(blank=True)
     enabled = models.BooleanField(default=False)
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
-    automator = models.ManyToManyField('automation.Automator', through='ControllerAutomator', help_text="Specify the automators you are interested in using. You'll set the operations to perform later")
+    tasks = models.ManyToManyField('automation.Task', through='ControllerTask')
 
     def decide(self):
         decisions = {}
@@ -254,9 +255,9 @@ class Controller(UUIDModel):
 
     def automate(self):
         decision = self.decide()
-        for automator in self.automator.all():
-            ca = ControllerAutomator.get(automator=automator, controller=controller)
-            config = json.loads(ca.operations)
+        for task in self.tasks.all():
+            ca = ControllerTask.get(task=task, controller=controller)
+            config = json.loads(ct.mapping)
             ops = ca['decision']['binary'][decision]
             for op in ops:
               automator.do_operations()
@@ -287,20 +288,20 @@ class ControllerDeciderForm(ModelForm):
         model = ControllerDecider
         fields = ['controller', 'decider']
 
-class ControllerAutomator(UUIDModel):
+class ControllerTask(UUIDModel):
     notes = models.TextField()
     controller = models.ForeignKey(Controller)
-    automator = models.ForeignKey(Automator)
-    operations = models.TextField()
+    task = models.ForeignKey(Task)
+    mapping = models.TextField()
 
     def perform_operations(self):
-        ops = json.loads(self.operations)
-        for automator, operations in ops['automators']:
+        ops = json.loads(self.mapping)
+        for decision, task in ops['task']:
             a = Automator.objects.get(automator)
             a.get_instance()
             a.perform_operations(operations)
 
-class ControllerAutomatorForm(ModelForm):
+class ControllerTaskForm(ModelForm):
     class Meta:
-        model = ControllerAutomator
-        fields = ['notes', 'automator', 'operations']
+        model = ControllerTask
+        fields = ['notes', 'task', 'mapping']

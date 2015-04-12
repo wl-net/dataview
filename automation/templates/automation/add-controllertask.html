@@ -1,0 +1,12 @@
+{%load bootstrap3%}
+{% block content %}
+
+<h4>Just fill out a few quick details</h4>
+<form method='post'>
+  {%csrf_token%}
+  {%bootstrap_form form%}
+
+  <button type="submit" class="btn btn-default">Ok</button>
+</form>
+
+{% endblock %}

@@ -15,7 +15,7 @@ urlpatterns = patterns('automation.views',
     url(r'^/controllers/$', 'controllers', name='automation-controllers'),
     url('^/add-controller$', 'add_controller', name='automation-add_controller'),
     url('^/edit-controller/(?P<controller>[0-9a-f\-]+)$', 'edit_controller', name='automation-edit_controller'),
-    url('^/edit-controller/(?P<controller>[0-9a-f\-]+)/(?P<automator>[0-9a-f\-]+)$', 'edit_controllerautomator', name='automation-edit_controllerautomator'),
+    url('^/edit-controller/(?P<controller>[0-9a-f\-]+)/(?P<task>[0-9a-f\-]+)$', 'edit_controllertask', name='automation-edit_controllertask'),
 
     url(r'^/deciders/$', 'deciders', name='automation-deciders'),
     url('^/add-decider', 'add_decider', name='automation-add_decider'),

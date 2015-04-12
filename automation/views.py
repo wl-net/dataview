@@ -6,8 +6,8 @@ from django.http import HttpResponse
 from dataview.models import Event
 from dataview.models import Account
 from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm
-from automation.models import ControllerAutomator, ControllerAutomatorForm, ControllerDecider
-from automation.models import ControllerDeciderForm, DeciderForm, TaskGroup
+from automation.models import ControllerTask, ControllerTaskForm, ControllerDecider
+from automation.models import ControllerDeciderForm, DeciderForm, Task, TaskGroup
 
 def index(request):
     automators = Automator.objects.all()
@@ -50,6 +50,7 @@ def edit_automator(request, automator):
             form.save()
     else:
         form = AutomatorForm(instance = Automator.objects.get(id=automator))
+        return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
 
     return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
 
@@ -58,19 +59,27 @@ def run_task(request):
         TaskGroup.objects.get(id=request.POST.get('task')).do_operations()
     return HttpResponseRedirect(reverse('automation-index'))
 
-def edit_controllerautomator(request, controller, automator):
+def edit_controllertask(request, controller, task):
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
-            ControllerAutomator.objects.get(id=automator).delete()
+            ControllerTask.objects.get(id=task).delete()
             return HttpResponseRedirect(reverse('automation-automators'))
 
-        form = ControllerAutomatorForm(request.POST, instance=ControllerAutomator.objects.get(id=automator))
+        form = ControllerTaskForm(request.POST, instance=ControllerTask.objects.get(id=automator))
         if form.is_valid():
             form.save()
     else:
-        form = ControllerAutomatorForm(instance = ControllerAutomator.objects.get(id=automator))
+        try:
+            instance = ControllerTask.objects.get(id=task)
+            form = ControllerTaskForm()
+        except Exception:
+            ct = ControllerTask()
+            ct.task = Task.objects.get(id=task)
+            form = ControllerTaskForm(instance=ct)
+            form.fields['task'].widget = form.fields['task'].hidden_widget()
+            return render_to_response('automation/add-controllertask.html', RequestContext(request, {'form': form}))
 
-    return render_to_response('automation/edit-controllerautomator.html', RequestContext(request, {'form': form}))
+    return render_to_response('automation/edit-controllertask.html', RequestContext(request, {'form': form}))
 
 
 def controllers(request):
@@ -103,12 +112,12 @@ def edit_controller(request, controller):
     else:
         controller = Controller.objects.get(id=controller)
         form = ControllerForm(instance = controller)
-        automators = Automator.objects.all()
+        tasks = Task.objects.all()
         deciders = Decider.objects.all()
-        my_automators = controller.automator.all()
+        my_tasks = controller.tasks.all()
         my_deciders = controller.deciders.all()
 
-    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'automators': automators, 'my_automators': my_automators, 'deciders': deciders, 'my_deciders': deciders}))
+    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': deciders}))
 
 def deciders(request):
     deciders = Decider.objects.all()
