@@ -107,6 +107,21 @@ class AutomatorForm(ModelForm):
         model = Automator
         fields = ['name', 'account', 'backend', 'description', 'configuration']
 
+
+class Task(UUIDModel):
+    name = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    operations = models.TextField(default='{}')
+    automator = models.ForeignKey(Automator)
+
+    def do_operations(self, placeholders={}):
+        return self.automator.do_operations(self.operations)
+
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'automator']
+
 class Decider(UUIDModel):
     """
     Think of deciders as a machine that answers with "Yes" or "No" depsite

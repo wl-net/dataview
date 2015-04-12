@@ -1,4 +1,4 @@
-from automation.models import Automator, AutomatorClass, DeciderClass, Decider, Controller
+from automation.models import Automator, AutomatorClass, DeciderClass, Decider, Controller, Task
 
 class Processor:
     '''
@@ -18,6 +18,10 @@ class Processor:
       a = Automator.objects.get(name = automator)
       import json
       print(a.do_operations('[{"method": "' + method + '", "params": ' + json.dumps(params) + '}]'))
+
+    def run_task(self, task):
+      t = Task.objects.get(id = task)
+      t.do_operations()
 
     def call_decider(self, decider):
       d = Decider.objects.get(name = decider)
