@@ -49,6 +49,21 @@ Your automator should be designed such that sending the same command multiple ti
 
 For example, if you automate a light switch you should not implement change_state() but rather turn_on() and turn_off(). Some use cases will fit outside of this model, such as a coffee maker. In these cases, care must be taken to ensure that the action is performed only once by returning accurate status information to automator requests.
 
+Tasks
+----
+
+Tasks are a way of telling automators what to do. For example, you might have a humidifier that you want to turn on and set the fan speed to low. A task can incorporate both of these actions for simplicity.
+
+##### Task Groups
+
+Tasks only relate to one automator, so if you need to trigger multiple automators you should place your tasks in a task group. 
+
+Tasks and task groups can be run from the command line:
+
+```
+python3 manage.py automation_runtask 913c7e48-6260-4374-b182-55a849a69671
+```
+
 Deciders
 ----
 
