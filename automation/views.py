@@ -5,14 +5,17 @@ from django.http import HttpResponse
 
 from dataview.models import Event
 from dataview.models import Account
-from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm, ControllerAutomator, ControllerAutomatorForm, ControllerDecider, ControllerDeciderForm, DeciderForm
+from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm
+from automation.models import ControllerAutomator, ControllerAutomatorForm, ControllerDecider
+from automation.models import ControllerDeciderForm, DeciderForm, TaskGroup
 
 def index(request):
     automators = Automator.objects.all()
     controllers = Controller.objects.all()
     deciders = Decider.objects.all()
+    taskgroups = TaskGroup.objects.all()
     events = Event.objects.filter(type = 'automation.operation')[:5]
-    return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'events': events}))
+    return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'taskgroups': taskgroups, 'events': events}))
 
 from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
@@ -48,8 +51,12 @@ def edit_automator(request, automator):
     else:
         form = AutomatorForm(instance = Automator.objects.get(id=automator))
 
-
     return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
+
+def run_task(request):
+    if request.method == 'POST':
+        TaskGroup.objects.get(id=request.POST.get('task')).do_operations()
+    return HttpResponseRedirect(reverse('automation-index'))
 
 def edit_controllerautomator(request, controller, automator):
     if request.method == 'POST':
