@@ -1,5 +1,5 @@
 from django.contrib import admin
-from automation.models import Automator, Decider, Controller, Task
+from automation.models import Automator, Decider, Controller, Task, TaskGroup
 
 class AutomatorAdmin(admin.ModelAdmin):
     list_display = ['name']
@@ -12,6 +12,12 @@ class TaskAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Task, TaskAdmin)
+
+class TaskGroupAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    pass
+
+admin.site.register(TaskGroup, TaskGroupAdmin)
 
 class DeciderAdmin(admin.ModelAdmin):
     list_display = ['name']

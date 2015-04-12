@@ -43,7 +43,7 @@ class Automator(UUIDModel):
                 e.type = 'automation.operation'
                 e.save()
 
-            return response
+        return response
 
     @staticmethod
     def get_valid_cls_list():
@@ -111,8 +111,14 @@ class AutomatorForm(ModelForm):
 class Task(UUIDModel):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
-    operations = models.TextField(default='{}')
+    operations = models.TextField(default='[]')
     automator = models.ForeignKey(Automator)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
     def do_operations(self, placeholders={}):
         return self.automator.do_operations(self.operations)
@@ -121,6 +127,21 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ['name', 'description', 'automator']
+
+class TaskGroup(UUIDModel):
+    name = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    tasks = models.ManyToManyField(Task)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    def do_operations(self, placeholders={}):
+        for task in self.tasks.all():
+            task.automator.do_operations(task.operations)
 
 class Decider(UUIDModel):
     """
