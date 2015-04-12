@@ -30,7 +30,7 @@ See https://github.com/wl-net/dataview/wiki/Installation
 API
 ----
 
-The API application provides a REST web service for interacting with dataview from third-party applications.
+The API application provides a REST web service for interacting with dataview from third-party applications. The REST framework is implemented using Django REST Framework and utilizes token based authentication for ease of use in external applications.
 
 Automation
 ----
