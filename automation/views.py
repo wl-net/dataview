@@ -9,6 +9,8 @@ from automation.models import Automator, Controller, Decider, AutomatorForm, Con
 from automation.models import ControllerTask, ControllerTaskForm, ControllerDecider
 from automation.models import ControllerDeciderForm, DeciderForm, Task, TaskGroup
 
+import json
+
 def index(request):
     automators = Automator.objects.all()
     controllers = Controller.objects.all()
@@ -143,6 +145,12 @@ def edit_decider(request, decider):
         if form.is_valid():
             form.save()
     else:
-        form = DeciderForm(instance = Decider.objects.get(id=decider))
+        decider = Decider.objects.get(id=decider)
+        form = DeciderForm(instance = decider)
 
-    return render_to_response('automation/edit-decider.html', RequestContext(request, {'form': form}))
+    return render_to_response('automation/edit-decider.html', RequestContext(request, {'decider': decider, 'form': form}))
+
+def query_decider(request, decider):
+      d = Decider.objects.get(id = decider)
+      return HttpResponse(json.dumps({"name": d.name, "decision": d.decide()}), content_type='application/json')
+

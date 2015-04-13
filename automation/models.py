@@ -239,7 +239,7 @@ class DeciderClass(UUIDModel):
 class DeciderForm(ModelForm):
     class Meta:
         model = Decider
-        fields = ['name', 'backend', 'description', 'configuration']
+        fields = ['name', 'backend', 'description', 'conditions', 'configuration']
 
 class Controller(UUIDModel):
     name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")

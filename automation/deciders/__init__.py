@@ -18,5 +18,5 @@ class AbstractDecider:
 
     def get_decision_reason(self):
         """
-        Returns a OrderedDict of decisions and their results.
+        Returns a list of decisions and their results.
         """
