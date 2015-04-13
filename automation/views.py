@@ -97,9 +97,9 @@ def add_controller(request):
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
 
 def edit_controller(request, controller):
-    automators = {}
+    tasks = {}
     deciders = {}
-    my_automators ={}
+    my_tasks ={}
     my_deciders = {}
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
