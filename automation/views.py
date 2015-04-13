@@ -103,21 +103,22 @@ def edit_controller(request, controller):
     deciders = {}
     my_tasks ={}
     my_deciders = {}
+    controller = Controller.objects.get(id=controller)
+
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
-            Controller.objects.get(id=controller).delete()
+            controller.delete()
             return HttpResponseRedirect(reverse('automation-controllers'))
 
-        form = ControllerForm(request.POST, instance= Controller.objects.get(id=controller))
+        form = ControllerForm(request.POST, instance = controller)
         if form.is_valid():
             form.save()
     else:
-        controller = Controller.objects.get(id=controller)
         form = ControllerForm(instance = controller)
-        tasks = Task.objects.all()
-        deciders = Decider.objects.all()
-        my_tasks = controller.tasks.all()
-        my_deciders = controller.deciders.all()
+    tasks = Task.objects.all()
+    deciders = Decider.objects.all()
+    my_tasks = controller.tasks.all()
+    my_deciders = controller.deciders.all()
 
     return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': deciders}))
 
