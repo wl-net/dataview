@@ -67,7 +67,22 @@ def edit_controllertask(request, controller, task):
             ControllerTask.objects.get(id=task).delete()
             return HttpResponseRedirect(reverse('automation-automators'))
 
-        form = ControllerTaskForm(request.POST, instance=ControllerTask.objects.get(id=automator))
+        try:
+            ct = ControllerTask.objects.get(id=task)
+            form = ControllerTaskForm(request.POST, instance=ct)
+            if form.is_valid():
+                form.save()
+        except Exception:
+            # new from task
+            ct = ControllerTask()
+            ct.controller = Controller.objects.get(id=controller)
+            ct.task = Task.objects.get(id=task)
+            form = ControllerTaskForm(request.POST, instance=ct)
+            if form.is_valid():
+                form.save()
+            return render_to_response('automation/edit-controllertask.html', RequestContext(request, {'form': form}))
+
+        form = ControllerTaskForm(request.POST, instance=ControllerTask.objects.get(id=task))
         if form.is_valid():
             form.save()
     else:
@@ -102,7 +117,7 @@ def edit_controller(request, controller):
     tasks = {}
     deciders = {}
     my_tasks ={}
-    my_deciders = {}
+    my_deciders = []
     controller = Controller.objects.get(id=controller)
 
     if request.method == 'POST':
@@ -118,9 +133,10 @@ def edit_controller(request, controller):
     tasks = Task.objects.all()
     deciders = Decider.objects.all()
     my_tasks = controller.tasks.all()
-    my_deciders = controller.deciders.all()
+    for decider in controller.deciders.all():
+        my_deciders.append(decider.id)
 
-    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': deciders}))
+    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
 
 def deciders(request):
     deciders = Decider.objects.all()

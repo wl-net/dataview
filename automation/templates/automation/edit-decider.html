@@ -2,7 +2,18 @@
 {%load bootstrap3%}
 {% block content %}
 
+<script>
+  $(document).ready(function() {
+    setInterval(function() {
+      $.getJSON("{%url 'automation-query_decider' decider.id%}", function(data) {
+        $('.decider-decision').show()
+        $('.decider-decision span').html(data.decision.boolean ? "No" : "Yes");
+      });
+    }, 5000);
+  });
+</script>
 <h2>Edit Decider:</h2>
+<p class="decider-decision" style="display:none;"><strong>Last Descision:</strong> <span></span></p>
 <form method='post'>
   {%csrf_token%}
   {%bootstrap_form form%}
