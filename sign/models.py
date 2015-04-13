@@ -90,11 +90,8 @@ class Sign(UUIDModel):
     def update_signs():
         sws = SignWidget.objects.all()
         for sw in sws:
-            #try:
             updater = sw.sign.type.get_instance(sw.sign.backend_configuration)
             updater.update_widget(sw)
-            #except Exception as e:
-            #    print(e)
 
     def __unicode__(self):
         return self.name
@@ -176,8 +173,6 @@ class SignWidget(UUIDModel):
     sign = models.ForeignKey(Sign)
     widget = models.ForeignKey(Widget)
     enabled = models.BooleanField(default=True)
-    position = models.CharField(max_length=128)
-    order = models.IntegerField()
     backend_configuration = models.TextField(default='{}')
     frontend_configuration = models.TextField(default='{}')
 
