@@ -76,6 +76,21 @@ Core deciders:
 * holiday
 * json-rpc (abstract)
 
+Deciders can be queried from the web interface:
+
+http://dataview.restricted.wl-net.net:8000/portal/automation/query-decider/824a884d-0732-4f48-91af-0e69f58486f3
+
+```
+{"name": "Should humidifier run?", "decision": {"boolean": true, "string_descriptive": [{"message": "comparison of 35.0 was less than 50.0"}], "numeric": 1}}
+```
+
+or via the command line:
+
+```
+$ python3 manage.py  automation_calldecider 824a884d-0732-4f48-91af-0e69f58486f3
+{'string_descriptive': [{'message': 'comparison of 34.0 was less than 50.0'}], 'numeric': 1, 'boolean': True}
+```
+
 #### Performance Considerations
 
 Steps should be taken to prevent dataview from having to spend excessive time querying other services about their status. External systems that influence the decision of dataview should consider the implementation of the "sensors" application where sensors can report back with information directly to dataview.

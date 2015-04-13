@@ -31,6 +31,7 @@ class Processor:
         t.do_operations()
       except Exception:
         pass
+
     def call_decider(self, decider):
-      d = Decider.objects.get(name = decider)
+      d = Decider.objects.get(id = decider)
       print(d.decide())
