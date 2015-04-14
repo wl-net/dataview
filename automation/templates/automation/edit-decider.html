@@ -7,7 +7,7 @@
     setInterval(function() {
       $.getJSON("{%url 'automation-query_decider' decider.id%}", function(data) {
         $('.decider-decision').show()
-        $('.decider-decision span').html(data.decision.boolean ? "No" : "Yes");
+        $('.decider-decision span').html(data.decision.boolean ? "Yes" : "No");
       });
     }, 5000);
   });
