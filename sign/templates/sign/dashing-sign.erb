@@ -1,0 +1,19 @@
+<style type="text/css">body {overflow:hidden;}</style>
+<script type='text/javascript'>
+$(function() {
+  Dashing.widget_base_dimensions = [370, 340]
+  Dashing.numColumns = 5
+});
+</script>
+
+
+{% verbatim %}<% content_for :title do %>{% endverbatim %}{{sign.name}}{% verbatim %}<% end %>{% endverbatim %}
+
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-view="Clock"></div>
+      <i class="icon-time icon-background"></i>
+    </li>
+  </ul>
+</div>
