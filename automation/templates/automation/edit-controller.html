@@ -8,13 +8,18 @@ $(document).ready(function() {
   $('select').select2();
 
   $('.add-task').on('click', function() {
-    $.get(window.location + '/' + $('#task-selector').val(), function(data) {
+    $.get(window.location + '/task/' + $('#task-selector').val(), function(data) {
       $('.add-task-details').html(data)
     })
   });
   $('.add-task-details .action-finished').on('click', function() {
     console.log("registered");
-   });
+  });
+
+  $('#decider-selector').on("select2:select", function(e) {
+    $.post(window.location + '/deciders', {'controller': '{{controller.id}}', 'decider': JSON.stringify($('#decider-selector').val())}, function() {
+    });
+  });
 });
 </script>
 <h2>Edit Controller:</h2>
@@ -25,26 +30,25 @@ $(document).ready(function() {
   <button type="submit" class="btn btn-default">Save</button>
   <button type="submit" class="btn btn-danger" name="delete">Delete</button>
 </form>
-<h3>Deciders</h2>
+<h3>Deciders</h3>
 <h4>Add or remove a decider</h4>
 <small>The deciders you add are responsible for making decisions. You'll configure the mapping of these to automators when you add a task</small>
 <p>
-  <select class="form-control" multiple="multiple">
+  <select id="decider-selector" class="form-control" multiple="multiple">
     {%for decider in deciders%}
       <option value="{{decider.id}}" {% if decider.id in my_deciders %}selected="selected"{%endif%}>{{decider}}</option>
     {%endfor%}
   </select>
 </p>
-<h3>Tasks</h2>
+<h3>Tasks</h3>
 <h4>Existing</h4>
-<p>Search for a task to edit it</p>
-  <select id="task-selector" class="form-control">
+<p>Search for a task to edit it
+  <select id="existing-task-selector" class="form-control">
     {%for task in my_tasks%}
       <option value="{{task.id}}">{{task}}</option>
     {%endfor%}
   </select>
 </p>
-<div class="add-task-details">
 <h4>Add a task</h4>
 <small>You'll be prompted to configure the task after picking it</small>
 <p>
@@ -55,7 +59,7 @@ $(document).ready(function() {
   </select>
   <button type="submit" class="add-task btn btn-default">Add</button>
 </p>
-
+<div class="add-task-details">
 
 </div>
 

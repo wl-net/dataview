@@ -250,20 +250,28 @@ class Controller(UUIDModel):
 
     def decide(self):
         decisions = {}
+        result = True
         for decider in self.deciders.all():
-            decisions.append(decider.name, decider.decide())
+            decisions[decider.name] = decider.decide()
+
+        for decision in decisions:
+            if not decisions[decision]:
+                result = False
+
+        return {'result': result, 'decisions': decisions}
 
     def automate(self):
+        if self.enabled is False:
+            return
         decision = self.decide()
-        for task in self.tasks.all():
-            ca = ControllerTask.get(task=task, controller=controller)
-            config = json.loads(ct.mapping)
-            ops = ca['decision']['binary'][decision]
-            for op in ops:
-              automator.do_operations()
+        if decision['result']:
+            for task in self.tasks.all():
+                #ca = ControllerTask.objects.get(task=task, controller=self)
+                #config = json.loads(ct.mapping)
+                task.do_operations()
 
     def is_complete(self):
-        return self.automator.all().count() > 0 and self.decider.all().count()
+        return self.tasks.all().count() > 0 and self.deciders.all().count()
 
     def __unicode__(self):
         return self.name
@@ -294,12 +302,14 @@ class ControllerTask(UUIDModel):
     task = models.ForeignKey(Task)
     mapping = models.TextField()
 
-    def perform_operations(self):
+    def perform_operations(self, provided_decisions):
         ops = json.loads(self.mapping)
-        for decision, task in ops['task']:
-            a = Automator.objects.get(automator)
-            a.get_instance()
-            a.perform_operations(operations)
+        #for descisionblock in ops:
+            #for decision in descisionblock:
+            #    if decision not in provided_decisions:
+            #a = Automator.objects.get(automator)
+            #a.get_instance()
+            #a.perform_operations(operations)
 
 class ControllerTaskForm(ModelForm):
     class Meta:

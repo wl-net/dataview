@@ -6,8 +6,8 @@ from django.http import HttpResponse
 from dataview.models import Event
 from dataview.models import Account
 from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm
-from automation.models import ControllerTask, ControllerTaskForm, ControllerDecider
-from automation.models import ControllerDeciderForm, DeciderForm, Task, TaskGroup
+from automation.models import ControllerTask, ControllerTaskForm
+from automation.models import ControllerDecider, DeciderForm, Task, TaskGroup
 
 import json
 
@@ -98,6 +98,20 @@ def edit_controllertask(request, controller, task):
 
     return render_to_response('automation/edit-controllertask.html', RequestContext(request, {'form': form}))
 
+def edit_controllerdeciders(request, controller):
+    if request.method == 'POST':
+        provided_deciders = json.loads(request.POST.get('decider'))
+        controller = Controller.objects.get(id=controller)
+        for decider in controller.deciders.all():
+            if decider.id not in provided_deciders:
+                decider.delete()
+        for decider in provided_deciders:
+            cd = ControllerDecider()
+            cd.decider = Decider.objects.get(id=decider)
+            cd.controller = controller
+            cd.save()
+    return HttpResponse(json.dumps({}), content_type='application/json')
+
 
 def controllers(request):
     controllers = Controller.objects.all()
@@ -116,7 +130,7 @@ def add_controller(request):
 def edit_controller(request, controller):
     tasks = {}
     deciders = {}
-    my_tasks ={}
+    my_tasks = {}
     my_deciders = []
     controller = Controller.objects.get(id=controller)
 
@@ -130,13 +144,16 @@ def edit_controller(request, controller):
             form.save()
     else:
         form = ControllerForm(instance = controller)
+
     tasks = Task.objects.all()
     deciders = Decider.objects.all()
-    my_tasks = controller.tasks.all()
+
     for decider in controller.deciders.all():
         my_deciders.append(decider.id)
 
-    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
+    my_tasks = controller.tasks.all()
+
+    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'controller': controller, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
 
 def deciders(request):
     deciders = Decider.objects.all()

@@ -13,9 +13,12 @@ urlpatterns = patterns('automation.views',
     url('^/edit-automator/(?P<automator>[0-9a-f\-]+)$', 'edit_automator', name='automation-edit_automator'),
 
     url(r'^/controllers/$', 'controllers', name='automation-controllers'),
-    url('^/add-controller$', 'add_controller', name='automation-add_controller'),
-    url('^/edit-controller/(?P<controller>[0-9a-f\-]+)$', 'edit_controller', name='automation-edit_controller'),
-    url('^/edit-controller/(?P<controller>[0-9a-f\-]+)/(?P<task>[0-9a-f\-]+)$', 'edit_controllertask', name='automation-edit_controllertask'),
+    url('^/controller$', 'add_controller', name='automation-add_controller'),
+    url('^/controller/(?P<controller>[0-9a-f\-]+)$', 'edit_controller', name='automation-edit_controller'),
+    url('^/controller/(?P<controller>[0-9a-f\-]+)/deciders$', 'edit_controllerdeciders', name='automation-edit_controllerdeciders'),
+
+    url('^/controller/(?P<controller>[0-9a-f\-]+)/task/(?P<task>[0-9a-f\-]+)$', 'edit_controllertask', name='automation-edit_controllertask'),
+    #url('^/controller/(?P<controller>[0-9a-f\-]+)/decider/(?P<decider>[0-9a-f\-]+)$', 'edit_controllerdecider', name='automation-edit_controllerdecider'),
 
     url(r'^/deciders/$', 'deciders', name='automation-deciders'),
     url('^/add-decider', 'add_decider', name='automation-add_decider'),
