@@ -123,6 +123,8 @@ def add_controller(request):
         form = ControllerForm(request.POST)
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect(reverse('automation-controllers'))
+
     else:
         form = ControllerForm()
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
@@ -164,6 +166,7 @@ def add_decider(request):
         form = DeciderForm(request.POST)
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect(reverse('automation-deciders'))
     else:
         form = DeciderForm()
 
