@@ -3,7 +3,7 @@ WLNet Dataview [![Build Status](https://travis-ci.org/wl-net/dataview.svg?branch
 
 WLNet dataview provides a way to collect, interact, and view data. Dataview is being developed as a solution to home automation, though other use-cases such as office building management will not be difficult to realize. The official website for dataview is located at http://opensource.wl-net.net/projects/dataview
 
-Should I use Dataview?
+Is Dataview for You?
 ---
 
 Dataview is currently under development and doens't offer a lot of functionality to users who are not interested in developing on top of it. If you are interested in automation, this might be a good platform to build off of.
@@ -26,6 +26,27 @@ Installation
 ----
 
 See https://github.com/wl-net/dataview/wiki/Installation
+
+TLDR:
+
+<pre>
+pip -r requirements.txt
+cp dataview/settings.dist.py dataview/settings.py
+python3 manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py runserver
+</pre>
+
+Contributing
+----
+
+TODO
+
+Support
+----
+
+Open a issue on GitHub or send an email to andrew@andrewsorensen.net
 
 API
 ----
