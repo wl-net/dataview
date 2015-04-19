@@ -11,6 +11,7 @@ install:
   -  sed -i "s/SECRET_KEY = ''/SECRET_KEY = '`python -c 'import random; print(\"\".join([random.SystemRandom().choice(\"abcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(-_=+)\") for i in range(50)]))'`'/" dataview/settings.py 
   -  python manage.py migrate
   -  python manage.py makemigrations
+  -  sed -i "s/'#'guardian',/'guardian',/" dataview/settings.py
   -  python manage.py migrate
 script:
   -  python manage.py test
