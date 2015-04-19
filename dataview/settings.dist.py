@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'bootstrapnavtags',
     'guardian',
     'dataview',
+    'building',
     'portal',
     'automation',
     'money',
