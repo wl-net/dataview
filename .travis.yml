@@ -10,6 +10,7 @@ install:
   -  pip install -r requirements.txt
   -  cp dataview/settings.dist.py dataview/settings.py
   -  sed -i "s/SECRET_KEY = ''/SECRET_KEY = '`python -c 'import random; print(\"\".join([random.SystemRandom().choice(\"abcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(-_=+)\") for i in range(50)]))'`'/" dataview/settings.py 
+  -  python manage.py migrate
   -  python manage.py makemigrations
   -  python manage.py migrate
 script:
