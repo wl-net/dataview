@@ -3,6 +3,7 @@ psycopg2
 django
 django-filter
 django-formtools
+django-floppyforms
 django-guardian
 django-bootstrap3
 django-bootstrap-navtags
