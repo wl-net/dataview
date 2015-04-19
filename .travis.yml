@@ -9,6 +9,6 @@ before_script:
 install: 
   -  pip install -r requirements.txt
   -  cp dataview/settings.dist.py dataview/settings.py
-  -  sed "s/SECRET_KEY = ''/SECRET_KEY = '`python -c 'import random; print(\"\".join([random.SystemRandom().choice(\"abcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(-_=+)\") for i in range(50)]))'`'/" dataview/settings.dist.py 
+  -  sed "s/SECRET_KEY = ''/SECRET_KEY = '`python -c 'import random; print(\"\".join([random.SystemRandom().choice(\"abcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(-_=+)\") for i in range(50)]))'`'/" dataview/settings.py 
 script: 
   python manage.py test
