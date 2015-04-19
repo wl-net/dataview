@@ -146,7 +146,6 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'bootstrap3',
     'bootstrapnavtags',
-    'dashing',
     'guardian',
     'dataview',
     'portal',
