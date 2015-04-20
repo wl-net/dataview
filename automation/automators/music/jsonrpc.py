@@ -27,6 +27,9 @@ class MusicJSONRPCAutomator(AbstractAutomator):
         
     def pause(self):
         self.client.call('pause', [])
+
+    def unpause(self):
+        self.client.call('unpause', [])
         
     def set_volume(self, volume):
         self.client.call('set_volume', [volume])
