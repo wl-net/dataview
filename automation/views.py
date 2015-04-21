@@ -49,7 +49,7 @@ def edit_automator(request, automator):
             get_objects_for_user(request.user, 'automation.change_automator').get(id=automator).delete()
             return HttpResponseRedirect(reverse('automation-automators'))
 
-        form = AutomatorForm(request.POST, instance=Automator.objects.get(id=automator))
+        form = AutomatorForm(request.POST, instance=get_objects_for_user(request.user, 'automation.change_automator').objects.get(id=automator))
         if form.is_valid():
             form.save()
     else:
@@ -78,7 +78,7 @@ def edit_controllertask(request, controller, task):
             # new from task
             ct = ControllerTask()
             ct.controller = get_objects_for_user(request.user, 'automation.change_controller').objects.get(id=controller)
-            ct.task = Task.objects.get(id=task)
+            ct.task = get_objects_for_user(request.user, 'automation.change_task').objects.get(id=task)
             form = ControllerTaskForm(request.POST, instance=ct)
             if form.is_valid():
                 form.save()
@@ -89,11 +89,11 @@ def edit_controllertask(request, controller, task):
             form.save()
     else:
         try:
-            instance = ControllerTask.objects.get(id=task)
+            instance = get_objects_for_user(request.user, 'automation.change_controllertask').objects.get(id=task)
             form = ControllerTaskForm()
         except Exception:
             ct = ControllerTask()
-            ct.task = Task.objects.get(id=task)
+            ct.task = get_objects_for_user(request.user, 'automation.change_task').objects.get(id=task)
             form = ControllerTaskForm(instance=ct)
             form.fields['task'].widget = form.fields['task'].hidden_widget()
             return render_to_response('automation/add-controllertask.html', RequestContext(request, {'form': form}))
@@ -103,13 +103,13 @@ def edit_controllertask(request, controller, task):
 def edit_controllerdeciders(request, controller):
     if request.method == 'POST':
         provided_deciders = json.loads(request.POST.get('decider'))
-        controller = Controller.objects.get(id=controller)
+        controller = get_objects_for_user(request.user, 'automation.change_controller').get(id=controller)
         for decider in controller.deciders.all():
             if decider.id not in provided_deciders:
                 decider.delete()
         for decider in provided_deciders:
             cd = ControllerDecider()
-            cd.decider = Decider.objects.get(id=decider)
+            cd.decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
             cd.controller = controller
             cd.save()
     return HttpResponse(json.dumps({}), content_type='application/json')
