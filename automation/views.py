@@ -175,19 +175,19 @@ def add_decider(request):
     return render_to_response('automation/add-decider.html', RequestContext(request, {'form': form}))
 
 def edit_decider(request, decider):
+    my_decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
-            get_objects_for_user(request.user, 'automation.change_decider').get(id=decider).delete()
+            my_decider.delete()
             return HttpResponseRedirect(reverse('automation-deciders'))
 
-        form = DeciderForm(request.POST, instance=get_objects_for_user(request.user, 'automation.change_decider').get(id=decider))
+        form = DeciderForm(request.POST, instance=my_decider)
         if form.is_valid():
             form.save()
     else:
-        decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
-        form = DeciderForm(instance = decider)
+        form = DeciderForm(instance = my_decider)
 
-    return render_to_response('automation/edit-decider.html', RequestContext(request, {'decider': decider, 'form': form}))
+    return render_to_response('automation/edit-decider.html', RequestContext(request, {'decider': my_decider , 'form': form}))
 
 def query_decider(request, decider):
       d = get_objects_for_user(request.user, 'automation.change_decider').get(id = decider)
