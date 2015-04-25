@@ -49,7 +49,7 @@ def edit_automator(request, automator):
             get_objects_for_user(request.user, 'automation.change_automator').get(id=automator).delete()
             return HttpResponseRedirect(reverse('automation-automators'))
 
-        form = AutomatorForm(request.POST, instance=get_objects_for_user(request.user, 'automation.change_automator').objects.get(id=automator))
+        form = AutomatorForm(request.POST, instance=get_objects_for_user(request.user, 'automation.change_automator').get(id=automator))
         if form.is_valid():
             form.save()
     else:
@@ -60,7 +60,7 @@ def edit_automator(request, automator):
 
 def run_task(request):
     if request.method == 'POST':
-        get_objects_for_user(request.user, 'automation.change_taskgroup').objects.get(id=request.POST.get('task')).do_operations()
+        get_objects_for_user(request.user, 'automation.change_taskgroup').get(id=request.POST.get('task')).do_operations()
     return HttpResponseRedirect(reverse('automation-index'))
 
 def edit_controllertask(request, controller, task):
@@ -70,30 +70,30 @@ def edit_controllertask(request, controller, task):
             return HttpResponseRedirect(reverse('automation-automators'))
 
         try:
-            ct = get_objects_for_user(request.user, 'automation.change_controllertask').objects.get(id=task)
+            ct = get_objects_for_user(request.user, 'automation.change_controllertask').get(id=task)
             form = ControllerTaskForm(request.POST, instance=ct)
             if form.is_valid():
                 form.save()
         except Exception:
             # new from task
             ct = ControllerTask()
-            ct.controller = get_objects_for_user(request.user, 'automation.change_controller').objects.get(id=controller)
-            ct.task = get_objects_for_user(request.user, 'automation.change_task').objects.get(id=task)
+            ct.controller = get_objects_for_user(request.user, 'automation.change_controller').get(id=controller)
+            ct.task = get_objects_for_user(request.user, 'automation.change_task').get(id=task)
             form = ControllerTaskForm(request.POST, instance=ct)
             if form.is_valid():
                 form.save()
             return render_to_response('automation/edit-controllertask.html', RequestContext(request, {'form': form}))
 
-        form = ControllerTaskForm(request.POST, instance=ControllerTask.objects.get(id=task))
+        form = ControllerTaskForm(request.POST, instance=ControllerTask.get(id=task))
         if form.is_valid():
             form.save()
     else:
         try:
-            instance = get_objects_for_user(request.user, 'automation.change_controllertask').objects.get(id=task)
+            instance = get_objects_for_user(request.user, 'automation.change_controllertask').get(id=task)
             form = ControllerTaskForm()
         except Exception:
             ct = ControllerTask()
-            ct.task = get_objects_for_user(request.user, 'automation.change_task').objects.get(id=task)
+            ct.task = get_objects_for_user(request.user, 'automation.change_task').get(id=task)
             form = ControllerTaskForm(instance=ct)
             form.fields['task'].widget = form.fields['task'].hidden_widget()
             return render_to_response('automation/add-controllertask.html', RequestContext(request, {'form': form}))
@@ -149,8 +149,8 @@ def edit_controller(request, controller):
     else:
         form = ControllerForm(instance = controller)
 
-    tasks = get_objects_for_user(request.user, 'automation.change_task').objects.all()
-    deciders = get_objects_for_user(request.user, 'automation.change_decider').objects.all()
+    tasks = get_objects_for_user(request.user, 'automation.change_task').all()
+    deciders = get_objects_for_user(request.user, 'automation.change_decider').all()
 
     for decider in controller.deciders.all():
         my_deciders.append(decider.id)
