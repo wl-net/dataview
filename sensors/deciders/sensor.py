@@ -17,7 +17,7 @@ class SensorDecider(AbstractDecider):
         for condition in self.conditions:
             sv = SensorValue.objects.filter(sensor=self.configuration['sensor']).order_by('-updated')[0].value
             if self.__my_cmp__(float(sv), condition['value']) not in condition['results']: 
-                self.reason.append({'message': 'comparison of {0} was {2} {1}'.format(float(sv), condition['value'], self.__get_cmp_str__(__my_cmp__(float(sv), condition['value']))) })
+                self.reason.append({'message': 'comparison of {0} was {2} {1}'.format(float(sv), condition['value'], self.__get_cmp_str__(self.__my_cmp__(float(sv), condition['value']))) })
                 result = False
             else:
                 self.reason.append({'message': 'comparison of {0} was {2} {1}'.format(float(sv), condition['value'], self.__get_cmp_str__(self.__my_cmp__(float(sv), condition['value']))) })
