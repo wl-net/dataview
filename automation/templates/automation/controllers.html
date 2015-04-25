@@ -4,6 +4,10 @@
 
 <h2>List of Controllers</h2>
 <div class='row'>
-
+<ul>
+{%for controller in controllers%}
+  <li><a href="{%url 'automation-edit_controller' controller.id%}">{{controller}}</a></li>
+{%endfor%}
+</ul>
 </div>
 {% endblock %}
