@@ -29,7 +29,7 @@ from django.contrib.gis.db.models import MultiPolygonField
 
 class SafetyIncidentAlertBoundary(UUIDModel):
     name = models.CharField(max_length=128)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     geobox = MultiPolygonField()
     enabled = models.BooleanField(default=True)
     
