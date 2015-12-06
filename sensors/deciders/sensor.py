@@ -1,5 +1,4 @@
 from automation.deciders import AbstractDecider
-from security.models import SafetyIncident
 from sensors.models import SensorValue
 
 class SensorDecider(AbstractDecider):
