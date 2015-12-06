@@ -1,4 +1,3 @@
-from dataview.transports.json_rpc import JSONRPCClient
 from automation.deciders import AbstractDecider
 from datetime import datetime
 import dateutil.parser
