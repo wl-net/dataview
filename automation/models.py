@@ -3,10 +3,9 @@ from django.forms import ModelForm, ModelMultipleChoiceField
 from django.core.validators import URLValidator
 from importlib import import_module
 import sys, json, uuid
-from dataview.common.models import UUIDModel
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
-from dataview.models import Event
+from dataview.models import Event, UUIDModel
 
 class Automator(UUIDModel):
     name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")

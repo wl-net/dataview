@@ -1,6 +1,6 @@
 from django.db import models
 
-from dataview.common.models import UUIDModel
+from dataview.models import UUIDModel
 
 from sign.sign_widgets import AbstractWidget
 

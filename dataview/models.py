@@ -1,8 +1,13 @@
-from django.db import models
 from django.contrib.gis.db import models
-from dataview.common.models import UUIDModel
 from django.conf import settings
 from django.forms import ModelForm, ModelMultipleChoiceField
+import uuid
+
+class UUIDModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    class Meta:
+        abstract = True
 
 class SystemDeployment(UUIDModel):
     """ System Deployments represent a server that hosts Dataview."""

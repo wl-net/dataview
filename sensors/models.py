@@ -1,6 +1,5 @@
 from django.db import models
-from dataview.common.models import UUIDModel
-import datetime
+from dataview.models import UUIDModel
 
 class SensorType(UUIDModel):
     name = models.CharField(max_length=128)

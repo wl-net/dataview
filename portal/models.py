@@ -1,8 +1,7 @@
-from django.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import User
 from building.models import Address
-from dataview.common.models import UUIDModel
+from dataview.models import UUIDModel
 
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import GEOSGeometry
