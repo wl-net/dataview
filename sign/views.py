@@ -1,8 +1,6 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.utils.datastructures import SortedDict
 from django.http import HttpResponse, Http404
-
 from sign.models import Sign, Widget, SignWidget
 
 import datetime, urllib.request, json, sys
@@ -17,7 +15,7 @@ def sign(request, id=None):
     except Sign.DoesNotExist:
         raise Http404
 
-    for signwidget in SignWidget.objects.filter(sign=sign).extra(order_by=['order']):
+    for signwidget in SignWidget.objects.filter(sign=sign):
         widget = signwidget.widget
         try:
             import_module("sign.widgets." + widget.internal_name)
@@ -46,7 +44,7 @@ def sign_config(request, id=None):
     except Sign.DoesNotExist:
         raise Http404
 
-    for signwidget in SignWidget.objects.filter(sign=sign).extra(order_by=['order']):
+    for signwidget in SignWidget.objects.filter(sign=sign):
         widget = signwidget.widget
         response["widgets"].append(json.loads(signwidget.frontend_configuration))
 
