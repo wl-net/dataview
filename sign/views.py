@@ -3,8 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
 from sign.models import Sign, Widget, SignWidget
 
-import datetime, urllib.request, json, sys
-from xml.dom import minidom
+import datetime, json, sys
 from importlib import import_module
 
 def sign(request, id=None):

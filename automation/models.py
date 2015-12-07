@@ -1,8 +1,7 @@
 from django.db import models
-from django.forms import ModelForm, ModelMultipleChoiceField
-from django.core.validators import URLValidator
+from django.forms import ModelForm
 from importlib import import_module
-import sys, json, uuid
+import sys, json
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
 from dataview.models import Event, UUIDModel
