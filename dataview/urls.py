@@ -7,9 +7,12 @@ admin.autodiscover()
 admin.site.site_header = "WLNet DataView Administrator"
 admin.site.site_title = "WLNet DataView"
 
+from portal.views import index
+from dataview.views import v1_config
+
 urlpatterns = patterns('',
-    url(r'^$', 'portal.views.index', name='index'),
-    url(r'^api/1/config$', 'dataview.views.v1_config', name='v1_config'),
+    url(r'^$', index, name='index'),
+    url(r'^api/1/config$', v1_config, name='v1_config'),
     url(r'^api/', include('api.urls')),
 
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
