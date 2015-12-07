@@ -1,5 +1,5 @@
 from django.db import models
-from dataview.common.models import UUIDModel
+from dataview.models import UUIDModel
 
 # Create your models here.
 class Bank(UUIDModel):
