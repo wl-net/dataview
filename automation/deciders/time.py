@@ -4,7 +4,7 @@ from datetime import datetime
 import dateutil.parser
 
 class TimeDecider(AbstractDecider):
-    def __init__(self, conditions, configuration):
+    def __init__(self, conditions, configuration=None):
         self.conditions = conditions
         self.configuration = configuration
         super().__init__(conditions)
