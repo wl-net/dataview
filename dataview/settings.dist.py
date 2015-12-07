@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'api',
+    'transportation',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
