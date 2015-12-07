@@ -1,5 +1,4 @@
-from django.db import models
-from dataview.common.models import UUIDModel
+from dataview.models import UUIDModel
 from django.contrib.gis.db import models
 import datetime, requests, json
 from django.contrib.gis.geos import GEOSGeometry
