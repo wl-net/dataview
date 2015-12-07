@@ -1,7 +1,7 @@
 requests
 psycopg2
 python-dateutil
-django==1.8.7
+django
 django-filter
 django-formtools
 django-floppyforms
