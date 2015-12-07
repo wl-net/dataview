@@ -1,9 +1,10 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
+from portal.views import index, dismiss_message
 
 urlpatterns = patterns('',
-    url(r'^portal/$', 'portal.views.index', name='index'),
-    url(r'^portal/api/dismiss-message', 'portal.views.dismiss_message', name='dismiss_message'),
+    url(r'^portal/$', index, name='index'),
+    url(r'^portal/api/dismiss-message', dismiss_message, name='dismiss_message'),
 )
 
 for app in settings.DATAVIEW_APPS:
