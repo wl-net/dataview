@@ -93,6 +93,10 @@ class Sign(UUIDModel):
             updater = sw.sign.type.get_instance(sw.sign.backend_configuration)
             updater.update_widget(sw)
 
+    def reload_sign(self):
+        updater = self.type.get_instance(self.backend_configuration)
+        updater.reload_signs(str(self.id))
+
     def __unicode__(self):
         return self.name
 
