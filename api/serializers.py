@@ -1,11 +1,11 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from building.models import Address, Building
+from building.models import Address
 from portal.models import Guest, Message
 
 from sensors.models import Sensor, SensorValue
-from security.models import Camera, SafetyIncidentSource, SafetyIncident
+from security.models import Camera, SafetyIncidentSource, SafetyIncident, SafetyIncidentAlert, SafetyIncidentAlertBoundary
 from sign.models import Sign
 from transportation.models import Destination, OpenHour
 
@@ -64,12 +64,23 @@ class SafetyIncidentSourceSerializer(serializers.HyperlinkedModelSerializer):
         model = SafetyIncidentSource
         fields = ['name']
 
+class SafetyIncidentAlertBoundarySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SafetyIncidentAlertBoundary
+        fields = ['name']
+
 class SafetyIncidentSerializer(serializers.HyperlinkedModelSerializer):
     source = serializers.SlugRelatedField(queryset = SafetyIncidentSource.objects.all(), read_only = False, slug_field = 'name')
 
     class Meta:
         model = SafetyIncident
         fields = ('source', 'location', 'time', 'units', 'type')
+
+class SafetyIncidentAlertSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = SafetyIncidentAlert
+        fields = ('boundary', 'incident')
 
 # sign serializers
 class SignSerializer(serializers.HyperlinkedModelSerializer):

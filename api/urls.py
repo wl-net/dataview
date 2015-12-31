@@ -28,6 +28,8 @@ router.register(r'sensor-value', views.SensorValueViewSet)
 router.register(r'camera', views.CameraViewSet)
 router.register(r'safety-incident-source', views.SafetyIncidentSourceViewSet)
 router.register(r'safety-incident', views.SafetyIncidentViewSet)
+router.register(r'safety-incident-alert', views.SafetyIncidentAlertViewSet)
+router.register(r'safety-incident-alert-boundary', views.SafetyIncidentAlertBoundaryViewSet)
 
 urlpatterns = [
     url(r'^1/', include(router.urls)),

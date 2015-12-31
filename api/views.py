@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, filters
 from rest_framework.response import Response
@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from api.serializers import UserSerializer, AddressSerializer, DestinationSerializer, GuestSerializer, MessageSerializer, OpenHourSerializer
 
 from portal.models import Guest, Message
-from building.models import Address, Building
+from building.models import Address
 
 from transportation.models import Destination, OpenHour
 
@@ -95,8 +95,8 @@ class SensorValueViewSet(viewsets.ModelViewSet):
     serializer_class = SensorValueSerializer
 # security application
 
-from security.models import Camera, SafetyIncidentSource, SafetyIncident
-from api.serializers import CameraSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer
+from security.models import Camera, SafetyIncidentSource, SafetyIncident, SafetyIncidentAlert, SafetyIncidentAlertBoundary
+from api.serializers import CameraSerializer, SafetyIncidentSourceSerializer, SafetyIncidentSerializer, SafetyIncidentAlertSerializer, SafetyIncidentAlertBoundarySerializer
 
 class CameraViewSet(viewsets.ModelViewSet):
     queryset = Camera.objects.all()
@@ -123,3 +123,11 @@ class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
     serializer_class = SafetyIncidentSerializer
     filter_class = SafetyIncidentFilter
+
+class SafetyIncidentAlertViewSet(viewsets.ModelViewSet):
+    queryset = SafetyIncidentAlert.objects.all()
+    serializer_class = SafetyIncidentAlertSerializer
+
+class SafetyIncidentAlertBoundaryViewSet(viewsets.ModelViewSet):
+    queryset = SafetyIncidentAlertBoundary.objects.all()
+    serializer_class = SafetyIncidentAlertBoundarySerializer
