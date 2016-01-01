@@ -66,8 +66,8 @@
                 <button type="button" class="close" data-messageid="{{message.id}}" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <strong>{{message.time|date:'l, F j H:i:s'}}: </strong>{{message.message}}
             </div>
+       {% endfor %}
         </div>
-        {% endfor %}
         {% block content %}
         {% endblock %}
       </div>
