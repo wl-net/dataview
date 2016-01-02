@@ -1,7 +1,6 @@
 from sign.sign_widgets import AbstractWidget
 from transportation.provider.opentripplanner import OpenTripPlannerProvider
-import json, datetime
-from portal.models import Address
+import datetime
 
 class SimpleTransportationWidget(AbstractWidget):
 
