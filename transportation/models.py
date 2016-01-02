@@ -1,6 +1,7 @@
 from django.db import models
 from dataview.models import UUIDModel
 from building.models import Address
+import datetime
 
 WEEKDAYS = [
   (0, "Monday"),
