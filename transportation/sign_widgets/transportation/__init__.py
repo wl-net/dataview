@@ -18,7 +18,7 @@ class SimpleTransportationWidget(AbstractWidget):
         from_a = Address.objects.get(id=self.configuration['from'])
         to_a = Address.objects.get(id=self.configuration['to'])
 
-        plan = otpp.get_directions(str(from_a.geo.x) + ' ' + str(from_a.geo.y), str(to_a.geo.x) + ' ' + str(to_a.geo.x))
+        plan = otpp.get_directions(str(from_a.geo.y) + ',' + str(from_a.geo.x), str(to_a.geo.y) + ',' + str(to_a.geo.x))
         departure_method = plan['itineraries'][0]['legs'][0]
         trip_time = round(plan['itineraries'][0]['duration']/60) 
         departure_time = plan['itineraries'][0]['legs'][0]['startTime']
