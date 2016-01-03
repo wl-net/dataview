@@ -12,5 +12,5 @@ class OpenTripPlannerProvider():
                       'arriveBy': arriveBy, 'wheelchair': wheelchair, 'showIntermediateStops': showIntermediateStops}
                      , headers = {'Accept': 'application/json'})
         if r.status_code != 200:
-            pass
+            return {'itineraries': []}
         return r.json()['plan']

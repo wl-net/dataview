@@ -1,5 +1,6 @@
 from sign.sign_widgets import AbstractWidget
 from transportation.provider.opentripplanner import OpenTripPlannerProvider
+from building.models import Address
 import datetime
 
 class SimpleTransportationWidget(AbstractWidget):
@@ -14,7 +15,10 @@ class SimpleTransportationWidget(AbstractWidget):
     def get_contents(self):
         response = {}
         otpp = OpenTripPlannerProvider(self.configuration['api_target'], self.configuration['router_id'])
-        plan = otpp.get_directions()
+        from_a = Address.objects.get(id=self.configuration['from'])
+        to_a = Address.objects.get(id=self.configuration['to'])
+
+        plan = otpp.get_directions(str(from_a.geo.x) + ' ' + str(from_a.geo.y), str(to_a.geo.x) + ' ' + str(to_a.geo.x))
         departure_method = plan['itineraries'][0]['legs'][0]
         trip_time = round(plan['itineraries'][0]['duration']/60) 
         departure_time = plan['itineraries'][0]['legs'][0]['startTime']
