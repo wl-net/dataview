@@ -90,13 +90,12 @@ def edit_controllertask(request, controller, task):
     else:
         try:
             instance = get_objects_for_user(request.user, 'automation.change_controllertask').get(id=task)
-            form = ControllerTaskForm()
+            form = ControllerTaskForm(instance=instance)
         except Exception:
             ct = ControllerTask()
             ct.task = get_objects_for_user(request.user, 'automation.change_task').get(id=task)
             form = ControllerTaskForm(instance=ct)
             form.fields['task'].widget = form.fields['task'].hidden_widget()
-            print(request.path)
             return render(request, 'automation/add-controllertask.html', {'form': form, 'request_path': request.path})
 
     return render(request, 'automation/edit-controllertask.html', {'form': form, 'request_path': request.path})
@@ -156,7 +155,7 @@ def edit_controller(request, controller):
     for decider in controller.deciders.all():
         my_deciders.append(decider.id)
 
-    my_tasks = controller.tasks.all()
+    my_tasks = ControllerTask.objects.filter(controller=controller)
 
     return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'controller': controller, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
 

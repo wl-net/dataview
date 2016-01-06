@@ -253,15 +253,16 @@ class Controller(UUIDModel):
             decisions[decider.name] = decider.decide()
 
         for decision in decisions:
-            if not decisions[decision]:
+            if not decisions[decision]['boolean']:
                 result = False
 
         return {'result': result, 'decisions': decisions}
 
     def automate(self):
-        if self.enabled is False:
+        if not self.enabled:
             return
         decision = self.decide()
+        print(decision)
         if decision['result']:
             for task in self.tasks.all():
                 #ca = ControllerTask.objects.get(task=task, controller=self)

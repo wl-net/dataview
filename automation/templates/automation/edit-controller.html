@@ -45,7 +45,7 @@ $(document).ready(function() {
 <p>Search for a task to edit it
   <select id="existing-task-selector" class="form-control">
     {%for task in my_tasks%}
-      <option value="{{task.id}}">{{task}}</option>
+      <option value="{{task.id}}">{{task.task.name}}</option>
     {%endfor%}
   </select>
 </p>
