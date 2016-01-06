@@ -2,7 +2,7 @@
 {% block content %}
 
 <h4>Just fill out a few quick details</h4>
-<form method='post' target="{{request.path}}">
+<form method='post' action="{{request_path}}">
   {%csrf_token%}
   {%bootstrap_form form%}
 

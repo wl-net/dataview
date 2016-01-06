@@ -82,7 +82,7 @@ def edit_controllertask(request, controller, task):
             form = ControllerTaskForm(request.POST, instance=ct)
             if form.is_valid():
                 form.save()
-            return render_to_response('automation/edit-controllertask.html', RequestContext(request, {'form': form}))
+            return render(request, 'automation/edit-controllertask.html', {'form': form, 'request_path': request.path})
 
         form = ControllerTaskForm(request.POST, instance=ControllerTask.get(id=task))
         if form.is_valid():
@@ -96,9 +96,10 @@ def edit_controllertask(request, controller, task):
             ct.task = get_objects_for_user(request.user, 'automation.change_task').get(id=task)
             form = ControllerTaskForm(instance=ct)
             form.fields['task'].widget = form.fields['task'].hidden_widget()
-            return render_to_response('automation/add-controllertask.html', RequestContext(request, {'form': form}))
+            print(request.path)
+            return render(request, 'automation/add-controllertask.html', {'form': form, 'request_path': request.path})
 
-    return render_to_response('automation/edit-controllertask.html', RequestContext(request, {'form': form}))
+    return render(request, 'automation/edit-controllertask.html', {'form': form, 'request_path': request.path})
 
 def edit_controllerdeciders(request, controller):
     if request.method == 'POST':
