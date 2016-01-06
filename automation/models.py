@@ -262,7 +262,7 @@ class Controller(UUIDModel):
         if not self.enabled:
             return
         decision = self.decide()
-        print(decision)
+
         if decision['result']:
             for task in self.tasks.all():
                 #ca = ControllerTask.objects.get(task=task, controller=self)
