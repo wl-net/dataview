@@ -18,8 +18,12 @@ def index(request):
     controllers = get_objects_for_user(request.user, 'automation.change_controller')
     deciders = get_objects_for_user(request.user, 'automation.change_decider')
     taskgroups = get_objects_for_user(request.user, 'automation.change_taskgroup')
+    tasks = get_objects_for_user(request.user, 'automation.change_task')
     events = Event.objects.filter(type = 'automation.operation')[:5]
-    return render_to_response('automation/index.html', RequestContext(request, {'automators': automators, 'controllers': controllers, 'deciders': deciders, 'taskgroups': taskgroups, 'events': events}))
+    return render_to_response('automation/index.html',
+                              RequestContext(request, {'automators': automators,
+                                                       'controllers': controllers, 'deciders': deciders,
+                                                       'taskgroups': taskgroups, 'tasks': tasks, 'events': events}))
 
 from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
@@ -60,7 +64,11 @@ def edit_automator(request, automator):
 
 def run_task(request):
     if request.method == 'POST':
-        get_objects_for_user(request.user, 'automation.change_taskgroup').get(id=request.POST.get('task')).do_operations()
+        try:
+            get_objects_for_user(request.user, 'automation.change_taskgroup').get(id=request.POST.get('task')).do_operations()
+        except Exception:
+            get_objects_for_user(request.user, 'automation.change_task').get(id=request.POST.get('task')).do_operations()
+
     return HttpResponseRedirect(reverse('automation-index'))
 
 def edit_controllertask(request, controller, task):
