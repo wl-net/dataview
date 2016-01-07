@@ -26,7 +26,7 @@ class Automator(UUIDModel):
         clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
         return clsName(json.loads(self.configuration))
 
-    def do_operations(self, operations, instance=None, logging=True):
+    def do_operations(self, operations, instance=None, logging=True, duplicate=False):
         i = self.get_instance()
         response = []
         for operation in json.loads(operations):
@@ -39,6 +39,11 @@ class Automator(UUIDModel):
                 if operation['method']:
                     e.action = e.action + ' ' + ' '.join(operation['params'])
                 e.type = 'automation.operation'
+
+                details = operation.copy()
+                details.update({'name': self.name})
+                e.detail = json.dumps(details)
+
                 e.save()
 
         return response
@@ -245,6 +250,8 @@ class Controller(UUIDModel):
     enabled = models.BooleanField(default=False)
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
     tasks = models.ManyToManyField('automation.Task', through='ControllerTask')
+    configuration = models.TextField(default='{}')
+    state = models.TextField(default={})
 
     def decide(self):
         decisions = {}
@@ -263,11 +270,29 @@ class Controller(UUIDModel):
             return
         decision = self.decide()
 
-        if decision['result']:
-            for task in self.tasks.all():
-                #ca = ControllerTask.objects.get(task=task, controller=self)
-                #config = json.loads(ct.mapping)
-                task.do_operations()
+        config = json.loads(self.configuration)
+        dualmode = 'restore_state' in config and config['restore_state']
+        dualmode_run = False
+
+        decision = decision['result']
+        if dualmode:
+            state = json.loads(self.state)
+            if 'last_decision' not in state or state['last_decision'] != decision:
+                dualmode_run = True
+                state['last_decision'] = decision
+                self.state = json.dumps(state)
+                self.save()
+
+        if decision or dualmode_run:
+            for ca in ControllerTask.objects.filter(controller=self):
+                ca_config = json.loads(ca.mapping)
+                if dualmode and 'dualmode' in ca_config and \
+                                ca_config['dualmode'] != decision:
+                    continue
+                ca.task.do_operations()
+
+
+
 
     def is_complete(self):
         return self.tasks.all().count() > 0 and self.deciders.all().count()
