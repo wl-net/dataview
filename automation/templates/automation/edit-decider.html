@@ -7,13 +7,15 @@
     setInterval(function() {
       $.getJSON("{%url 'automation-query_decider' decider.id%}", function(data) {
         $('.decider-decision').show()
-        $('.decider-decision span').html(data.decision.boolean ? "Yes" : "No");
+        $('.decider-decision span.decision-boolean').html(data.decision.boolean ? "Yes" : "No");
+        $('.decider-decision span.decision-reasoning').text(data.decision.string_descriptive[0]['message']);
+
       });
     }, 5000);
   });
 </script>
 <h2>Edit Decider:</h2>
-<p class="decider-decision" style="display:none;"><strong>Last Descision:</strong> <span></span></p>
+<p class="decider-decision" style="display:none;"><strong>Last Decision:</strong> <span class="decision-boolean"></span>. <span class="decision-reasoning"></span></p>
 <form method='post'>
   {%csrf_token%}
   {%bootstrap_form form%}
