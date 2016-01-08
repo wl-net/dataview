@@ -1,17 +1,25 @@
 from django.db import models
 from django.forms import ModelForm
 from importlib import import_module
+
 import sys, json
+
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
 from dataview.models import Event, UUIDModel
 
+
 class Automator(UUIDModel):
-    name = models.CharField(max_length=60, help_text="Give your automator a name. For example: <strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
+    name = models.CharField(max_length=60,
+                            help_text="Give your automator a name. For example: " +
+                                      "<strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
     account = models.ForeignKey('dataview.Account')
-    backend = models.ForeignKey('automation.AutomatorClass', help_text="This backend will be responsible for performing the actions you desire. Your Dataview administrator can provision additional backends for you to use.")
+    backend = models.ForeignKey('automation.AutomatorClass',
+                                help_text="This backend will be responsible for performing the actions you desire. " +
+                                          "Your Dataview administrator can provision additional backends for you to use.")
     description = models.TextField(blank=True, help_text="What does this Automator do?")
-    configuration = models.TextField(blank=True, help_text="Don't modify this unless you know understand how the automator processes configuration")
+    configuration = models.TextField(blank=True, help_text="Don't modify this unless you know understand how the " +
+                                                           "automator processes configuration")
 
     def __unicode__(self):
         return self.name
@@ -20,11 +28,11 @@ class Automator(UUIDModel):
         return self.name
 
     def get_instance(self):
-        cls = self.backend.path + '.' +  self.backend.name 
+        cls = self.backend.path + '.' +  self.backend.name
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
-        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
-        return clsName(json.loads(self.configuration))
+        class_name = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+        return class_name(json.loads(self.configuration))
 
     def do_operations(self, operations, instance=None, logging=True, duplicate=False):
         i = self.get_instance()
@@ -65,6 +73,7 @@ class Automator(UUIDModel):
                         apps.append({'name': member, 'path': path})
         return apps
 
+
 class AutomatorClass(UUIDModel):
     name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
@@ -103,7 +112,7 @@ class AutomatorClass(UUIDModel):
 
         # remove old classes
         for old_cls in my_classes:
-            AutomatorClass.objects.filter(name=old_cls['name']).filter(path = old_cls['path']).delete()
+            AutomatorClass.objects.filter(name=old_cls['name']).filter(path=old_cls['path']).delete()
 
 class AutomatorForm(ModelForm):
     class Meta:
@@ -146,6 +155,7 @@ class TaskGroup(UUIDModel):
     def do_operations(self, placeholders={}):
         for task in self.tasks.all():
             task.automator.do_operations(task.operations)
+
 
 class Decider(UUIDModel):
     """
@@ -198,6 +208,7 @@ class Decider(UUIDModel):
     def __str__(self):
         return self.name
 
+
 class DeciderClass(UUIDModel):
     name = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
@@ -236,7 +247,7 @@ class DeciderClass(UUIDModel):
 
         # remove old classes
         for old_cls in my_classes:
-            DeciderClass.objects.filter(name=old_cls['name']).filter(path = old_cls['path']).delete()
+            DeciderClass.objects.filter(name=old_cls['name']).filter(path=old_cls['path']).delete()
 
 
 class DeciderForm(ModelForm):
@@ -245,7 +256,9 @@ class DeciderForm(ModelForm):
         fields = ['name', 'backend', 'description', 'conditions', 'configuration']
 
 class Controller(UUIDModel):
-    name = models.CharField(max_length = 128, help_text="Give your controller a name. For example a controller that turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
+    name = models.CharField(max_length=128,
+                            help_text="Give your controller a name. For example a controller that " +
+                                      "turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
     description = models.TextField(blank=True)
     enabled = models.BooleanField(default=False)
     deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
@@ -290,9 +303,6 @@ class Controller(UUIDModel):
                                 ca_config['dualmode'] != decision:
                     continue
                 ca.task.do_operations()
-
-
-
 
     def is_complete(self):
         return self.tasks.all().count() > 0 and self.deciders.all().count()
