@@ -1,11 +1,12 @@
+import sys
+import json
+
 from django.db import models
 
 from dataview.models import UUIDModel
-
 from sign.sign_widgets import AbstractWidget
-
 from importlib import import_module
-import sys, json
+
 
 class SignType(UUIDModel):
     name = models.CharField(max_length=128)
@@ -77,6 +78,7 @@ class SignType(UUIDModel):
     def __str__(self):
         return self.name
 
+
 class Sign(UUIDModel):
     name = models.CharField(max_length=128)
     hostname = models.CharField(max_length=128)
@@ -87,6 +89,7 @@ class Sign(UUIDModel):
     backend_configuration = models.TextField(blank=True, default='{}')
     type = models.ForeignKey(SignType)
 
+    @staticmethod
     def update_signs():
         sws = SignWidget.objects.all()
         for sw in sws:
@@ -102,6 +105,7 @@ class Sign(UUIDModel):
 
     def __str__(self):
         return self.name
+
 
 class Widget(UUIDModel):
     name = models.CharField(max_length=128)
@@ -140,8 +144,8 @@ class Widget(UUIDModel):
         cls = self.path + '.' +  self.internal_name
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
-        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
-        return clsName(json.loads(configuration))
+        class_name = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+        return class_name(json.loads(configuration))
 
     def update_widget_list(widgets=None):
         my_widgets = []
@@ -172,6 +176,7 @@ class Widget(UUIDModel):
         # remove old widgets
         for old_cls in my_widgets:
             Widget.objects.filter(internal_name=old_cls['internal_name']).filter(path = old_cls['path']).delete()
+
 
 class SignWidget(UUIDModel):
     sign = models.ForeignKey(Sign)

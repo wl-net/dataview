@@ -6,6 +6,8 @@ from sign.models import Sign, Widget, SignWidget
 import datetime, json, sys
 from importlib import import_module
 
+from guardian.shortcuts import get_objects_for_user
+
 def sign(request, id=None):
     template_fields = {'widgets': []}
 
@@ -51,7 +53,7 @@ def sign_config(request, id=None):
 
 def sign_widget(request, id, widget_id):
     response = {}
-    sw = SignWidget.objects.get(id=widget_id)
+    sw = get_objects_for_user(request.user, 'sign.change_signwidget').get(id=widget_id)
     i = sw.widget.get_instance(sw.backend_configuration)
     response['contents'] = i.get_contents()
     response['widget_name'] = i.WIDGET_NAME

@@ -1,13 +1,17 @@
 from django.contrib.gis.db import models
 from django.conf import settings
-from django.forms import ModelForm, ModelMultipleChoiceField
+from django.forms import ModelForm
+
 import uuid
+import hashlib
+
 
 class UUIDModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True
+
 
 class SystemDeployment(UUIDModel):
     """ System Deployments represent a server that hosts Dataview."""
@@ -27,6 +31,7 @@ class SystemDeploymentForm(ModelForm):
         model = SystemDeployment
         fields = ['name', 'hostname']
 
+
 class Account(UUIDModel):
     """ Accounts represent a collection of dataview users that rely on shared residences"""
     name = models.CharField(max_length=60, help_text="This will be displayed to all users you share your account with")
@@ -38,12 +43,13 @@ class Account(UUIDModel):
     def __str__(self):
         return self.name
 
+
 class AccountForm(ModelForm):
     class Meta:
         model = Account
         fields = ['name', 'users']
 
-import hashlib
+
 class X509Certificate(UUIDModel):
     cert = models.TextField(unique=True)
     file_name = models.CharField(max_length=255, unique=True)
@@ -54,9 +60,8 @@ class X509Certificate(UUIDModel):
 
         settings.BASE_DIR
         c.file_name = hashlib.sha256(c.cert.encode('utf-8')).hexdigest() + '.pem'
-        f = open(settings.BASE_DIR + '/certificates/' + c.file_name, 'w')
-        f.write(c.cert)
-        f.close()
+        with open(settings.BASE_DIR + '/certificates/' + c.file_name, 'w') as f:
+            f.write(c.cert)
 
         c.save()
 
@@ -64,6 +69,7 @@ class X509Certificate(UUIDModel):
 
     def get_file_from_str(certificate):
         return settings.BASE_DIR + '/certificates/' + X509Certificate.objects.get(cert=certificate).file_name
+
 
 class Event(UUIDModel):
     """
