@@ -1,0 +1,21 @@
+{% extends "basic-portal.html" %}
+
+{% block content %}
+<h2>Automation Activity</h2>
+
+<script type="text/javascript" src="/static/js/select2.min.js"></script>
+<link href="/static/css/select2.min.css" rel="stylesheet">
+<script type="text/javascript">
+$(document).ready(function() {
+  $('select').select2();
+  $('#task-selector').on("change", function (e) { $('.task-runner').attr('value', ($('#task-selector').val())); });
+});
+</script>
+
+<h3>Recent Activity</h3>
+<ul>
+{%for event in events%}
+  <li>{{event.time|date:'l, F j H:i:s'}}: {{event}}</li>
+{%endfor%}
+</ul>
+{% endblock %}

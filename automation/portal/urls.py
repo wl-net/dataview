@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from automation.views import AutomateWizard, AutomatorForm, DeciderForm, ControllerForm
-from automation.views import automators, add_automator, edit_automator, run_task, index
+from automation.views import automators, activity, add_automator, edit_automator, run_task, index
 from automation.views import controllers, add_controller, edit_controller, edit_controllertask, edit_controllerdeciders
 from automation.views import deciders, add_decider, edit_decider, query_decider
 
@@ -10,6 +10,8 @@ urlpatterns = patterns('automation.views',
 
     url(r'^/automate$', AutomateWizard.as_view([AutomatorForm, DeciderForm, ControllerForm], template_name='automation/automate-wizard.html')),
     url('^/run-task$', run_task, name='automation-run_task'),
+
+    url(r'^/activity/$', activity, name='automation-activity'),
 
     url(r'^/automators/$', automators, name='automation-automators'),
     url('^/add-automator$', add_automator, name='automation-add_automator'),
