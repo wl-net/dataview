@@ -146,10 +146,6 @@ def add_controller(request):
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
 
 def edit_controller(request, controller):
-    tasks = {}
-    deciders = {}
-    my_tasks = {}
-    my_deciders = []
     controller = get_objects_for_user(request.user, 'automation.change_controller').get(id=controller)
 
     if request.method == 'POST':
@@ -166,12 +162,16 @@ def edit_controller(request, controller):
     tasks = get_objects_for_user(request.user, 'automation.change_task').all()
     deciders = get_objects_for_user(request.user, 'automation.change_decider').all()
 
+    my_deciders = []
     for decider in controller.deciders.all():
         my_deciders.append(decider.id)
 
     my_tasks = ControllerTask.objects.filter(controller=controller)
 
-    return render_to_response('automation/edit-controller.html', RequestContext(request, {'form': form, 'controller': controller, 'tasks': tasks, 'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
+    return render_to_response('automation/edit-controller.html',
+                              RequestContext(request,
+                                             {'form': form, 'controller': controller, 'tasks': tasks,
+                                              'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
 
 def deciders(request):
     deciders = get_objects_for_user(request.user, 'automation.change_decider').all()
@@ -201,9 +201,10 @@ def edit_decider(request, decider):
     else:
         form = DeciderForm(instance = my_decider)
 
-    return render_to_response('automation/edit-decider.html', RequestContext(request, {'decider': my_decider , 'form': form}))
+    return render_to_response('automation/edit-decider.html',
+                              RequestContext(request, {'decider': my_decider , 'form': form}))
 
 def query_decider(request, decider):
-      d = get_objects_for_user(request.user, 'automation.change_decider').get(id = decider)
-      return HttpResponse(json.dumps({"name": d.name, "decision": d.decide()}), content_type='application/json')
+    decider = get_objects_for_user(request.user, 'automation.change_decider').get(id = decider)
+    return HttpResponse(json.dumps({"name": decider.name, "decision": decider.decide()}), content_type='application/json')
 
