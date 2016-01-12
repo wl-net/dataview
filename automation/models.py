@@ -298,17 +298,17 @@ class Controller(UUIDModel):
                 self.save()
 
         if decision or dualmode_run:
-            for ca in ControllerTask.objects.filter(controller=self):
-                ca_config = json.loads(ca.mapping)
+            for ct in ControllerTask.objects.filter(controller=self):
+                ct_config = json.loads(ct.mapping)
                 if dualmode:
-                    if ('dualmode' in ca_config and
-                                ca_config['dualmode'] != decision):
+                    if ('dualmode' in ct_config and
+                                ct_config['dualmode'] != decision):
                         continue
-                    if 'dualmode' not in ca_config and not decision:
+                    if 'dualmode' not in ct_config and not decision:
                         continue
                     if not dualmode_run:
                         continue
-                ca.task.do_operations()
+                ct.task.do_operations()
 
     def is_complete(self):
         return self.tasks.all().count() > 0 and self.deciders.all().count()
