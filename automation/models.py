@@ -281,6 +281,7 @@ class Controller(UUIDModel):
     def automate(self):
         if not self.enabled:
             return
+
         decision = self.decide()
 
         config = json.loads(self.configuration)
@@ -290,18 +291,23 @@ class Controller(UUIDModel):
         decision = decision['result']
         if dualmode:
             state = json.loads(self.state)
-            if 'last_decision' not in state or state['last_decision'] != decision:
+            if 'last_decision' not in state or state['last_decision'] != str(decision):
                 dualmode_run = True
-                state['last_decision'] = decision
+                state['last_decision'] = str(decision)
                 self.state = json.dumps(state)
                 self.save()
 
         if decision or dualmode_run:
             for ca in ControllerTask.objects.filter(controller=self):
                 ca_config = json.loads(ca.mapping)
-                if dualmode and 'dualmode' in ca_config and \
-                                ca_config['dualmode'] != decision:
-                    continue
+                if dualmode:
+                    if ('dualmode' in ca_config and
+                                ca_config['dualmode'] != decision):
+                        continue
+                    if 'dualmode' not in ca_config and not decision:
+                        continue
+                    if not dualmode_run:
+                        continue
                 ca.task.do_operations()
 
     def is_complete(self):
