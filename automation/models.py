@@ -135,10 +135,12 @@ class Task(UUIDModel):
     def do_operations(self, placeholders={}):
         return self.automator.do_operations(self.operations)
 
+
 class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ['name', 'description', 'automator']
+
 
 class TaskGroup(UUIDModel):
     name = models.CharField(max_length=128)
@@ -327,14 +329,17 @@ class ControllerForm(ModelForm):
     #automators = ModelMultipleChoiceField(queryset=Automator.objects.all())
     #deciders = ModelMultipleChoiceField(queryset=Decider.objects.all())
 
+
 class ControllerDecider(UUIDModel):
     controller = models.ForeignKey(Controller)
     decider = models.ForeignKey(Decider)
+
 
 class ControllerDeciderForm(ModelForm):
     class Meta:
         model = ControllerDecider
         fields = ['controller', 'decider']
+
 
 class ControllerTask(UUIDModel):
     notes = models.TextField()
@@ -350,6 +355,7 @@ class ControllerTask(UUIDModel):
             #a = Automator.objects.get(automator)
             #a.get_instance()
             #a.perform_operations(operations)
+
 
 class ControllerTaskForm(ModelForm):
     class Meta:

@@ -2,6 +2,7 @@ from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 from dataview.models import Event
 from dataview.models import Account
@@ -9,6 +10,8 @@ from automation.models import Automator, Controller, Decider, AutomatorForm, Con
 from automation.models import ControllerTask, ControllerTaskForm
 from automation.models import ControllerDecider, DeciderForm, Task, TaskGroup
 
+from django.http import HttpResponseRedirect
+from formtools.wizard.views import SessionWizardView
 from guardian.shortcuts import get_objects_for_user
 
 import json
@@ -25,8 +28,6 @@ def index(request):
                                                        'controllers': controllers, 'deciders': deciders,
                                                        'taskgroups': taskgroups, 'tasks': tasks, 'events': events}))
 
-from django.http import HttpResponseRedirect
-from formtools.wizard.views import SessionWizardView
 
 class AutomateWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
@@ -37,6 +38,7 @@ def automators(request):
     automators = get_objects_for_user(request.user, 'automation.change_automator')
     return render_to_response('automation/automators.html', RequestContext(request, {'automators': automators}))
 
+
 def add_automator(request):
     if request.method == 'POST':
         form = AutomatorForm(request.POST, initial={'account': Account.objects.get(users=request.user)})
@@ -46,6 +48,7 @@ def add_automator(request):
     else:
         form = AutomatorForm(initial={'account': Account.objects.get(users=request.user)})
     return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
+
 
 def edit_automator(request, automator):
     if request.method == 'POST':
@@ -62,20 +65,23 @@ def edit_automator(request, automator):
 
     return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
 
+
 def run_task(request):
     if request.method == 'POST':
         try:
             get_objects_for_user(request.user, 'automation.change_taskgroup').get(id=request.POST.get('task')).do_operations()
-        except Exception:
+        except ObjectDoesNotExist:
             get_objects_for_user(request.user, 'automation.change_task').get(id=request.POST.get('task')).do_operations()
 
     return HttpResponseRedirect(reverse('automation-index'))
+
 
 def activity(request):
     events = Event.objects.filter(type='automation.operation')[:50]
 
     return render_to_response('automation/activity.html',
                               RequestContext(request, {'events': events}))
+
 
 def edit_controllertask(request, controller, task):
     if request.method == 'POST':
@@ -114,6 +120,7 @@ def edit_controllertask(request, controller, task):
 
     return render(request, 'automation/edit-controllertask.html', {'form': form, 'request_path': request.path})
 
+
 def edit_controllerdeciders(request, controller):
     if request.method == 'POST':
         provided_deciders = json.loads(request.POST.get('decider'))
@@ -134,6 +141,7 @@ def controllers(request):
 
     return render_to_response('automation/controllers.html', RequestContext(request, {'controllers': controllers}))
 
+
 def add_controller(request):
     if request.method == 'POST':
         form = ControllerForm(request.POST)
@@ -144,6 +152,7 @@ def add_controller(request):
     else:
         form = ControllerForm()
     return render_to_response('automation/add-controller.html', RequestContext(request, {'form': form}))
+
 
 def edit_controller(request, controller):
     controller = get_objects_for_user(request.user, 'automation.change_controller').get(id=controller)
@@ -173,9 +182,11 @@ def edit_controller(request, controller):
                                              {'form': form, 'controller': controller, 'tasks': tasks,
                                               'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders}))
 
+
 def deciders(request):
     deciders = get_objects_for_user(request.user, 'automation.change_decider').all()
     return render_to_response('automation/deciders.html', RequestContext(request, {'deciders': deciders}))
+
 
 def add_decider(request):
     if request.method == 'POST':
@@ -187,6 +198,7 @@ def add_decider(request):
         form = DeciderForm()
 
     return render_to_response('automation/add-decider.html', RequestContext(request, {'form': form}))
+
 
 def edit_decider(request, decider):
     my_decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
@@ -202,9 +214,9 @@ def edit_decider(request, decider):
         form = DeciderForm(instance = my_decider)
 
     return render_to_response('automation/edit-decider.html',
-                              RequestContext(request, {'decider': my_decider , 'form': form}))
+                              RequestContext(request, {'decider': my_decider, 'form': form}))
+
 
 def query_decider(request, decider):
-    decider = get_objects_for_user(request.user, 'automation.change_decider').get(id = decider)
+    decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
     return HttpResponse(json.dumps({"name": decider.name, "decision": decider.decide()}), content_type='application/json')
-
