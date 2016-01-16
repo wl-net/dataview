@@ -1,5 +1,6 @@
-from dataview.transports.json_rpc import JSONRPCClient
 from automation.automators import AbstractAutomator
+from dataview.transports.json_rpc import JSONRPCClient
+
 
 class AirCleanerJSONRPCAutomator(AbstractAutomator):
     def __init__(self, configuration):
@@ -9,7 +10,6 @@ class AirCleanerJSONRPCAutomator(AbstractAutomator):
 
     def set_fan_speed(self, fan_speed):
         self.client.call('call_function', ['acfanspeed', [fan_speed.upper()]])
-
 
     def get_commands(self):
         return {"set_fan_speed":{"args":[["off", "low", "medium", "high"]]}}

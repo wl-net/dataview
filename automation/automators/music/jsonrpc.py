@@ -1,5 +1,6 @@
-from dataview.transports.json_rpc import JSONRPCClient
 from automation.automators import AbstractAutomator
+from dataview.transports.json_rpc import JSONRPCClient
+
 
 class MusicJSONRPCAutomator(AbstractAutomator):
     def __init__(self, configuration):
