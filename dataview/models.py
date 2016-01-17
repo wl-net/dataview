@@ -1,9 +1,12 @@
 from django.contrib.gis.db import models
 from django.conf import settings
 from django.forms import ModelForm
+from django.db.utils import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 
 import uuid
 import hashlib
+import os
 
 
 class UUIDModel(models.Model):
@@ -54,21 +57,44 @@ class X509Certificate(UUIDModel):
     cert = models.TextField(unique=True)
     file_name = models.CharField(max_length=255, unique=True)
 
-    def create_from_str(certificate):
-        c = X509Certificate()
-        c.cert = certificate
+    @staticmethod
+    def get_base_path():
+        return settings.BASE_DIR + '/certificates/'
 
-        settings.BASE_DIR
-        c.file_name = hashlib.sha256(c.cert.encode('utf-8')).hexdigest() + '.pem'
-        with open(settings.BASE_DIR + '/certificates/' + c.file_name, 'w') as f:
+    @staticmethod
+    def create_from_str(certificate):
+        if not os.path.exists(X509Certificate.get_base_path()):
+            os.makedirs(X509Certificate.get_base_path())
+
+        try:
+            c = X509Certificate.objects.get(cert=certificate)
+            # The certificate exists in the database, but not the filesystem
+        except ObjectDoesNotExist:
+            # The certificate does not exist in the database
+            c = X509Certificate()
+            c.cert = certificate
+            c.file_name = hashlib.sha256(c.cert.encode('utf-8')).hexdigest() + '.pem'
+
+        with open(X509Certificate.get_base_path() + c.file_name, 'w') as f:
             f.write(c.cert)
 
-        c.save()
+        try:
+            c.save()
+        except IntegrityError:
+            pass
 
         return c
 
+    def get_location(self):
+        return X509Certificate.get_base_path() + self.file_name
+
     def get_file_from_str(certificate):
-        return settings.BASE_DIR + '/certificates/' + X509Certificate.objects.get(cert=certificate).file_name
+        path = X509Certificate.get_base_path() + X509Certificate.objects.get(cert=certificate).file_name
+
+        with open(path, 'r'):
+            pass
+
+        return path
 
 
 class Event(UUIDModel):

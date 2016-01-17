@@ -1,4 +1,4 @@
-from dataview.transports.json_rpc import JSONRPCClient
+from dataview.transports.jsonrpc import JSONRPCClient
 from automation.automators import AbstractAutomator
 
 

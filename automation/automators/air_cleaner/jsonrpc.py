@@ -1,5 +1,5 @@
 from automation.automators import AbstractAutomator
-from dataview.transports.json_rpc import JSONRPCClient
+from dataview.transports.jsonrpc import JSONRPCClient
 
 
 class AirCleanerJSONRPCAutomator(AbstractAutomator):

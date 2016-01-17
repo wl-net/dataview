@@ -19,19 +19,19 @@ class JSONRPCClient(object):
 
     def call(self, command, arguments):
         req = {"jsonrpc": "2.0", "method": command, "params": arguments, "id": self.request_id}
-        self.request_id +=1
+        self.request_id += 1
 
         if self.certificate is not None:
             try:
                 cert_file = X509Certificate.get_file_from_str(self.certificate)
-            except ObjectDoesNotExist:
-                cert_file = X509Certificate.create_from_str(self.certificate).file_name
+            except (ObjectDoesNotExist, FileNotFoundError):
+                cert_file = X509Certificate.create_from_str(self.certificate).get_location()
 
-            r = requests.post(self.target, data = json.dumps(req),
+            r = requests.post(self.target, data=json.dumps(req),
                               headers={'Authorization': 'Token ' + self.apikey},
                               verify=cert_file)
         else:
-            r = requests.post(self.target, data = json.dumps(req),
+            r = requests.post(self.target, data=json.dumps(req),
                               headers={'Authorization': 'Token: ' + self.apikey})
 
         if r.status_code == 200:
