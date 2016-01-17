@@ -8,6 +8,7 @@ class MusicJSONRPCAutomator(AbstractAutomator):
         self.client = JSONRPCClient()
         self.client.connect(configuration['target'], configuration['token'], configuration['certificate'])
 
+    @staticmethod
     def get_configuration_fields():
         fields = {
             'target': ['text', 'url'],
@@ -18,10 +19,10 @@ class MusicJSONRPCAutomator(AbstractAutomator):
         return fields
 
     def mute(self):
-        self.client.call('mute',arguments={})
+        self.client.call('mute', arguments={})
 
     def unmute(self):
-        self.client.call('unmute',arguments={})
+        self.client.call('unmute', arguments={})
 
     def play(self, url):
         self.client.call('play', arguments = [url])

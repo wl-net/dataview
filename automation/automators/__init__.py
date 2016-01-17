@@ -1,10 +1,18 @@
 
-class AbstractAutomator:
+class AbstractAutomator(object):
     def __init__(self, configuration):
-        pass
+        self.configuration = configuration
+        self.validate_configuration()
 
-    def get_configuration_parameters():
+    @staticmethod
+    def get_configuration_fields():
         pass
 
     def validate_configuration(self):
+        for key in self.get_configuration_fields():
+            if key not in self.configuration:
+                raise ValueError("{} not provided in configuration".format(key))
+
+
+    def healthcheck(self):
         pass
