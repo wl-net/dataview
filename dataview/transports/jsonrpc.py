@@ -1,8 +1,8 @@
-import requests
-import json
-
 from dataview.models import X509Certificate
 from django.core.exceptions import ObjectDoesNotExist
+
+import requests
+import json
 
 
 class JSONRPCClient(object):
@@ -21,7 +21,7 @@ class JSONRPCClient(object):
         req = {"jsonrpc": "2.0", "method": command, "params": arguments, "id": self.request_id}
         self.request_id += 1
 
-        if self.certificate is not None:
+        if self.certificate:
             try:
                 cert_file = X509Certificate.get_file_from_str(self.certificate)
             except (ObjectDoesNotExist, FileNotFoundError):
@@ -41,3 +41,6 @@ class JSONRPCClient(object):
 
     def get_client(self):
         return self.client
+
+    def healthcheck(self):
+        pass
