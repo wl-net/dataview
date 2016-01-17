@@ -8,8 +8,11 @@ urlpatterns = [
 ]
 
 for app in settings.DATAVIEW_APPS:
+    if app == 'portal':
+        continue
+
     try:
-        urlpatterns += patterns('', url('^portal/' + app, include(app + '.portal.urls')))
+        urlpatterns += [url('^portal/' + app, include(app + '.portal.urls'))]
     except ImportError as e:
         if "No module named '" + app + '.portal' +  "'" != str(e):
 
