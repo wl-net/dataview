@@ -1,7 +1,20 @@
-class AbstractDecider:
+class AbstractDecider(object):
+    class CommunicationException(Exception):
+        pass
     def __init__(self, conditions, configuration={}):
         self.conditions = conditions
         self.configuration = configuration
+        self.validate_configuration()
+
+    @staticmethod
+    def get_configuration_fields():
+        return {}
+
+    def validate_configuration(self):
+        for key in self.get_configuration_fields():
+            if key not in self.configuration:
+                raise ValueError("{} not provided in configuration".format(key))
+
 
     def decide(self):
         """

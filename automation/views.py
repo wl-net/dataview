@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from dataview.models import Event
 from dataview.models import Account
-from automation.models import Automator, Controller, Decider, AutomatorForm, ControllerForm
+from automation.models import Automator, AutomatorClass, Controller, Decider, AutomatorForm, ControllerForm
 from automation.models import ControllerTask, ControllerTaskForm
 from automation.models import ControllerDecider, DeciderForm, Task, TaskGroup
 
@@ -49,6 +49,9 @@ def add_automator(request):
         form = AutomatorForm(initial={'account': Account.objects.get(users=request.user)})
     return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
 
+def get_automator_default_config(request):
+    a = AutomatorClass.objects.get(id=request.id)
+    a.get_instance
 
 def edit_automator(request, automator):
     if request.method == 'POST':
@@ -61,7 +64,7 @@ def edit_automator(request, automator):
             form.save()
     else:
         form = AutomatorForm(instance = get_objects_for_user(request.user, 'automation.change_automator').get(id=automator))
-        return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
+        return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
 
     return render_to_response('automation/edit-automator.html', RequestContext(request, {'form': form}))
 

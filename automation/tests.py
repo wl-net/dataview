@@ -45,3 +45,14 @@ class TimeDeciderTest(TestCase):
 
         td = TimeDecider([{'name': 'daytime', 'time': datetime.time(15).isoformat(), 'results': [-1]}])
         self.assertEqual(td.decide(now), True)
+
+class ICalendarTests(TestCase):
+    def test_configuration(self):
+        from automation.deciders.icalcalendar import CalendarDecider
+
+        self.assertRaises(TypeError, CalendarDecider)
+
+        self.assertRaises(ValueError, CalendarDecider, {}, {})
+        cal = CalendarDecider({}, {'ical_url': 'http://example.com'})
+
+        self.assertRaises(ValueError, cal.decide)

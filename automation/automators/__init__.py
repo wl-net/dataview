@@ -6,13 +6,12 @@ class AbstractAutomator(object):
 
     @staticmethod
     def get_configuration_fields():
-        pass
+        return {}
 
     def validate_configuration(self):
         for key in self.get_configuration_fields():
             if key not in self.configuration:
                 raise ValueError("{} not provided in configuration".format(key))
-
 
     def healthcheck(self):
         pass

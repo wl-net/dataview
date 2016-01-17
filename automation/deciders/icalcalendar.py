@@ -1,23 +1,41 @@
 from automation.deciders import AbstractDecider
-from datetime import datetime, timezone
+from django.core.cache import cache
 
+from datetime import datetime, timezone
 import requests
+import hashlib
 from icalendar import Calendar, Event
 from dateutil.relativedelta import *
 from dateutil.rrule import *
 
 
 class CalendarDecider(AbstractDecider):
+    CACHE_TIME = 5 * 60
+
     def __init__(self, conditions, configuration):
-        self.conditions = conditions
         self.reason = ""
         super().__init__(conditions, configuration)
 
-    def get_calendar(self):
-        request = requests.get(self.configuration['ical_url'])
-        request.raise_for_status()
+    @staticmethod
+    def get_configuration_fields():
+        fields = {
+            'ical_url': ['text', 'url'],
+        }
 
-        return Calendar.from_ical(request.text)
+        return fields
+
+    def get_calendar(self):
+        index = 'ical_' + hashlib.sha256(self.configuration['ical_url'].encode('utf-8')).hexdigest()
+        response = cache.get(index)
+
+        if not response:
+            request = requests.get(self.configuration['ical_url'])
+            request.raise_for_status()
+
+            response = request.text
+            cache.set(index, response, self.CACHE_TIME)
+
+        return Calendar.from_ical(response)
 
     def get_decision_reason(self):
         return self.reason
