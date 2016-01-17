@@ -120,6 +120,13 @@ class AutomatorForm(ModelForm):
         fields = ['name', 'account', 'backend', 'description', 'configuration']
 
 
+class Action(UUIDModel):
+    automator = models.ForeignKey(Automator)
+    method = models.CharField(max_length=128)
+    operations = models.TextField()
+    time = models.DateTimeField(auto_now=True)
+
+
 class Task(UUIDModel):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
@@ -257,13 +264,15 @@ class DeciderForm(ModelForm):
         model = Decider
         fields = ['name', 'backend', 'description', 'conditions', 'configuration']
 
+
 class Controller(UUIDModel):
     name = models.CharField(max_length=128,
                             help_text="Give your controller a name. For example a controller that " +
                                       "turns off lights when you go to sleep might be called <strong>Sleep Conditions</strong>")
     description = models.TextField(blank=True)
     enabled = models.BooleanField(default=False)
-    deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider', help_text="Specify the deciders you are interested in using. You'll configure them later")
+    deciders = models.ManyToManyField('automation.Decider', through='ControllerDecider',
+                                      help_text="Specify the deciders you are interested in using. You'll configure them later")
     tasks = models.ManyToManyField('automation.Task', through='ControllerTask')
     configuration = models.TextField(default='{}')
     state = models.TextField(default={})
