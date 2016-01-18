@@ -53,8 +53,7 @@ class CalendarDecider(AbstractDecider):
             rrules_start = rrulestr(rrule.to_ical().decode("utf-8"), dtstart=start)
             reccuring_start = rrules_start.before(now)
 
-            rrules_end = rrulestr(rrule.to_ical().decode("utf-8"), dtstart=end)
-            reccuring_end = rrules_end.after(now)
+            reccuring_end = reccuring_start + time
 
             if now > reccuring_start and now < reccuring_end and (reccuring_end - reccuring_start == time):
                 self.reason = str(event.get('summary'))
