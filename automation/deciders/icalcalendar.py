@@ -43,14 +43,29 @@ class CalendarDecider(AbstractDecider):
     def decide(self, now=datetime.now(timezone.utc)):
         calendar = self.get_calendar()
 
+        if 'default_reason' in self.configuration:
+            self.reason = self.configuration['default_reason']
+
         for event in calendar.walk('vevent'):
             start = event.get('dtstart').dt
             end = event.get('dtend').dt
             time = end - start
             rrule = event.get('rrule')
 
-            #exdate = event.get( 'EXDATE' ) # TODO
+            if rrule is None:
+                if now > start and now < end:
+                    self.reason = str(event.get('summary'))
+                    return True
+                else:
+                    continue
+
+            # exdate = event.get('EXDATE')
+            # if exdate:
+            #     print(str(exdate.dts))
             rrules_start = rrulestr(rrule.to_ical().decode("utf-8"), dtstart=start)
+
+            # rrules_set = rruleset(rrules_start)
+            # rrules_set.exdate(exdate)
             reccuring_start = rrules_start.before(now)
 
             reccuring_end = reccuring_start + time
