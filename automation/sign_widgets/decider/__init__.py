@@ -10,5 +10,5 @@ class DeciderWidget(AbstractWidget):
             instance = Decider.objects.get(id=self.configuration["decider"]).get_instance()
             instance.decide()
             return {'text': instance.get_decision_reason()}
-        except Exception:
-            return "Unknown"
+        except Exception as e:
+            return {"text": None, "error":  str(e)}

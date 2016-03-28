@@ -1,7 +1,10 @@
 from automation.deciders import AbstractDecider
 from django.core.cache import cache
 
-from datetime import datetime, timezone
+from datetime import datetime
+from pytz import timezone
+from pytz.exceptions import UnknownTimeZoneError
+import pytz
 import requests
 import hashlib
 from icalendar import Calendar, Event
@@ -40,11 +43,19 @@ class CalendarDecider(AbstractDecider):
     def get_decision_reason(self):
         return self.reason
 
-    def decide(self, now=datetime.now(timezone.utc)):
+    def decide(self, now=None):
         calendar = self.get_calendar()
 
         if 'default_reason' in self.configuration:
             self.reason = self.configuration['default_reason']
+
+        if 'timezone' not in self.configuration:
+            now = datetime.now(pytz.utc)
+        else:
+            try:
+                now = datetime.now(timezone(self.configuration['timezone']))
+            except UnknownTimeZoneError as e:
+                raise AbstractDecider.ConfigurationException("pytz: Invalid timezone: " + str(e))
 
         for event in calendar.walk('vevent'):
             start = event.get('dtstart').dt

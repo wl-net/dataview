@@ -1,6 +1,9 @@
 class AbstractDecider(object):
     class CommunicationException(Exception):
         pass
+
+    class ConfigurationException(Exception):
+        pass
     def __init__(self, conditions, configuration={}):
         self.conditions = conditions
         self.configuration = configuration
