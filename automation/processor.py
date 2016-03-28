@@ -21,7 +21,7 @@ class Processor:
         result = a.do_operations('[{"method": "' + method + '", "params": ' + json.dumps(params) + '}]')
 
         if not (len(result) == 1 and result[0] == None):
-            print(result)
+            print(json.dumps(result))
 
     def run_task(self, task):
         try:
@@ -39,4 +39,4 @@ class Processor:
 
     def call_decider(self, decider):
       d = Decider.objects.get(id = decider)
-      print(d.decide())
+      print(json.dumps(d.decide()))
