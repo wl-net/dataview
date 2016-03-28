@@ -5,13 +5,29 @@ class SensorValueWidget(AbstractWidget):
 
     WIDGET_NAME = "Generic Sensor Value Widget"
 
-    def __init__(self, configuration):
-        super().__init__(configuration)
-        pass
-
     def get_contents(self):
         try:
-            return {'value': float(SensorValue.objects.filter(sensor=self.configuration["sensor"]).order_by('-updated')[0].value)}
+            value = float(SensorValue.objects.filter(sensor=self.configuration["sensor"]).order_by('-updated')[0].value)
+
+            if 'average' in self.configuration:
+                pass
+
+            if 'divide' in self.configuration:
+                divide = self.configuration['divide']
+
+                if 'type' in divide:
+                    if 'int' == divide['type']:
+                        value = int(value)
+
+                value = value / divide['value']
+
+            if 'round' in self.configuration:
+                config = self.configuration['round']
+                if 'digits' in config:
+                    value = round(value, config['digits'])
+
+            return {'value': value}
+
         except Exception:
             return "Unknown"
 
