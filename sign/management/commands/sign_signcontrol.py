@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from sign.models import SignType, Sign, Widget
+
+
 class Command(BaseCommand):
  
     help = "Update sign functionality"

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from sign.models import SignType, Sign, Widget
+from sign.models import Sign
 
 class Command(BaseCommand):
 

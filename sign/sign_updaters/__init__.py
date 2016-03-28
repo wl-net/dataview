@@ -1,6 +1,4 @@
-from sign.models import SignWidget
-
-class AbstractSignUpdater:
+class AbstractSignUpdater(object):
     def __init__(self, configuration):
         self.configuration = configuration
         pass

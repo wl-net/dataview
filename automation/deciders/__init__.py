@@ -4,6 +4,7 @@ class AbstractDecider(object):
 
     class ConfigurationException(Exception):
         pass
+
     def __init__(self, conditions, configuration={}):
         self.conditions = conditions
         self.configuration = configuration
