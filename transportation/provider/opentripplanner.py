@@ -11,6 +11,6 @@ class OpenTripPlannerProvider():
                      {'fromPlace': fromPlace, 'toPlace': toPlace, 'time': time, 'date': date, 'mode': mode, 'maxWalkDistance': maxWalkDistance,
                       'arriveBy': arriveBy, 'wheelchair': wheelchair, 'showIntermediateStops': showIntermediateStops}
                      , headers = {'Accept': 'application/json'})
-        if r.status_code != 200:
+        if r.status_code != 200 or 'error' in r.json():
             return {'itineraries': []}
         return r.json()['plan']
