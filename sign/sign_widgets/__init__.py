@@ -6,7 +6,7 @@ class AbstractWidget():
     """
 
     """
-    WIDGET_NAME must be set in order for Dataview to consider this widget
+    The WIDGET_NAME field must be set in order for Dataview to add this widget
     """
 
     def __init__(self, configuration):
