@@ -3,6 +3,7 @@ from transportation.provider.opentripplanner import OpenTripPlannerProvider
 from building.models import Address
 import datetime
 
+
 class SimpleTransportationWidget(AbstractWidget):
 
     WIDGET_NAME = "Departure Information"
@@ -13,12 +14,15 @@ class SimpleTransportationWidget(AbstractWidget):
         pass
 
     def get_contents(self):
-        response = {}
+        response = {'trip_efficency': 0, 'friendly_message': "Unable to plan trip"}
         otpp = OpenTripPlannerProvider(self.configuration['api_target'], self.configuration['router_id'])
         from_a = Address.objects.get(id=self.configuration['from'])
         to_a = Address.objects.get(id=self.configuration['to'])
 
         plan = otpp.get_directions(str(from_a.geo.y) + ',' + str(from_a.geo.x), str(to_a.geo.y) + ',' + str(to_a.geo.x))
+        if len(plan['itineraries']) == 0:
+            return response
+
         departure_method = plan['itineraries'][0]['legs'][0]
         trip_time = round(plan['itineraries'][0]['duration']/60) 
         departure_time = plan['itineraries'][0]['legs'][0]['startTime']
@@ -34,6 +38,7 @@ class SimpleTransportationWidget(AbstractWidget):
         note that this particular implementation does not does not scale with longer trips.
         """
         return round(1/(4 / (itinerary['walkTime'] + 1)) + (2 / (itinerary['waitingTime'] + 1)) + (8 / (itinerary['transitTime'] + 1)), 2)
+
 
 class TransportationWidget(AbstractWidget):
 
