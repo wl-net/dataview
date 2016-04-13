@@ -10,6 +10,8 @@ import hashlib
 from icalendar import Calendar, Event
 from dateutil.relativedelta import *
 from dateutil.rrule import *
+from dateutil.parser import *
+import re
 
 
 class CalendarDecider(AbstractDecider):
@@ -54,36 +56,41 @@ class CalendarDecider(AbstractDecider):
         else:
             try:
                 now = datetime.now(timezone(self.configuration['timezone']))
+                tz = timezone(self.configuration['timezone'])
             except UnknownTimeZoneError as e:
                 raise AbstractDecider.ConfigurationException("pytz: Invalid timezone: " + str(e))
 
         for event in calendar.walk('vevent'):
-            start = event.get('dtstart').dt
-            end = event.get('dtend').dt
+            start = event.get('dtstart').dt.astimezone(timezone(self.configuration['timezone']))
+            end = event.get('dtend').dt.astimezone(timezone(self.configuration['timezone']))
             time = end - start
-            rrule = event.get('rrule')
-
-            if rrule is None:
+            rule = event.get('rrule')
+            if not rule:
                 if now > start and now < end:
                     self.reason = str(event.get('summary'))
                     return True
                 else:
                     continue
 
+            now = now.replace(tzinfo=None)
             # exdate = event.get('EXDATE')
             # if exdate:
             #     print(str(exdate.dts))
-            rrules_start = rrulestr(rrule.to_ical().decode("utf-8"), dtstart=start)
+            tz = timezone(self.configuration['timezone'])
+            start= start.replace(tzinfo=None)
+
+            rule = re.sub(r';UNTIL=[0-9A-Z]*', '', rule.to_ical().decode('utf-8'))
+            rrules_start = rrulestr(rule, dtstart=start)
 
             # rrules_set = rruleset(rrules_start)
             # rrules_set.exdate(exdate)
-            reccuring_start = rrules_start.before(now)
 
-            reccuring_end = reccuring_start + time
+            recurring_start = rrules_start.before(now)
 
-            if now > reccuring_start and now < reccuring_end and (reccuring_end - reccuring_start == time):
+            recurring_end = recurring_start + time
+
+            if now > recurring_start and now < recurring_end and (recurring_end - recurring_start == time):
                 self.reason = str(event.get('summary'))
                 return True
 
         return False
-
