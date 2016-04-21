@@ -1,8 +1,11 @@
 from django.conf import settings
 from django.db.models import Q
 
-from django.contrib.auth.models import User,Permission
+from django.contrib.auth.models import User, Permission
 from portal.models import Message
+
+BLACKLIST = ['portal']
+
 
 def add_commons(request):
     d = {}
@@ -16,6 +19,8 @@ def add_commons(request):
                 permissions.append(permission.content_type.app_label)
         apps = []
         for app in sorted(settings.DATAVIEW_APPS):
+            if app in BLACKLIST:
+                continue
             if app in permissions:
                 apps.append(app)
 

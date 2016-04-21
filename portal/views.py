@@ -4,11 +4,11 @@ from django.http import HttpResponse
 import json
 from portal.models import *
 
+
 def index(request):
     return render_to_response('portal/index.html', RequestContext(request, {}))
 
 def dismiss_message(request):
-    print(request.POST['messageid'])
     m = Message.objects.get(id=int(request.POST['messageid']))
     m.acknowledge()
     m.save()
