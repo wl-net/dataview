@@ -1,0 +1,8 @@
+{% extends "basic-portal.html" %}
+
+{% block content %}
+<h2>Sensors</h2>
+{% for sensor in sensors %}
+    <li>{{ sensor }}</li>
+{% endfor %}
+{% endblock %}
