@@ -11,7 +11,6 @@ from icalendar import Calendar, Event
 from dateutil.relativedelta import *
 from dateutil.rrule import *
 from dateutil.parser import *
-import re
 
 
 class CalendarDecider(AbstractDecider):
@@ -79,13 +78,15 @@ class CalendarDecider(AbstractDecider):
             tz = timezone(self.configuration['timezone'])
             start= start.replace(tzinfo=None)
 
-            rule = re.sub(r';UNTIL=[0-9A-Z]*', '', rule.to_ical().decode('utf-8'))
-            rrules_start = rrulestr(rule, dtstart=start)
+            rrules_start = rrulestr(rule.to_ical().decode('utf-8'), dtstart=start, ignoretz=True)
 
             # rrules_set = rruleset(rrules_start)
             # rrules_set.exdate(exdate)
 
             recurring_start = rrules_start.before(now)
+
+            if not recurring_start:
+                continue
 
             recurring_end = recurring_start + time
 

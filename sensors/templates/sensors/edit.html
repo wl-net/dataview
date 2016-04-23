@@ -1,0 +1,8 @@
+{% extends "basic-portal.html" %}
+
+{% block content %}
+<h2>Sensors</h2>
+{% for sensor in sensors %}
+    <li><a href="{% url 'sensors-edit_sensor' sensor.id %}"> {{ sensor }} </a></li>
+{% endfor %}
+{% endblock %}
