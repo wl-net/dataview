@@ -9,20 +9,25 @@ class SensorType(UUIDModel):
     def __str__(self):
         return self.name
 
+
 class Sensor(UUIDModel):
     name = models.CharField(max_length=128)
     type = models.ForeignKey(SensorType)
     description = models.TextField(blank=True)
     location = models.ForeignKey('building.Room', null=True, blank=True)
 
+    def get_values(self, count=10):
+        return SensorValue.objects.filter(sensor=self).order_by('-updated')[:count]
+
     def get_most_recent_value(self):
-        return SensorValue.objects.filter(sensor=self).order_by('-updated')[0].value
+        return self.get_values(1).value
 
     def __unicode__(self):
         return self.name
 
     def __str__(self):
         return self.name
+
 
 class SensorValue(UUIDModel):
     sensor = models.ForeignKey('sensors.Sensor')
@@ -30,7 +35,7 @@ class SensorValue(UUIDModel):
     value = models.TextField()
 
     def __unicode__(self):
-        return self.sensor + " " + self.updated
+        return self.value
 
     def __str__(self):
-        return self.sensor + " " + self.updated
+        return self.value
