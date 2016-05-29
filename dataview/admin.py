@@ -1,13 +1,15 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
-from dataview.models import Account, SystemDeployment
+from dataview.models import Account, SystemDeployment, Node, Attribute
 
 class SystemDeploymentAdmin(admin.ModelAdmin):
     list_display = ['name']
     pass
 
 admin.site.register(SystemDeployment, SystemDeploymentAdmin)
+admin.site.register(Node)
+admin.site.register(Attribute)
 
 class AccountAdmin(admin.ModelAdmin):
     list_display = ['name']

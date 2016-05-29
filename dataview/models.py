@@ -29,6 +29,37 @@ class SystemDeployment(UUIDModel):
     is_available = models.BooleanField(default=True)
 
 
+class Node(UUIDModel):
+    """
+    Nodes represent external systems that dataview has knowledge of or manages
+    """
+    name = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class Attribute(UUIDModel):
+    node = models.ForeignKey(Node)
+    name = models.CharField(max_length=128)
+    value = models.CharField(max_length=128)
+
+    def value(self, value=None):
+        if value:
+            self.value = value
+            self.save()
+        return self.value
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
 class SystemDeploymentForm(ModelForm):
     class Meta:
         model = SystemDeployment
