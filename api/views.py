@@ -131,3 +131,26 @@ class SafetyIncidentAlertViewSet(viewsets.ModelViewSet):
 class SafetyIncidentAlertBoundaryViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncidentAlertBoundary.objects.all()
     serializer_class = SafetyIncidentAlertBoundarySerializer
+
+
+from dataview.models import Attribute, Node
+from api.serializers import AttributeSerializer, NodeSerializer
+
+
+class AttributeFilter(django_filters.FilterSet):
+    node = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(node = Node.objects.filter(name = value)))
+
+    class Meta:
+        model = Attribute
+        fields = ('node', 'name')
+
+
+class NodeViewSet(viewsets.ModelViewSet):
+    queryset = Node.objects.all()
+    serializer_class = NodeSerializer
+
+
+class AttributeViewSet(viewsets.ModelViewSet):
+    queryset = Attribute.objects.all()
+    serializer_class = AttributeSerializer
+    filter_class = AttributeFilter

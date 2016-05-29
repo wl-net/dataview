@@ -87,3 +87,18 @@ class SignSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Sign
         fields = ('name', 'location', 'background_image')
+
+
+from dataview.models import Attribute, Node
+
+
+class AttributeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Attribute
+        fields = ('name', 'value')
+
+
+class NodeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Node
+        fields = ['name']

@@ -31,6 +31,8 @@ router.register(r'safety-incident', views.SafetyIncidentViewSet)
 router.register(r'safety-incident-alert', views.SafetyIncidentAlertViewSet)
 router.register(r'safety-incident-alert-boundary', views.SafetyIncidentAlertBoundaryViewSet)
 
+router.register(r'node-attributes', views.AttributeViewSet)
+
 urlpatterns = [
     url(r'^1/', include(router.urls)),
     url(r'^1/portal/', include(portal_router.urls)),

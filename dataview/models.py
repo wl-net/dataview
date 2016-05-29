@@ -47,6 +47,9 @@ class Attribute(UUIDModel):
     name = models.CharField(max_length=128)
     value = models.CharField(max_length=128)
 
+    class Meta:
+        unique_together = ('node', 'name')
+
     def set_value(self, value):
         self.value = value
         self.save()
