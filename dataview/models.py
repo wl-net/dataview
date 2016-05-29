@@ -47,10 +47,11 @@ class Attribute(UUIDModel):
     name = models.CharField(max_length=128)
     value = models.CharField(max_length=128)
 
-    def value(self, value=None):
-        if value:
-            self.value = value
-            self.save()
+    def set_value(self, value):
+        self.value = value
+        self.save()
+
+    def get_value(self):
         return self.value
 
     def __unicode__(self):
