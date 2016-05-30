@@ -1,8 +1,10 @@
 from dataview.models import X509Certificate
 from django.core.exceptions import ObjectDoesNotExist
 
+import binascii
 import requests
 import json
+import os
 
 
 class JSONRPCClient(object):
@@ -38,6 +40,14 @@ class JSONRPCClient(object):
             return r.json()['result']
 
         raise Exception(r.status_code)
+
+    @classmethod
+    def generate_random_token(cls):
+        """
+        generates a token suitable for authentication
+        :return:
+        """
+        return binascii.hexlify(os.urandom(32)).decode('utf-8')
 
     def get_client(self):
         return self.client

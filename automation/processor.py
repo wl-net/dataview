@@ -2,7 +2,8 @@ from automation.models import Automator, AutomatorClass, DeciderClass, Decider, 
 
 import json
 
-class Processor:
+
+class Processor(object):
     '''
     The processor calls automators based on configuration of deciders defined in a controller
     '''
@@ -17,7 +18,7 @@ class Processor:
                 print("Skipped '{0}'. Please ensure it is configured properly.".format(controller.name))
 
     def call_automator(self, automator, method, params):
-        a = Automator.objects.get(name = automator)
+        a = Automator.objects.get(id=automator)
         result = a.do_operations('[{"method": "' + method + '", "params": ' + json.dumps(params) + '}]')
 
         if not (len(result) == 1 and result[0] == None):
@@ -25,18 +26,18 @@ class Processor:
 
     def run_task(self, task):
         try:
-            t = Task.objects.get(id = task)
+            t = Task.objects.get(id=task)
             t.do_operations()
             return
         except Exception:
             pass
 
         try:
-            t = TaskGroup.objects.get(id = task)
+            t = TaskGroup.objects.get(id=task)
             t.do_operations()
         except Exception:
             pass
 
     def call_decider(self, decider):
-      d = Decider.objects.get(id = decider)
+      d = Decider.objects.get(id=decider)
       print(json.dumps(d.decide()))
