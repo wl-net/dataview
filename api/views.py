@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+import django_filters
+
 from rest_framework import viewsets, filters
 from rest_framework.response import Response
 
@@ -9,6 +11,7 @@ from portal.models import Guest, Message
 from building.models import Address
 
 from transportation.models import Destination, OpenHour
+
 
 class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
@@ -28,7 +31,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # portal models
 
-import django_filters
+
 
 class AddressFilter(django_filters.FilterSet):
     street = django_filters.CharFilter(name="street",lookup_type="icontains")
@@ -38,12 +41,14 @@ class AddressFilter(django_filters.FilterSet):
         model = Address
         fields = ('street', 'city')
 
+
 class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
     filter_class = AddressFilter
     filter_backends = (filters.DjangoFilterBackend,)
     search_fields = ('street', 'city')
+
 
 class DestinationViewSet(viewsets.ModelViewSet):
     queryset = Destination.objects.all()

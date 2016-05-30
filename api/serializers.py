@@ -52,22 +52,25 @@ class SensorValueSerializer(serializers.HyperlinkedModelSerializer):
         model = SensorValue
         fields = ('sensor', 'updated', 'value')
 
-# security serializers
 
+# security serializers
 class CameraSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Camera
         fields = ('location', 'residence')
+
 
 class SafetyIncidentSourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SafetyIncidentSource
         fields = ['name']
 
+
 class SafetyIncidentAlertBoundarySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SafetyIncidentAlertBoundary
         fields = ['name']
+
 
 class SafetyIncidentSerializer(serializers.HyperlinkedModelSerializer):
     source = serializers.SlugRelatedField(queryset = SafetyIncidentSource.objects.all(), read_only = False, slug_field = 'name')
@@ -75,6 +78,7 @@ class SafetyIncidentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SafetyIncident
         fields = ('source', 'location', 'time', 'units', 'type')
+
 
 class SafetyIncidentAlertSerializer(serializers.HyperlinkedModelSerializer):
 

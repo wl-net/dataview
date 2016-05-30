@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken import views as authtoken_views
@@ -39,3 +40,12 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^get-auth-token', authtoken_views.obtain_auth_token),
 ]
+
+for app in settings.DATAVIEW_APPS:
+    try:
+        urlpatterns += [url('^1/{}/'.format(app), include(app + '.api.urls'))]
+    except ImportError as e:
+        if "No module named '" + app + '.api' +  "'" != str(e):
+
+            import traceback
+            print(traceback.format_exc())
