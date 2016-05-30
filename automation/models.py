@@ -6,7 +6,7 @@ import sys, json
 
 from automation.automators import AbstractAutomator
 from automation.deciders import AbstractDecider
-from dataview.models import Event, UUIDModel
+from dataview.models import Event, UUIDModel, Node
 
 
 class Automator(UUIDModel):
@@ -15,11 +15,14 @@ class Automator(UUIDModel):
                                       "<strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
     account = models.ForeignKey('dataview.Account')
     backend = models.ForeignKey('automation.AutomatorClass',
-                                help_text="This backend will be responsible for performing the actions you desire. " +
+                                help_text="This backend will be responsible for performing the actions you desire. "
                                           "Your Dataview administrator can provision additional backends for you to use.")
     description = models.TextField(blank=True, help_text="What does this Automator do?")
-    configuration = models.TextField(blank=True, help_text="Don't modify this unless you know understand how the " +
+    configuration = models.TextField( default='{}', help_text="Don't modify this unless you know understand how the " +
                                                            "automator processes configuration")
+    nodes = models.ManyToManyField(Node, blank=True,
+                                   help_text="These nodes will be associated with this automator and "
+                                             "granted access to any credentials")
 
     def __unicode__(self):
         return self.name
@@ -27,12 +30,18 @@ class Automator(UUIDModel):
     def __str__(self):
         return self.name
 
-    def get_instance(self):
+    def save(self, *args, **kwargs):
+        self.configuration = self.get_class().populate_configuration(json.loads(self.configuration))
+        super(Automator, self).save(*args, **kwargs)
+
+    def get_class(self):
         cls = self.backend.path + '.' +  self.backend.name
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
-        class_name = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
-        return class_name(json.loads(self.configuration))
+        return getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+
+    def get_instance(self):
+        return self.get_class(json.loads(self.configuration))
 
     def do_operations(self, operations, instance=None, logging=True, duplicate=False):
         i = self.get_instance()
@@ -117,7 +126,7 @@ class AutomatorClass(UUIDModel):
 class AutomatorForm(ModelForm):
     class Meta:
         model = Automator
-        fields = ['name', 'account', 'backend', 'description', 'configuration']
+        fields = ['name', 'account', 'backend', 'description', 'configuration', 'nodes']
 
 
 class Action(UUIDModel):
@@ -196,16 +205,16 @@ class Decider(UUIDModel):
         return apps
 
     def get_instance(self):
-        cls = self.backend.path + '.' +  self.backend.name 
+        cls = self.backend.path + '.' + self.backend.name
         import_module(cls[:cls.rfind(".")])
         module = sys.modules[cls[:cls.rfind(".")]]
-        clsName = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
+        name = getattr(module, cls[(cls.rfind(".")+1):len(cls)])
         try:
             config = json.loads(self.configuration)
-        except Exception:
+        except IOError:
             config = {}
 
-        return clsName(json.loads(self.conditions), config)
+        return name(json.loads(self.conditions), config)
 
     def decide(self):
         i = self.get_instance()
@@ -255,8 +264,8 @@ class DeciderClass(UUIDModel):
             ac.save()
 
         # remove old classes
-        for old_cls in my_classes:
-            DeciderClass.objects.filter(name=old_cls['name']).filter(path=old_cls['path']).delete()
+        #for old_cls in my_classes:
+        #    DeciderClass.objects.filter(name=old_cls['name']).filter(path=old_cls['path']).delete()
 
 
 class DeciderForm(ModelForm):
@@ -329,6 +338,7 @@ class Controller(UUIDModel):
 
     def __str__(self):
         return self.name
+
 
 class ControllerForm(ModelForm):
     class Meta:

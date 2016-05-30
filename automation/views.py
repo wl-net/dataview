@@ -16,13 +16,14 @@ from guardian.shortcuts import get_objects_for_user
 
 import json
 
+
 def index(request):
     automators = get_objects_for_user(request.user, 'automation.change_automator')
     controllers = get_objects_for_user(request.user, 'automation.change_controller')
     deciders = get_objects_for_user(request.user, 'automation.change_decider')
     taskgroups = get_objects_for_user(request.user, 'automation.change_taskgroup')
     tasks = get_objects_for_user(request.user, 'automation.change_task')
-    events = Event.objects.filter(type='automation.operation')[:5]
+    events = get_objects_for_user(request.user, 'dataview.change_event').filter(type='automation.operation')[:5]
     return render_to_response('automation/index.html',
                               RequestContext(request, {'automators': automators,
                                                        'controllers': controllers, 'deciders': deciders,
@@ -31,7 +32,6 @@ def index(request):
 
 class AutomateWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
-        do_something_with_the_form_data(form_list)
         return HttpResponseRedirect('/portal/automation/')
 
 def automators(request):
@@ -49,9 +49,11 @@ def add_automator(request):
         form = AutomatorForm(initial={'account': Account.objects.get(users=request.user)})
     return render_to_response('automation/add-automator.html', RequestContext(request, {'form': form}))
 
+
 def get_automator_default_config(request):
     a = AutomatorClass.objects.get(id=request.id)
-    a.get_instance
+    a.get_instance()
+
 
 def edit_automator(request, automator):
     if request.method == 'POST':
