@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf import settings
 from portal.views import index, dismiss_message
 
@@ -14,7 +14,7 @@ for app in settings.DATAVIEW_APPS:
     try:
         urlpatterns += [url('^portal/' + app, include(app + '.portal.urls'))]
     except ImportError as e:
-        if "No module named '" + app + '.portal' +  "'" != str(e):
+        if "No module named '{}'".format(app) != str(e):
 
             import traceback
             print(traceback.format_exc())

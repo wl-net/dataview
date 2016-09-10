@@ -112,6 +112,7 @@ class SafetyIncidentSourceViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncidentSource.objects.all()
     serializer_class = SafetyIncidentSourceSerializer
 
+
 class SafetyIncidentFilter(django_filters.FilterSet):
     """
     source is a ForeignKey in SafetyIncident. We look it up by "name" in the query string.
@@ -124,14 +125,17 @@ class SafetyIncidentFilter(django_filters.FilterSet):
         model = SafetyIncident
         fields = ('source', 'location', 'type')
 
+
 class SafetyIncidentViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncident.objects.all()
     serializer_class = SafetyIncidentSerializer
     filter_class = SafetyIncidentFilter
 
+
 class SafetyIncidentAlertViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncidentAlert.objects.all()
     serializer_class = SafetyIncidentAlertSerializer
+
 
 class SafetyIncidentAlertBoundaryViewSet(viewsets.ModelViewSet):
     queryset = SafetyIncidentAlertBoundary.objects.all()

@@ -3,10 +3,17 @@ class AbstractAutomator(object):
     def __init__(self, configuration):
         self.configuration = configuration
         self.validate_configuration()
+        self.exposed_attributes = {}
 
     @staticmethod
     def get_configuration_fields():
         return {}
+
+    def get_attributes(self):
+        attributes = {}
+        for attribute in self.exposed_attributes:
+            attributes[attribute] = self.configuration[attribute]
+        return attributes
 
     @classmethod
     def populate_configuration(cls, configuration={}):
