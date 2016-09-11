@@ -24,9 +24,9 @@ def add_commons(request):
             if app in permissions:
                 apps.append(app)
 
-        d =  {'portal_messages': Message.objects.filter(user=request.user, acknowledged=False),
+        d = {'portal_messages': Message.objects.filter(user=request.user, acknowledged=False),
               'portal_apps': apps,
               'portal_current_app': '',
               'portal_current_user': User.objects.get(username=request.user),
-              }
+            }
     return d
