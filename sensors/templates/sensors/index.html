@@ -3,6 +3,6 @@
 {% block content %}
 <h2>Sensors</h2>
 {% for sensor in sensors %}
-    <li>{{ sensor }}</li>
+    <li>{{ sensor }} <a href="{% url 'sensors-edit_sensor' sensor.id %}">edit</a> | <a href="{% url 'sensors-observe_sensor' sensor.id %}">observe</a></li>
 {% endfor %}
 {% endblock %}

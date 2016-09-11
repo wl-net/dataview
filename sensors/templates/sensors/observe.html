@@ -1,8 +1,31 @@
-index.html{% extends "basic-portal.html" %}
+{% extends "basic-portal.html" %}
 
 {% block content %}
-<h2>Sensors</h2>
-{% for sensor in sensors %}
-    <li><a href="{% url 'sensors-edit_sensor' sensor.id %}"> {{ sensor }} </a></li>
+<script src="/static/js/plotly-latest.min.js"></script>
+
+<h2>Sensor: {{ sensor }}</h2>
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+    <td>Value</td>
+    <td>Updated</td>
+</tr>
+</thead>
+{% for value in values %}
+    <tr>
+    <td>{{ value.value }}</td>
+    <td>{{ value.updated }}</td>
+    </tr>
 {% endfor %}
+</table>
+
+    <div id="tester" style="width:1000px"></div>
+    <script>
+        $.get('data?count=100', function(d) {
+            Plotly.plot( document.getElementById('tester'), [{
+            x: d.data.x,
+            y: d.data.y }], {
+            margin: { t: 0 } } );
+        })
+    </script>
 {% endblock %}
