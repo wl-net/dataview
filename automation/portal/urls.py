@@ -1,11 +1,12 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from automation.views import AutomateWizard, AutomatorForm, DeciderForm, ControllerForm
 from automation.views import automators, activity, add_automator, edit_automator, run_task, index
 from automation.views import controllers, add_controller, edit_controller, edit_controllertask, edit_controllerdeciders
 from automation.views import deciders, add_decider, edit_decider, query_decider
+from automation.views import edit_task
 
-urlpatterns = patterns('automation.views',
+urlpatterns = [
     url(r'^/?$', index, name = 'automation-index'),
 
     url(r'^/automate$', AutomateWizard.as_view([AutomatorForm, DeciderForm, ControllerForm], template_name='automation/automate-wizard.html')),
@@ -29,5 +30,8 @@ urlpatterns = patterns('automation.views',
     url('^/add-decider', add_decider, name='automation-add_decider'),
     url('^/edit-decider/(?P<decider>[0-9a-f\-]+)$', edit_decider, name='automation-edit_decider'),
     url('^/query-decider/(?P<decider>[0-9a-f\-]+)$', query_decider, name='automation-query_decider'),
-)
 
+    url(r'^/tasks/$', deciders, name='automation-tasks'),
+    url('^/add-task', add_decider, name='automation-add_task'),
+    url('^/edit-task/(?P<task>[0-9a-f\-]+)$', edit_task, name='automation-edit_task'),
+]

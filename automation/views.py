@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from dataview.models import Event
 from dataview.models import Account
-from automation.models import Automator, AutomatorClass, Controller, Decider, AutomatorForm, ControllerForm
+from automation.models import Automator, AutomatorClass, Controller, Decider, TaskForm, AutomatorForm, ControllerForm
 from automation.models import ControllerTask, ControllerTaskForm
 from automation.models import ControllerDecider, DeciderForm, Task, TaskGroup
 
@@ -222,3 +222,19 @@ def edit_decider(request, decider):
 def query_decider(request, decider):
     decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
     return HttpResponse(json.dumps({"name": decider.name, "decision": decider.decide()}), content_type='application/json')
+
+
+def edit_task(request, task):
+    my_task = get_objects_for_user(request.user, 'automation.change_task').get(id=task)
+    if request.method == 'POST':
+        if request.POST.get('delete') is not None:
+            my_task.delete()
+            return HttpResponseRedirect(reverse('automation-tasks'))
+
+        form = TaskForm(request.POST, instance=my_task)
+        if form.is_valid():
+            form.save()
+    else:
+        form = TaskForm(instance=my_task)
+
+    return render(request, 'automation/edit-task.html', {'task': my_task, 'form': form})

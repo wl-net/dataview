@@ -30,8 +30,15 @@ class Automator(UUIDModel):
     def __str__(self):
         return self.name
 
+    def get_attributes(self):
+        """
+        Get exported attributes
+        :return:
+        """
+        return self.get_instance().get_attributes()
+
     def save(self, *args, **kwargs):
-        self.configuration = self.get_class().populate_configuration(json.loads(self.configuration))
+        self.configuration = json.dumps(self.get_class().populate_configuration(json.loads(self.configuration)))
         super(Automator, self).save(*args, **kwargs)
 
     def get_class(self):
@@ -41,13 +48,18 @@ class Automator(UUIDModel):
         return getattr(module, cls[(cls.rfind(".")+1):len(cls)])
 
     def get_instance(self):
-        return self.get_class(json.loads(self.configuration))
+        return self.get_class()(json.loads(self.configuration))
 
     def do_operations(self, operations, instance=None, logging=True, duplicate=False):
         i = self.get_instance()
         response = []
         for operation in json.loads(operations):
-            response.append(getattr(i, operation["method"])(*operation["params"]))
+            success = True
+            try:
+                response.append(getattr(i, operation["method"])(*operation["params"]))
+            except Exception as e:
+                success = False
+                response.append(e)
 
             if logging:
                 e = Event()
@@ -58,7 +70,7 @@ class Automator(UUIDModel):
                 e.type = 'automation.operation'
 
                 details = operation.copy()
-                details.update({'name': self.name})
+                details.update({'name': self.name, 'success': success})
                 e.detail = json.dumps(details)
 
                 e.save()
@@ -155,7 +167,7 @@ class Task(UUIDModel):
 class TaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = ['name', 'description', 'automator']
+        fields = ['name', 'description', 'automator', 'operations']
 
 
 class TaskGroup(UUIDModel):

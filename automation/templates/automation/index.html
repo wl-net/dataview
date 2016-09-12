@@ -72,4 +72,13 @@ $(document).ready(function() {
   <li><a href="{%url 'automation-edit_controller' controller.id%}">{{controller}}</a></li>
 {%endfor%}
 </ul>
+
+<h3>Tasks</h3>
+<a href="{%url 'automation-add_controller'%}">Add</a>
+
+<ul>
+{%for task in tasks%}
+  <li><a href="{%url 'automation-edit_task' task.id%}">{{task}}</a></li>
+{%endfor%}
+</ul>
 {% endblock %}

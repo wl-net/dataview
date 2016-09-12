@@ -1,0 +1,21 @@
+{% extends "basic-portal.html" %}
+{%load bootstrap3%}
+{% block content %}
+<script src="/static/automation/js/automation.js"></script>
+
+<h2>Edit Task:</h2>
+<form class="task-runner" method="post" action="{%url 'automation-run_task'%}">
+{%csrf_token%}
+<input type="hidden" name="task" value="{{ task.id }}">
+</p>
+<button type="submit" class="btn btn-default">Run</button>
+</form>
+<form method='post'>
+  {%csrf_token%}
+  {%bootstrap_form form%}
+
+  <button type="submit" class="btn btn-default">Save</button>
+  <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+</form>
+
+{% endblock %}
