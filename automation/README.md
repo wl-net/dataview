@@ -28,7 +28,7 @@ python3 manage.py automation_callautomator "WLNet Denny Triangle Sound" play htt
 Create an empty file in YOUR_APPLICATION/automators/YOUR_AUTOMATOR_TYPE/YOUR_TRANSPORT.py Create a python class that extendss AbstractAutomator as shown below:
 
 ````
-from dataview.transports.json_rpc import JSONRPCClient
+from dataview.transports.jsonrpc import JSONRPCClient
 from automation.automators import AbstractAutomator
 
 class HumidiferJSONRPCAutomator(AbstractAutomator):
