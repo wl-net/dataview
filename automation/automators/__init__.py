@@ -30,3 +30,7 @@ class AbstractAutomator(object):
 
     def healthcheck(self):
         pass
+
+    @classmethod
+    def get_commands(cls):
+        return {}
