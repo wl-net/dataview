@@ -1,0 +1,64 @@
+{% extends "basic-portal.html" %}
+{% block content %}
+<h1>Safety Incident Map</h1>
+<div id="map" style="height:700px; width:1000px">
+
+</div>
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=false">
+</script>
+<script>
+    var mapOptions = {
+        zoom: 14,
+        center: new google.maps.LatLng(47.611,-122.339)
+    }
+
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    $(document).ready(function() {
+        $.get('/security/safety-incidents', function(data) {
+            data.forEach(function(unused, i, data) {
+                var myLatLng = {lat: data[i]['geolocation'][0], lng: data[i]['geolocation'][1]};
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    label: data[i]['type'],
+                    title: data[i]['type'] + ' - ' + data[i]['units'] + ' at ' + data[i]['location']
+                });
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: data[i]['type'] + ' <br/> ' + data[i]['units'] + ' <br/>' + data[i]['location']
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+            });
+        });
+        $.get('/security/safety-incident-boundaries', function(data) {
+            for (i in data) {
+                for (j in data[i]['coordinates']) {
+                    var coords = [];
+                    console.log(data[i]['coordinates'])
+                    for (k in data[i]['coordinates'][j][0]) {
+                        coords.push({'lat': data[i]['coordinates'][j][0][k][1], 'lng': data[i]['coordinates'][0][j][k][0]})
+                    }
+                    console.log(coords);
+                    var polygon = new google.maps.Polygon({
+                        paths: coords,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35
+                    });
+                    polygon.setMap(map);
+                }
+
+            }
+        });
+
+
+    });
+</script>
+{% endblock %}

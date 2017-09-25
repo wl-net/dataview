@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from automation.processor import Processor
 
+
 class Command(BaseCommand):
  
     help = "Run an automation automator"
