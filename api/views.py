@@ -117,9 +117,12 @@ class SafetyIncidentFilter(django_filters.FilterSet):
     """
     source is a ForeignKey in SafetyIncident. We look it up by "name" in the query string.
     """
-    source = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(source = SafetyIncidentSource.objects.filter(name = value)))
+    source = django_filters.CharFilter(method='filter_source')
     location = django_filters.CharFilter(name="location",lookup_type="icontains")
     type = django_filters.CharFilter(name="type",lookup_type="icontains")
+
+    def filter_source(self, qs, value):
+        return qs.filter(source = SafetyIncidentSource.objects.filter(name = value))
 
     class Meta:
         model = SafetyIncident
@@ -147,7 +150,10 @@ from api.serializers import AttributeSerializer, NodeSerializer
 
 
 class AttributeFilter(django_filters.FilterSet):
-    node = django_filters.MethodFilter(action = lambda queryset, value: queryset.filter(node = Node.objects.filter(name = value)))
+    node = django_filters.CharFilter(method='filter_node')
+
+    def filter_node(self, qs, name, value):
+        return qs.filter(node=Node.objects.filter(name=value))
 
     class Meta:
         model = Attribute
