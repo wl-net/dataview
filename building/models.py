@@ -9,13 +9,16 @@ class Address(UUIDModel):
     city = models.CharField(max_length=128)
     state = models.CharField(max_length=2)
     zip = models.CharField(max_length=5)
-    geo = models.PointField(blank=True, null=True)
+    geo = models.PointField(blank=True, null=True, srid=4326)
 
     def save(self, *args, **kwargs):
-        request = requests.get("https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=0" % str(self).replace(' ', '%20'))
-        response = json.loads(request.content.decode('utf-8'))
-        self.geo = GEOSGeometry("POINT(" + response[0]['lat'] + " "+ response[0]['lon'] + ")")
-        super(Address, self).save(*args, **kwargs)
+        try:
+            request = requests.get("https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=0" % str(self).replace(' ', '%20'))
+            response = json.loads(request.content.decode('utf-8'))
+            self.geo = GEOSGeometry("POINT(" + response[0]['lon'] + " " + response[0]['lat'] + ")")
+        except Exception as e:
+            print(e)
+=        super(Address, self).save(*args, **kwargs)
 
     def full_name(self):
         return self.street + " " + self.city + ", " + self.state + " " + self.zip
