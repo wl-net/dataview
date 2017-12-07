@@ -18,7 +18,7 @@ class Address(UUIDModel):
             self.geo = GEOSGeometry("POINT(" + response[0]['lon'] + " " + response[0]['lat'] + ")")
         except Exception as e:
             print(e)
-=        super(Address, self).save(*args, **kwargs)
+        super(Address, self).save(*args, **kwargs)
 
     def full_name(self):
         return self.street + " " + self.city + ", " + self.state + " " + self.zip
