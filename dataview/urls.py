@@ -19,5 +19,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     
     url(r'^account/login/$',  login),
-    url(r'^account/logout/$', logout)
+    url(r'^account/logout/$', logout),
+
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+
 ]
