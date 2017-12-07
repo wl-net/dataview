@@ -135,6 +135,7 @@ class AutomatorClass(UUIDModel):
         for old_cls in my_classes:
             AutomatorClass.objects.filter(name=old_cls['name']).filter(path=old_cls['path']).delete()
 
+
 class AutomatorForm(ModelForm):
     class Meta:
         model = Automator
