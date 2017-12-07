@@ -35,7 +35,7 @@ def sign(request, id=None):
     return render_to_response('sign/sign.html', RequestContext(request, template_fields))
 
 def sign_dashing(request, id=None):
-    return render_to_response('sign/dashing-sign.html', RequestContext(request, {}))
+    return render_to_response('sign/dashing-sign.html', )
 
 def sign_config(request, id=None):
     response = {"widgets":[]}
