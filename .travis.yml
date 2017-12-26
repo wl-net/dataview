@@ -5,6 +5,9 @@ python:
 before_script:
   - psql -c 'create database dataview;' -U postgres
   
+before_install:
+  - sudo apt-get install postgresql-9.5-postgis-2.2
+
 install: 
   -  pip install -r requirements.txt
   -  cp dataview/settings.dist.py dataview/settings.py
@@ -13,5 +16,6 @@ install:
   -  python manage.py makemigrations
   -  sed -i "s/'#'guardian',/'guardian',/" dataview/settings.py
   -  python manage.py migrate
+
 script:
   -  python manage.py test
