@@ -6,7 +6,7 @@ before_script:
   - psql -c 'create database dataview;' -U postgres
   
 before_install:
-  - sudo apt-get install postgresql-9.5-postgis-2.2
+  - sudo apt-get install gdal postgresql-9.5-postgis-2.2
 
 install: 
   -  pip install -r requirements.txt
