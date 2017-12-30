@@ -13,3 +13,5 @@ djangorestframework
 Pillow
 # for icalendar decider
 icalendar
+# for oauth suport
+django-oauth-toolkit
