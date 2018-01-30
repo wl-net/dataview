@@ -162,7 +162,13 @@ class Task(UUIDModel):
         return self.name
 
     def do_operations(self, placeholders={}):
-        return self.automator.do_operations(self.operations)
+        prepared_operations = json.loads(self.operations)
+        for operation in prepared_operations:
+
+            params = operation.get('params')
+            operation.update({'params': [param.format(**placeholders) for param in params]})
+
+        return self.automator.do_operations(json.dumps(prepared_operations))
 
 
 class TaskForm(ModelForm):
