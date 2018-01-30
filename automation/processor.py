@@ -4,9 +4,10 @@ import json
 
 
 class Processor(object):
-    '''
+    """
     The processor calls automators based on configuration of deciders defined in a controller
-    '''
+    """
+
     def run(self):
         AutomatorClass.update_classes()
         DeciderClass.update_classes()
@@ -17,9 +18,9 @@ class Processor(object):
             else:
                 print("Skipped '{0}'. Please ensure it is configured properly.".format(controller.name))
 
-    def call_automator(self, automator, method, params):
-        a = Automator.objects.get(id=automator)
-        result = a.do_operations('[{"method": "' + method + '", "params": ' + json.dumps(params) + '}]')
+    def call_automator(self, automator_id, method, params):
+        automator = Automator.objects.get(id=automator_id)
+        result = automator.do_operations('[{"method": "' + method + '", "params": ' + json.dumps(params) + '}]')
 
         if not (len(result) == 1 and result[0] == None):
             print(json.dumps(result))
@@ -39,5 +40,5 @@ class Processor(object):
             pass
 
     def call_decider(self, decider):
-      d = Decider.objects.get(id=decider)
-      print(json.dumps(d.decide()))
+        d = Decider.objects.get(id=decider)
+        print(json.dumps(d.decide()))
