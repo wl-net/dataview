@@ -32,7 +32,19 @@ class MusicJSONRPCAutomator(AbstractAutomator):
 
     def unpause(self):
         self.client.call('unpause', [])
-        
+
+    def next(self):
+        self.client.call('next', [])
+
+    def previous(self):
+      self.client.call('previous', [])
+
+    def play_item(self, item):
+      self.client.call('play_item', [item])
+
+    def list(self):
+      return self.client.call('list', [])
+
     def set_volume(self, volume):
         self.client.call('set_volume', [volume])
 
@@ -42,6 +54,20 @@ class MusicJSONRPCAutomator(AbstractAutomator):
     def decrease_volume(self, threshold=5):
         self.client.call('decrease_volume', [threshold])
 
+    def set_position(self, position):
+        self.client.call('set_position', [position])
+
+    def set_loop(self, status):
+        self.client.call('set_loop', [status])
+
     def get_playback_information(self):
         return self.client.call('get_playback_information', [])
-    
+
+    def set_equalizer(self, band, value):
+        return self.client.call('set_equalizer', [band, value])
+
+    def set_equalizer_preamp(self, value):
+        return self.client.call('set_equalizer_preamp', [value])
+
+    def get_equalizer(self):
+        return self.client.call('get_equalizer', [])
