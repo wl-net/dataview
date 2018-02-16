@@ -26,6 +26,12 @@ class SensorValueWidget(AbstractWidget):
                 if 'digits' in config:
                     value = round(value, config['digits'])
 
+            if 'minutes_to_hours' in self.configuration:
+                value = int(value) / 60
+                hours = int(value)
+                minutes = int((value - hours) * 60)
+
+                value = '{}:{}'.format(hours, minutes)
             return {'value': value}
 
         except Exception:
