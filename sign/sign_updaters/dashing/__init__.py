@@ -11,10 +11,14 @@ class DashingSignUpdater(AbstractSignUpdater):
         wconfig = json.loads(sign_widget.backend_configuration)
         if 'dashing_widget_id' not in wconfig:
             return
-        contents['auth_token'] = self.configuration['dashing_auth_token']
 
-        r = requests.post(self.configuration['dashing_uri'] + 'widgets/' + wconfig['dashing_widget_id'],
-                          data=json.dumps(contents))
+        self.post_to_widget(wconfig, contents)
+
+    def post_to_widget(self, widget, payload):
+        payload['auth_token'] = self.configuration['dashing_auth_token']
+
+        r = requests.post(self.configuration['dashing_uri'] + 'widgets/' + widget['dashing_widget_id'],
+                          data=json.dumps(payload))
         r.raise_for_status()
 
     def reload_signs(self, sign_id):
