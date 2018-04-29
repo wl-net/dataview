@@ -1,6 +1,7 @@
 from sign.sign_widgets import AbstractWidget
 from sensors.models import SensorValue
 
+
 class SensorValueWidget(AbstractWidget):
 
     WIDGET_NAME = "Generic Sensor Value Widget"
@@ -36,5 +37,3 @@ class SensorValueWidget(AbstractWidget):
 
         except Exception:
             return "Unknown"
-
-      
