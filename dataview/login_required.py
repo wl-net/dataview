@@ -14,7 +14,7 @@ class LoginRequiredMiddleware(object):
         # One-time configuration and initialization.
 
     def __call__(self, request):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             path = request.path_info.lstrip('/')
             if not any(m.match(path) for m in EXEMPT_URLS):
                 return HttpResponseRedirect(settings.LOGIN_URL)

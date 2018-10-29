@@ -43,7 +43,7 @@ class Node(UUIDModel):
 
 
 class Attribute(UUIDModel):
-    node = models.ForeignKey(Node)
+    node = models.ForeignKey(Node, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     value = models.CharField(max_length=128)
 
@@ -136,7 +136,7 @@ class Event(UUIDModel):
     """
     Events are sourced either internally or externally
     """
-    account = models.ForeignKey(Account)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now=True)
     action = models.CharField(max_length=128)
     description = models.TextField(blank=True)

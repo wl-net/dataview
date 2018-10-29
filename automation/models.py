@@ -13,10 +13,11 @@ class Automator(UUIDModel):
     name = models.CharField(max_length=60,
                             help_text="Give your automator a name. For example: " +
                                       "<strong>Downtown Seattle: Kitchen Automatic Blinds</strong>")
-    account = models.ForeignKey('dataview.Account')
+    account = models.ForeignKey('dataview.Account', on_delete=models.CASCADE)
     backend = models.ForeignKey('automation.AutomatorClass',
                                 help_text="This backend will be responsible for performing the actions you desire. "
-                                          "Your Dataview administrator can provision additional backends for you to use.")
+                                          "Your Dataview administrator can provision additional backends for you to use.",
+                                on_delete=models.CASCADE)
     description = models.TextField(blank=True, help_text="What does this Automator do?")
     configuration = models.TextField( default='{}', help_text="Don't modify this unless you know understand how the " +
                                                            "automator processes configuration")
@@ -38,7 +39,7 @@ class Automator(UUIDModel):
         return self.get_instance().get_attributes()
 
     def save(self, *args, **kwargs):
-        self.configuration = json.dumps(self.get_class().populate_configuration(json.loads(self.configuration)))
+        # self.configuration = json.dumps(self.get_class().populate_configuration(json.loads(self.configuration)))
         super(Automator, self).save(*args, **kwargs)
 
     def get_class(self):
@@ -143,7 +144,7 @@ class AutomatorForm(ModelForm):
 
 
 class Action(UUIDModel):
-    automator = models.ForeignKey(Automator)
+    automator = models.ForeignKey(Automator, on_delete=models.CASCADE)
     method = models.CharField(max_length=128)
     operations = models.TextField()
     time = models.DateTimeField(auto_now=True)
@@ -153,7 +154,7 @@ class Task(UUIDModel):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
     operations = models.TextField(default='[]')
-    automator = models.ForeignKey(Automator)
+    automator = models.ForeignKey(Automator, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.name
@@ -166,7 +167,7 @@ class Task(UUIDModel):
         for operation in prepared_operations:
 
             params = operation.get('params')
-            operation.update({'params': [param.format(**placeholders) for param in params]})
+            operation.update({'params': [str(param) .format(**placeholders) for param in params]})
 
         return self.automator.do_operations(json.dumps(prepared_operations))
 
@@ -204,7 +205,8 @@ class Decider(UUIDModel):
     description = models.TextField(blank=True)
     conditions = models.TextField(blank=True, help_text="This is the set of rules the decider uses to make its decision.", default='{}')
     configuration = models.TextField(blank=True, help_text="Optional configuration", default='{}')
-    backend = models.ForeignKey('automation.DeciderClass', help_text="This backend will be responsible for making decisions. Your Dataview administrator can provision additional internal backends for you to use.")
+    backend = models.ForeignKey('automation.DeciderClass', on_delete=models.CASCADE,
+                                help_text="This backend will be responsible for making decisions. Your Dataview administrator can provision additional internal backends for you to use.")
 
     @staticmethod
     def get_valid_cls_list():
@@ -369,8 +371,8 @@ class ControllerForm(ModelForm):
 
 
 class ControllerDecider(UUIDModel):
-    controller = models.ForeignKey(Controller)
-    decider = models.ForeignKey(Decider)
+    controller = models.ForeignKey(Controller, on_delete=models.CASCADE)
+    decider = models.ForeignKey(Decider, on_delete=models.CASCADE)
 
 
 class ControllerDeciderForm(ModelForm):
@@ -381,8 +383,8 @@ class ControllerDeciderForm(ModelForm):
 
 class ControllerTask(UUIDModel):
     notes = models.TextField()
-    controller = models.ForeignKey(Controller)
-    task = models.ForeignKey(Task)
+    controller = models.ForeignKey(Controller, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
     mapping = models.TextField()
 
     def perform_operations(self, provided_decisions):

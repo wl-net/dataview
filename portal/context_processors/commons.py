@@ -9,7 +9,7 @@ BLACKLIST = ['portal']
 
 def add_commons(request):
     d = {}
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         """
         TODO: clean this up. Create tests first
         """

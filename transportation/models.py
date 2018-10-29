@@ -20,7 +20,7 @@ class TransportationInformationProvider(UUIDModel):
 # Used for travel directions
 class Destination(UUIDModel):
     name = models.CharField(max_length=128)
-    location = models.ForeignKey(Address)
+    location = models.ForeignKey(Address, on_delete=models.CASCADE)
 
     def is_open(self):
         #return datetime.datetime.today().time()
@@ -58,7 +58,7 @@ class DestinationGroup(UUIDModel):
         return self.name
 
 class OpenHour(UUIDModel):
-    location = models.ForeignKey('building.Address')
+    location = models.ForeignKey('building.Address', on_delete=models.CASCADE)
     day_of_week = models.IntegerField(choices=WEEKDAYS)
     from_time = models.TimeField()
     to_time = models.TimeField()

@@ -37,8 +37,8 @@ class ServiceType(UUIDModel):
 
 class Service(UUIDModel):
     name = models.CharField(max_length=128)
-    service_type = models.ForeignKey('ServiceType')
-    location = models.ForeignKey('building.Address')
+    service_type = models.ForeignKey('ServiceType', on_delete=models.CASCADE)
+    location = models.ForeignKey('building.Address', on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.name
@@ -47,7 +47,7 @@ class Service(UUIDModel):
         return self.name
 
 class Guest(UUIDModel):
-    user = models.ForeignKey('auth.User', editable=False)
+    user = models.ForeignKey('auth.User', editable=False, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=128)
 
@@ -58,7 +58,7 @@ class Guest(UUIDModel):
         return self.name
 
 class Message(UUIDModel):
-    user = models.ForeignKey('auth.User', editable=False)
+    user = models.ForeignKey('auth.User', editable=False, on_delete=models.CASCADE)
     time = models.DateTimeField()
     acknowledged = models.BooleanField(default=False)
     relevant = models.BooleanField(default=True)

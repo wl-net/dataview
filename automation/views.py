@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -21,7 +21,7 @@ def index(request):
     controllers = get_objects_for_user(request.user, 'automation.change_controller')
     deciders = get_objects_for_user(request.user, 'automation.change_decider')
     taskgroups = get_objects_for_user(request.user, 'automation.change_taskgroup')
-    tasks = get_objects_for_user(request.user, 'automation.change_task')
+    tasks = get_objects_for_user(request.user, 'automation.change_task').order_by('name')
     events = get_objects_for_user(request.user, 'dataview.change_event').filter(type='automation.operation')[:5]
     return render(request, 'automation/index.html', {'automators': automators,
                                                        'controllers': controllers, 'deciders': deciders,
@@ -73,10 +73,13 @@ def edit_automator(request, automator):
 def run_task(request):
     if request.method == 'POST':
         try:
-            get_objects_for_user(request.user, 'automation.change_taskgroup').get(id=request.POST.get('task')).do_operations()
+            get_objects_for_user(request.user, 'automation.change_taskgroup').get(
+                id=request.POST.get('task')).do_operations()
         except ObjectDoesNotExist:
-            get_objects_for_user(request.user, 'automation.change_task').get(id=request.POST.get('task')).do_operations()
+            get_objects_for_user(request.user, 'automation.change_task').get(id=request.POST.get('task')).do_operations(
+                json.loads(request.POST.get('params', default='{}')))
 
+    # TODO: make this an API with proper response code.
     return HttpResponseRedirect(reverse('automation-index'))
 
 
@@ -106,10 +109,6 @@ def edit_controllertask(request, controller, task):
             if form.is_valid():
                 form.save()
             return render(request, 'automation/edit-controllertask.html', {'form': form, 'request_path': request.path})
-
-        form = ControllerTaskForm(request.POST, instance=ControllerTask.get(id=task))
-        if form.is_valid():
-            form.save()
     else:
         try:
             instance = get_objects_for_user(request.user, 'automation.change_controllertask').get(id=task)
@@ -181,9 +180,8 @@ def edit_controller(request, controller):
     my_tasks = ControllerTask.objects.filter(controller=controller)
 
     return render(request, 'automation/edit-controller.html',
-
-                                             {'form': form, 'controller': controller, 'tasks': tasks,
-                                              'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders})
+                  {'form': form, 'controller': controller, 'tasks': tasks,
+                   'my_tasks': my_tasks, 'deciders': deciders, 'my_deciders': my_deciders})
 
 
 def deciders(request):
@@ -214,7 +212,7 @@ def edit_decider(request, decider):
         if form.is_valid():
             form.save()
     else:
-        form = DeciderForm(instance = my_decider)
+        form = DeciderForm(instance=my_decider)
 
     return render(request, 'automation/edit-decider.html', {'decider': my_decider, 'form': form})
 
@@ -222,6 +220,12 @@ def edit_decider(request, decider):
 def query_decider(request, decider):
     decider = get_objects_for_user(request.user, 'automation.change_decider').get(id=decider)
     return HttpResponse(json.dumps({"name": decider.name, "decision": decider.decide()}), content_type='application/json')
+
+
+def automator_operations(request, automator):
+    automator = get_objects_for_user(request.user, 'automation.change_automator').get(id=automator)
+
+    return HttpResponse(json.dumps(automator.get_instance().get_commands()), content_type='application/json')
 
 
 def edit_task(request, task):

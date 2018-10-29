@@ -1,12 +1,12 @@
 requests
 psycopg2
 python-dateutil
-django==1.11.8
+django
 django-filter
 django-formtools
 django-floppyforms
 # https://github.com/django-guardian/django-guardian/issues/387
-django-guardian==1.3.2
+django-guardian
 django-bootstrap3
 django-bootstrap-navtags
 djangorestframework
@@ -15,3 +15,4 @@ Pillow
 icalendar
 # for oauth suport
 django-oauth-toolkit
+django-ssl-auth

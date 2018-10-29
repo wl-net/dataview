@@ -3,6 +3,7 @@ from django.contrib.gis.db import models
 import datetime, requests, json
 from django.contrib.gis.geos import GEOSGeometry
 
+
 class Address(UUIDModel):
     source_id = models.CharField(max_length=128, editable=False)
     street = models.CharField(max_length=128)
@@ -16,7 +17,7 @@ class Address(UUIDModel):
             request = requests.get("https://nominatim.openstreetmap.org/search?q=%s&format=json&polygon=1&addressdetails=0" % str(self).replace(' ', '%20'))
             response = json.loads(request.content.decode('utf-8'))
             self.geo = GEOSGeometry("POINT(" + response[0]['lon'] + " " + response[0]['lat'] + ")")
-        except Exception as e:
+        except Exception as e:  # TODO: scope this
             print(e)
         super(Address, self).save(*args, **kwargs)
 
@@ -29,8 +30,9 @@ class Address(UUIDModel):
     def __str__(self):
         return self.street + " " + self.city + ", " + self.state + " " + self.zip
 
+
 class Building(UUIDModel):
-    address = models.ForeignKey(Address)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
 
     YEAR_CHOICES = []
@@ -44,10 +46,11 @@ class Building(UUIDModel):
     def __str__(self):
         return self.name
 
+
 class Room(UUIDModel):
     name = models.CharField(max_length=128)
     unit_number = models.CharField(max_length=8)
-    location = models.ForeignKey(Building)
+    location = models.ForeignKey(Building, on_delete=models.CASCADE)
     square_feet = models.IntegerField()
     has_door = models.BooleanField(default=True)
     notes = models.TextField(blank=True)
@@ -58,10 +61,11 @@ class Room(UUIDModel):
     def __str__(self):
         return self.name + " (" +  str(self.location) + ")"
 
+
 class Amenity(UUIDModel):
-    location = models.ForeignKey(Building)
+    location = models.ForeignKey(Building, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    reserverable = models.BooleanField(default=False)
+    reserverable = models.BooleanField(default=False) # TODO: reservable
     visible = models.BooleanField(default=False)
     description = models.TextField(blank=True)
 

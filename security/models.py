@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 from dataview.models import UUIDModel
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.db.models import MultiPolygonField
+from django.db.models import Manager as GeoManager
 
 import requests
 import json
@@ -10,13 +11,40 @@ import re
 
 class Camera(UUIDModel):
     location = models.CharField(max_length=128)
-    residence = models.ForeignKey('building.Building')
+    residence = models.ForeignKey('building.Building', on_delete=models.CASCADE)
     
     def __unicode__(self):
         return self.location
 
     def __str__(self):
         return self.location
+
+
+class SecuritySystem(UUIDModel):
+    name = models.CharField(max_length=128)
+    residence = models.ForeignKey('residential.Residence', on_delete=models.CASCADE)
+    configuration = models.TextField(default='{}')
+    lock_taskgroup = models.ForeignKey('automation.TaskGroup', related_name='lock_taskgroup', on_delete=models.CASCADE)
+    unlock_taskgroup = models.ForeignKey('automation.TaskGroup', related_name='unlock_taskgroup', on_delete=models.CASCADE)
+    enabled = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class AuthenticationFactor(UUIDModel):
+    name = models.CharField(max_length=128)
+    security_system = models.ManyToManyField('security.SecuritySystem')
+    configuration = models.TextField(default='{}')
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+         return self.name
 
 
 class SafetyIncidentSource(UUIDModel):
@@ -30,8 +58,8 @@ class SafetyIncidentSource(UUIDModel):
 
 
 class SafetyIncidentAlert(UUIDModel):
-    incident = models.ForeignKey('security.SafetyIncident')
-    boundary = models.ForeignKey('security.SafetyIncidentAlertBoundary')
+    incident = models.ForeignKey('security.SafetyIncident', on_delete=models.CASCADE)
+    boundary = models.ForeignKey('security.SafetyIncidentAlertBoundary', on_delete=models.CASCADE)
     escalated = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -43,7 +71,7 @@ class SafetyIncidentAlertBoundary(UUIDModel):
     description = models.TextField(blank=True)
     geobox = MultiPolygonField()
     enabled = models.BooleanField(default=True)
-    objects = models.GeoManager()
+    objects = GeoManager()
 
     def __unicode__(self):
         return self.name
@@ -53,7 +81,7 @@ class SafetyIncidentAlertBoundary(UUIDModel):
 
 
 class SafetyIncident(UUIDModel):
-    source = models.ForeignKey('security.SafetyIncidentSource', editable=False)
+    source = models.ForeignKey('security.SafetyIncidentSource', editable=False, on_delete=models.CASCADE)
     location = models.CharField(max_length=128)
     time = models.DateTimeField()
     units = models.TextField(blank=True)

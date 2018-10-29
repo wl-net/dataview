@@ -82,12 +82,12 @@ class SignType(UUIDModel):
 class Sign(UUIDModel):
     name = models.CharField(max_length=128)
     hostname = models.CharField(max_length=128)
-    location = models.ForeignKey('building.Room', null=True, blank=True)
+    location = models.ForeignKey('building.Room', null=True, blank=True, on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
     widgets = models.ManyToManyField('Widget', blank=True, through='SignWidget')
     background_image = models.ImageField(upload_to='sign/uploads/backgrounds', blank=True)
     backend_configuration = models.TextField(blank=True, default='{}')
-    type = models.ForeignKey(SignType)
+    type = models.ForeignKey(SignType, on_delete=models.CASCADE)
 
     @staticmethod
     def update_signs():
@@ -96,8 +96,11 @@ class Sign(UUIDModel):
             updater = sw.sign.type.get_instance(sw.sign.backend_configuration)
             updater.update_widget(sw)
 
+    def get_sign_updater(self):
+        return self.type.get_instance(self.backend_configuration)
+
     def reload_sign(self):
-        updater = self.type.get_instance(self.backend_configuration)
+        updater = self.get_sign_updater()
         updater.reload_signs(str(self.id))
 
     def __unicode__(self):
@@ -179,8 +182,8 @@ class Widget(UUIDModel):
 
 
 class SignWidget(UUIDModel):
-    sign = models.ForeignKey(Sign)
-    widget = models.ForeignKey(Widget)
+    sign = models.ForeignKey(Sign, on_delete=models.CASCADE)
+    widget = models.ForeignKey(Widget, on_delete=models.CASCADE)
     enabled = models.BooleanField(default=True)
     backend_configuration = models.TextField(default='{}')
     frontend_configuration = models.TextField(default='{}')

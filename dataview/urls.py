@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import LoginView, LogoutView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -16,10 +16,10 @@ urlpatterns = [
     url(r'^api/', include('api.urls')),
 
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     
-    url(r'^account/login/$',  login),
-    url(r'^account/logout/$', logout),
+    url(r'^account/login/$', LoginView.as_view(template_name='registration/login.html')),
+    url(r'^account/logout/$', LogoutView.as_view()),
 
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
