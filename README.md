@@ -1,6 +1,8 @@
 WLNet Dataview [![Build Status](https://travis-ci.org/wl-net/dataview.svg?branch=master)](https://travis-ci.org/wl-net/dataview)
 ==============
 
+# Warning: This project is being phased out in favor of Arcus (wl-net/arcusplatform)
+
 WLNet dataview provides a way to collect, interact, and view data. Dataview is being developed as a solution to home automation, though other use-cases such as office building management will not be difficult to realize. The official website for dataview is located at http://opensource.wl-net.net/projects/dataview
 
 Is Dataview for You?
