@@ -152,7 +152,6 @@ INSTALLED_APPS = (
     'building',
     'portal',
     'automation',
-    'money',
     'sign',
     'sensors',
     'security',

@@ -63,11 +63,6 @@ Dataview
 
 The dataview application contains shared code used by all other applications.
 
-Money
-----
-
-The money application provides basic budgeting and transactions through imported data. This application will not be part of dataview core and will be removed soon.
-
 Portal
 ----
 
